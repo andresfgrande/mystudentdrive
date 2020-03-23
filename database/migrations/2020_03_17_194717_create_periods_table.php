@@ -24,7 +24,7 @@ class CreatePeriodsTable extends Migration
 
         Schema::table('periods', function (Blueprint $table) {
             $table->foreign('academic_year_id')->references('id')->on('academic_years');
-            $table->unique(['start_date','end_date', 'academic_year_id']);
+            $table->unique(['academic_year_id','start_date','end_date' ]);
         });
     }
 

@@ -16,18 +16,19 @@ class CreateDaysTable extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('class_id');
-            $table->boolean('monday');
-            $table->boolean('tuesday');
-            $table->boolean('wednesday');
-            $table->boolean('thursday');
-            $table->boolean('friday');
-            $table->boolean('saturday');
-            $table->boolean('sunday');
+            $table->boolean('mon');
+            $table->boolean('tue');
+            $table->boolean('wed');
+            $table->boolean('thu');
+            $table->boolean('fri');
+            $table->boolean('sat');
+            $table->boolean('sun');
             $table->timestamps();
         });
 
         Schema::table('days', function (Blueprint $table) {
             $table->foreign('class_id')->references('id')->on('classes');
+            $table->unique(['mon','tue','wed','thu','fri','sat','sun','class_id']);
         });
     }
 

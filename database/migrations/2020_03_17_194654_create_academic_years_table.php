@@ -23,7 +23,7 @@ class CreateAcademicYearsTable extends Migration
 
         Schema::table('academic_years', function (Blueprint $table) {
             $table->foreign('study_id')->references('id')->on('studies');
-            $table->unique(['start_date','end_date']);
+            $table->unique(['start_date','end_date','study_id']);
         });
     }
 

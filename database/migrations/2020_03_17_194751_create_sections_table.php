@@ -22,7 +22,7 @@ class CreateSectionsTable extends Migration
 
         Schema::table('sections', function (Blueprint $table) {
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->unique(['name','subject_id']);
+            $table->unique(['subject_id','name']);
         });
     }
 
