@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    myStudentDrive
+                    my Student Drive
                 </div>
                 <p>By: Andrés Grande</p>
 
