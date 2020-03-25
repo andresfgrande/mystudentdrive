@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>myStudentDrive</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -68,7 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/dashboard') }}">dashboard</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
@@ -84,6 +84,9 @@
                     my Student Drive
                 </div>
                 <p>By: Andrés Grande</p>
+                <div id="app">
+                    <example-component></example-component>
+                </div>
 
 {{--                <div class="links">--}}
 {{--                    <a href="https://laravel.com/docs">Docs</a>--}}
@@ -97,5 +100,6 @@
 {{--                </div>--}}
             </div>
         </div>
+        <script src="{{asset('js/app.js')}}"></script> <!--Añadimos el js generado con webpack, donde se encuentra nuestro componente vuejs-->
     </body>
 </html>
