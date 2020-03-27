@@ -11,12 +11,15 @@
 |
 */
 
+
+Auth::routes();
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});
 Route::get('/', 'IndexController@index' );
+//Route::get('/dashboard/mi-perfil', 'UserController@index' );
 
-
-Auth::routes();
-
-Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+Route::resource('account', 'UserController');

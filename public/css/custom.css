@@ -1,0 +1,32 @@
+
+@media (min-width: 1200px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 90vw;
+    }
+}
+
+.nav-title .navbar-brand{
+    font-size: 2rem;
+}
+.navbar{
+    padding-top:1em;
+}
+.page-title{
+    margin-top: 0.5em;
+    text-align: center;
+    margin-bottom: 1em;
+}
+.account-data .label-info{
+    width: 75%;
+    float:left;
+    margin-bottom:0;
+    padding-top: 0.5em;
+}
+
+.custom-card{
+    border-top: 1px rgba(0, 0, 0, 0.125) solid !important;
+}
+
+.account-data .btn-edit{
+    float:right;
+}
