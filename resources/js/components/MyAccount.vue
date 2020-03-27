@@ -1,20 +1,20 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header"> Información de la cuenta
                     </div>
-                    <div class="card-body">
+                    <div class="card-body ">
                         <div class="account-data">
-                            <p>Nombre: {{this.userNameVue}} {{this.userSurnamesVue}}</p>
-                            <button class="btn btn-success"  @click="editNameModal">Editar</button>
+                            <p class="label-info">Nombre: {{this.userNameVue}} {{this.userSurnamesVue}}</p>
+                            <button class="btn btn-success btn-edit"  @click="editNameModal">Editar</button>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body custom-card">
                         <div class="account-data">
-                            <p>E-mail: {{this.userEmailVue}}</p>
-                            <button class="btn btn-success"  @click="editEmailModal">Editar</button>
+                            <p class="label-info">E-mail: {{this.userEmailVue}}</p>
+                            <button class="btn btn-success btn-edit"  @click="editEmailModal">Editar</button>
                         </div>
                     </div>
                 </div>
@@ -42,22 +42,7 @@
                                 <label for="surnames">Apellidos</label>
                                     <input class="form-control" v-model="inputEditUserData.surnames" id="surnames" type="text" name="surnames"
                                            placeholder="Apellidos" required>
-
                             </div>
-
-                            <div class="form-group">
-<!--                                <input v-model="form.email" type="email" name="email"-->
-<!--                                       placeholder="Email Address"-->
-<!--                                       class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">-->
-<!--                                <has-error :form="form" field="email"></has-error>-->
-                            </div>
-
-                            <div class="form-group">
-<!--                                <input v-model="form.password" type="password" name="password" id="password"-->
-<!--                                       class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">-->
-<!--                                <has-error :form="form" field="password"></has-error>-->
-                            </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
@@ -114,14 +99,8 @@
         </div>
     </div>
 <!--/********************-->
-
-
-
     </div>
 </template>
-
-
-
 
 <script>
 
@@ -207,8 +186,6 @@
                     console.log(errors);
                 });
                 /*********************************/
-
-
             },
             cleanMessage(ele){
                 if(ele === 'email'){
@@ -226,8 +203,6 @@
             isDisabledSaveEmail: function(){
                 //Guardar deshabilitado si algun inputsvacio
                 return !(this.inputEditUserData.email !== "" && this.inputEditUserData.password!== "");
-
-
             }
         }
     }

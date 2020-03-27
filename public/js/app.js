@@ -2045,27 +2045,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "my_account",
   props: ['user_name', 'user_id', 'user_email', 'user_surnames', 'route_edit_user_account'],
@@ -37600,15 +37579,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-10" }, [
+      _c("div", { staticClass: "col-md-6" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _vm._v(" Información de la cuenta\n                    ")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "card-body " }, [
             _c("div", { staticClass: "account-data" }, [
-              _c("p", [
+              _c("p", { staticClass: "label-info" }, [
                 _vm._v(
                   "Nombre: " +
                     _vm._s(this.userNameVue) +
@@ -37620,7 +37599,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-success",
+                  staticClass: "btn btn-success btn-edit",
                   on: { click: _vm.editNameModal }
                 },
                 [_vm._v("Editar")]
@@ -37628,14 +37607,16 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "card-body custom-card" }, [
             _c("div", { staticClass: "account-data" }, [
-              _c("p", [_vm._v("E-mail: " + _vm._s(this.userEmailVue))]),
+              _c("p", { staticClass: "label-info" }, [
+                _vm._v("E-mail: " + _vm._s(this.userEmailVue))
+              ]),
               _vm._v(" "),
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-success",
+                  staticClass: "btn btn-success btn-edit",
                   on: { click: _vm.editEmailModal }
                 },
                 [_vm._v("Editar")]
@@ -37743,11 +37724,7 @@ var render = function() {
                         }
                       }
                     })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" })
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-footer" }, [
