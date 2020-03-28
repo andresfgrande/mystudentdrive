@@ -46,7 +46,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary" :disabled='isDisabled' @click="saveName">Guardar</button>
+                            <button type="button" class="btn btn-primary" :disabled='isDisabled' @click="saveName">Guardar</button>
                         </div>
 
                     </form>
@@ -161,6 +161,7 @@
                 this.userNameVue = this.inputEditUserData.name;
                 this.userSurnamesVue = this.inputEditUserData.surnames;
                 $('#editNameModal').modal('hide');
+               // window.location.reload()
             },
             saveEmail(){
                 var url = this.route_edit_user_account_vue;

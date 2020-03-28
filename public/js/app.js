@@ -2104,7 +2104,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.userNameVue = this.inputEditUserData.name;
       this.userSurnamesVue = this.inputEditUserData.surnames;
-      $('#editNameModal').modal('hide');
+      $('#editNameModal').modal('hide'); // window.location.reload()
     },
     saveEmail: function saveEmail() {
       var _this = this;
@@ -37741,7 +37741,7 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "submit", disabled: _vm.isDisabled },
+                      attrs: { type: "button", disabled: _vm.isDisabled },
                       on: { click: _vm.saveName }
                     },
                     [_vm._v("Guardar")]
