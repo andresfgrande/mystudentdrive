@@ -22,4 +22,6 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/', 'IndexController@index' );
 //Route::get('/dashboard/mi-perfil', 'UserController@index' );
 
+/*****ACCOUNT*****/
 Route::resource('account', 'UserController');
+Route::put('update/password','vuejs\UpdatePassword@updatePass')->name('updatePass');

@@ -14,6 +14,12 @@
                 route_edit_user_account="{{route('account.update',['account' => Auth::user()->id ])}}"
     ></my-account>
 
+    <br>
+
+    <change-password route_update_password="{{route('updatePass')}}">
+
+    </change-password>
+
 {{--    <div class="container">--}}
 {{--        <div class="row justify-content-center">--}}
 
