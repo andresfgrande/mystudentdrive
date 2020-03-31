@@ -90,7 +90,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" :disabled='isDisabledSaveEmail' @click="saveEmail">Guardar</button>
+                        <button type="button" class="btn btn-primary" :disabled='isDisabled' @click="saveEmail">Guardar</button>
                     </div>
 
                 </form>

@@ -7,6 +7,17 @@
 
     </div>
 
+
+{{--    <div class="container">--}}
+{{--        <div class="card">--}}
+{{--            <img class="card-img" src="{{url('/images/profile/photo.jpg')}}" alt="profile_photo"/>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+    <profile-photo route_profile_photo="{{url('/images/profile/photo.jpg')}}">
+    </profile-photo>
+
+    <br>
     <my-account user_name="{{ Auth::user()->name}}"
                 user_id="{{ Auth::user()->id}}"
                 user_email="{{ Auth::user()->email}}"

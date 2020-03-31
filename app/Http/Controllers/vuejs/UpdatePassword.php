@@ -25,7 +25,7 @@ class UpdatePassword extends Controller
                 $user->save();
                 return Response::json(array('success'=>true,'result'=>'uptade_pass_ok'));
             }else{
-                return Response::json(array('success'=>false,'result'=>'update_pass_fail_not_equals'));
+                return Response::json(array('success'=>false,'result'=>'pass_not_equals'));
             }
         }else{
             return Response::json(array('success'=>false,'result'=>'pass_fail'));
