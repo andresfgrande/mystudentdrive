@@ -25,3 +25,4 @@ Route::get('/', 'IndexController@index' );
 /*****ACCOUNT*****/
 Route::resource('account', 'UserController');
 Route::put('update/password','vuejs\UpdatePassword@updatePass')->name('updatePass');
+Route::post('/uploadphoto', 'vuejs\UploadPhoto@uploadProfilePhoto')->name('uploadphoto');

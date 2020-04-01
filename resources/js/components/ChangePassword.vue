@@ -40,6 +40,9 @@
                                 <small v-if="length_not_ok"  class="text-danger">
                                     La contraseña tiene que tener más de 8 caracteres.
                                 </small>
+                                <small v-if="new_equals_current"  class="text-danger">
+                                    Nueva contraseña no puede ser igual a la anterior.
+                                </small>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" @click="updatePassword" :disabled="isDisabled" >Actualizar contraseña</button>
@@ -48,11 +51,12 @@
                     </div>
                 </div>
                 <div class="alert alert-succes alert-dismissible fade show" v-if="updated_ok" role="alert">
-                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                    <strong>¡Contraseña cambiada correctamente!</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -63,6 +67,7 @@
     export default {
         name: "ChangePassword",
         props:['route_update_password'],
+        ///
 
         created(){
             this.route_update_password_vue = this.route_update_password;
@@ -81,6 +86,7 @@
                 length_not_ok: false,
                 result_not_match: false,
                 updated_ok: false,
+                new_equals_current: false,
             }
         },
 
@@ -108,6 +114,13 @@
                         this.password.current_password = '';
                         this.password.new_password = '';
                         this.password.confirm_password = '';
+                        $('#collapse-password').toggle();
+                    }
+                    if(response.data.result === 'new_current_equals_fail'){
+                        this.new_equals_current = true;
+                        this.password.current_password = '';
+                        this.password.new_password = '';
+                        this.password.confirm_password = '';
                     }
                 })
                     .catch(errors => {
@@ -120,6 +133,7 @@
             },
              showMessageNotMatch(){
                  this.result_not_match = false;
+                 this.new_equals_current = false;
                 this.showMessageLength();
 
                  if(this.password.new_password !== this.password.confirm_password){

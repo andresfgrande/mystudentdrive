@@ -1969,9 +1969,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ChangePassword",
   props: ['route_update_password'],
+  ///
   created: function created() {
     this.route_update_password_vue = this.route_update_password;
   },
@@ -1987,7 +1992,8 @@ __webpack_require__.r(__webpack_exports__);
       pass_not_match: false,
       length_not_ok: false,
       result_not_match: false,
-      updated_ok: false
+      updated_ok: false,
+      new_equals_current: false
     };
   },
   methods: {
@@ -2021,6 +2027,14 @@ __webpack_require__.r(__webpack_exports__);
           _this.password.current_password = '';
           _this.password.new_password = '';
           _this.password.confirm_password = '';
+          $('#collapse-password').toggle();
+        }
+
+        if (response.data.result === 'new_current_equals_fail') {
+          _this.new_equals_current = true;
+          _this.password.current_password = '';
+          _this.password.new_password = '';
+          _this.password.confirm_password = '';
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -2032,6 +2046,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     showMessageNotMatch: function showMessageNotMatch() {
       this.result_not_match = false;
+      this.new_equals_current = false;
       this.showMessageLength();
 
       if (this.password.new_password !== this.password.confirm_password) {
@@ -2244,7 +2259,6 @@ __webpack_require__.r(__webpack_exports__);
       this.inputEditUserData.password = '';
     },
     saveName: function saveName() {
-      //var url = url_edit.replace(':account_number_id',this.editedAccount.id );
       var url = this.route_edit_user_account_vue;
       this.inputEditUserData.is_email = false;
       /***********Ajax call*************/
@@ -2253,7 +2267,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.put(url, {
         params: this.inputEditUserData
       }).then(function (response) {
-        // this.getAccountsForDistributor();
         console.log(response);
       })["catch"](function (errors) {
         console.log(errors);
@@ -2263,7 +2276,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.userNameVue = this.inputEditUserData.name;
       this.userSurnamesVue = this.inputEditUserData.surnames;
-      $('#editNameModal').modal('hide'); // window.location.reload()
+      $('#editNameModal').modal('hide');
     },
     saveEmail: function saveEmail() {
       var _this = this;
@@ -2344,16 +2357,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProfilePhoto",
-  props: ['route_profile_photo'],
+  props: ['route_profile_photo', 'route_upload_photo'],
   created: function created() {
     this.route_profile_photo_vue = this.route_profile_photo;
+    this.route_upload_photo_vue = this.route_upload_photo;
   },
   data: function data() {
     return {
-      route_profile_photo_vue: ''
+      route_profile_photo_vue: '',
+      selectedFile: null,
+      route_upload_photo_vue: ''
     };
+  },
+  methods: {
+    uploadPhoto: function uploadPhoto() {
+      var _this = this;
+
+      var fd = new FormData();
+      fd.append('image', this.selectedFile, this.selectedFile.name);
+      var url = this.route_upload_photo_vue;
+      axios.post(url, fd).then(function (response) {
+        console.log(response.data.result);
+        console.log(_this.route_profile_photo_vue);
+        _this.route_profile_photo_vue = 'http://mystudentdrive.localhost/images/profile/' + response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    onFileSelected: function onFileSelected(event) {
+      console.log(event);
+      this.selectedFile = event.target.files[0];
+    }
   }
 });
 
@@ -37893,6 +37944,14 @@ var render = function() {
                           "\n                                La contraseña tiene que tener más de 8 caracteres.\n                            "
                         )
                       ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.new_equals_current
+                    ? _c("small", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n                                Nueva contraseña no puede ser igual a la anterior.\n                            "
+                        )
+                      ])
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -37920,10 +37979,8 @@ var render = function() {
                 attrs: { role: "alert" }
               },
               [
-                _c("strong", [_vm._v("Holy guacamole!")]),
-                _vm._v(
-                  " You should check in on some of those fields below.\n                "
-                ),
+                _c("strong", [_vm._v("¡Contraseña cambiada correctamente!")]),
+                _vm._v(" "),
                 _vm._m(1)
               ]
             )
@@ -38455,19 +38512,63 @@ var render = function() {
         _c("div", {}, [
           _c("img", {
             staticClass: "card-img",
-            staticStyle: {
-              width: "50%",
-              "border-radius": "50%",
-              "margin-left": "25%"
-            },
+            staticStyle: { width: "50%" },
             attrs: { src: this.route_profile_photo_vue, alt: "profile_photo" }
-          })
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("table", { staticClass: "table" }, [
+              _c("tr", [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("td", { attrs: { width: "30" } }, [
+                  _c("input", {
+                    attrs: { type: "file", name: "select_file" },
+                    on: { change: _vm.onFileSelected }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { width: "30%", align: "left" } }, [
+                  _c("input", {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", name: "upload", value: "Upload" },
+                    on: { click: _vm.uploadPhoto }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { width: "40%", align: "right" } }, [
+      _c("label", [_vm._v("Select File for Upload")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { width: "40%", align: "right" } }),
+      _vm._v(" "),
+      _c("td", { attrs: { width: "30" } }, [
+        _c("span", { staticClass: "text-muted" }, [_vm._v("jpg, png, gif")])
+      ]),
+      _vm._v(" "),
+      _c("td", { attrs: { width: "30%", align: "left" } })
+    ])
+  }
+]
 render._withStripped = true
 
 

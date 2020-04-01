@@ -6,3 +6,12 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+
+.alert.alert-succes{
+    background: #d4edda;
+    margin-top: 1.5em;
+}
+

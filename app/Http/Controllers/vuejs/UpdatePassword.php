@@ -20,12 +20,17 @@ class UpdatePassword extends Controller
         $hashedPassword = $user->getAuthPassword();
 
         if (Hash::check($currentPassword, $hashedPassword)) { //contraseña correcta
-            if( $newPassword == $confirmPassword){ //contraseñs coinciden
-                $user->password = bcrypt($newPassword);
-                $user->save();
-                return Response::json(array('success'=>true,'result'=>'uptade_pass_ok'));
+
+            if(Hash::check($newPassword, $hashedPassword)){
+                return Response::json(array('success'=>false,'result'=>'new_current_equals_fail'));
             }else{
-                return Response::json(array('success'=>false,'result'=>'pass_not_equals'));
+                if( $newPassword == $confirmPassword){ //contraseñs coinciden
+                    $user->password = bcrypt($newPassword);
+                    $user->save();
+                    return Response::json(array('success'=>true,'result'=>'uptade_pass_ok'));
+                }else{
+                    return Response::json(array('success'=>false,'result'=>'pass_not_equals'));
+                }
             }
         }else{
             return Response::json(array('success'=>false,'result'=>'pass_fail'));

@@ -8,13 +8,9 @@
     </div>
 
 
-{{--    <div class="container">--}}
-{{--        <div class="card">--}}
-{{--            <img class="card-img" src="{{url('/images/profile/photo.jpg')}}" alt="profile_photo"/>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 
-    <profile-photo route_profile_photo="{{url('/images/profile/photo.jpg')}}">
+    <profile-photo route_profile_photo="{{url('/images/profile/bob.jpg')}}"
+                   route_upload_photo="{{route('uploadphoto')}}">
     </profile-photo>
 
     <br>

@@ -144,13 +144,11 @@
                 this.inputEditUserData.password = '';
             },
             saveName(){
-                //var url = url_edit.replace(':account_number_id',this.editedAccount.id );
                 var url = this.route_edit_user_account_vue;
                 this.inputEditUserData.is_email = false;
                 /***********Ajax call*************/
                 console.log(url);
                 axios.put(url,{params:this.inputEditUserData}).then(response => {
-                    // this.getAccountsForDistributor();
                     console.log(response);
                 })
                     .catch(errors => {
@@ -161,7 +159,6 @@
                 this.userNameVue = this.inputEditUserData.name;
                 this.userSurnamesVue = this.inputEditUserData.surnames;
                 $('#editNameModal').modal('hide');
-               // window.location.reload()
             },
             saveEmail(){
                 var url = this.route_edit_user_account_vue;
