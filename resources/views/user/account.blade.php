@@ -8,9 +8,10 @@
     </div>
 
 
-
+{{--aqui envio nombre de foto de la BD--}}
     <profile-photo route_profile_photo="{{url('/images/profile/bob.jpg')}}"
-                   route_upload_photo="{{route('uploadphoto')}}">
+                   route_upload_photo="{{route('uploadphoto')}}"
+                   route_base_photo="{{url('/images/profile/')}}">
     </profile-photo>
 
     <br>

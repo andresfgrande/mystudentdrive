@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 
-class UpdatePassword extends Controller
+class UpdatePasswordController extends Controller
 {
     public function updatePass(Request $request){
 

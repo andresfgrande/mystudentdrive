@@ -2372,18 +2372,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProfilePhoto",
-  props: ['route_profile_photo', 'route_upload_photo'],
+  props: ['route_profile_photo', 'route_upload_photo', 'route_base_photo'],
   created: function created() {
     this.route_profile_photo_vue = this.route_profile_photo;
     this.route_upload_photo_vue = this.route_upload_photo;
+    this.route_base_photo_vue = this.route_base_photo;
   },
   data: function data() {
     return {
       route_profile_photo_vue: '',
       selectedFile: null,
-      route_upload_photo_vue: ''
+      route_upload_photo_vue: '',
+      route_base_photo_vue: '',
+      upload_fail: false
     };
   },
   methods: {
@@ -2394,16 +2407,23 @@ __webpack_require__.r(__webpack_exports__);
       fd.append('image', this.selectedFile, this.selectedFile.name);
       var url = this.route_upload_photo_vue;
       axios.post(url, fd).then(function (response) {
-        console.log(response.data.result);
-        console.log(_this.route_profile_photo_vue);
-        _this.route_profile_photo_vue = 'http://mystudentdrive.localhost/images/profile/' + response.data.result;
+        console.log(response.data);
+
+        if (response.data.result === 'img_validation_file') {
+          //mostrar aviso de fallo.
+          _this.upload_fail = true;
+        } else {
+          _this.route_profile_photo_vue = _this.route_base_photo + '/' + response.data.result_img;
+        }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     onFileSelected: function onFileSelected(event) {
+      this.upload_fail = false;
       console.log(event);
       this.selectedFile = event.target.files[0];
+      this.uploadPhoto();
     }
   }
 });
@@ -38510,34 +38530,62 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-6" }, [
         _c("div", {}, [
-          _c("img", {
-            staticClass: "card-img",
-            staticStyle: { width: "50%" },
-            attrs: { src: this.route_profile_photo_vue, alt: "profile_photo" }
-          }),
+          _c(
+            "a",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.$refs.fileInput.click()
+                }
+              }
+            },
+            [
+              _c("img", {
+                staticClass: "card-img",
+                staticStyle: { width: "50%", cursor: "pointer" },
+                attrs: {
+                  src: this.route_profile_photo_vue,
+                  alt: "profile_photo"
+                }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _vm.upload_fail
+            ? _c(
+                "div",
+                {
+                  staticClass: "alert alert-danger alert-dismissible fade show",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _c("strong", [
+                    _vm._v(
+                      "La foto escogida no tiene una extensión valida o es mayor de 10 MB."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("table", { staticClass: "table" }, [
               _c("tr", [
-                _vm._m(0),
+                _vm._m(1),
                 _vm._v(" "),
                 _c("td", { attrs: { width: "30" } }, [
                   _c("input", {
+                    ref: "fileInput",
+                    staticStyle: { display: "none" },
                     attrs: { type: "file", name: "select_file" },
                     on: { change: _vm.onFileSelected }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", { attrs: { width: "30%", align: "left" } }, [
-                  _c("input", {
-                    staticClass: "btn btn-primary",
-                    attrs: { type: "button", name: "upload", value: "Upload" },
-                    on: { click: _vm.uploadPhoto }
                   })
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(2)
             ])
           ])
         ])
@@ -38546,6 +38594,23 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
