@@ -11,12 +11,19 @@
 |
 */
 
+
+Auth::routes();
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});
 Route::get('/', 'IndexController@index' );
+//Route::get('/dashboard/mi-perfil', 'UserController@index' );
 
-
-Auth::routes();
-
-Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+/*****ACCOUNT*****/
+Route::resource('account', 'UserController');
+Route::put('update/password','vuejs\UpdatePasswordController@updatePass')->name('updatePass');
+Route::post('/uploadphoto', 'vuejs\UploadPhotoController@uploadProfilePhoto')->name('uploadphoto');
+route::delete('/deletephoto','vuejs\UploadPhotoController@deleteProfilePhoto')->name('deletephoto');

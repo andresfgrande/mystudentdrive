@@ -8,6 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +22,9 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('my-account', require('./components/MyAccount.vue').default);
+Vue.component('change-password', require('./components/ChangePassword.vue').default);
+Vue.component('profile-photo', require('./components/ProfilePhoto.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
