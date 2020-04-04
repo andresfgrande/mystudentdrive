@@ -2259,6 +2259,8 @@ __webpack_require__.r(__webpack_exports__);
       this.inputEditUserData.password = '';
     },
     saveName: function saveName() {
+      var _this = this;
+
       var url = this.route_edit_user_account_vue;
       this.inputEditUserData.is_email = false;
       /***********Ajax call*************/
@@ -2268,18 +2270,18 @@ __webpack_require__.r(__webpack_exports__);
         params: this.inputEditUserData
       }).then(function (response) {
         console.log(response);
+        _this.userNameVue = _this.inputEditUserData.name;
+        _this.userSurnamesVue = _this.inputEditUserData.surnames;
+        $('#editNameModal').modal('hide');
+
+        _this.actualiza();
       })["catch"](function (errors) {
         console.log(errors);
       });
       /*********************************/
-      //this.editedAccount = null;
-
-      this.userNameVue = this.inputEditUserData.name;
-      this.userSurnamesVue = this.inputEditUserData.surnames;
-      $('#editNameModal').modal('hide');
     },
     saveEmail: function saveEmail() {
-      var _this = this;
+      var _this2 = this;
 
       var url = this.route_edit_user_account_vue;
       this.inputEditUserData.is_email = true;
@@ -2293,17 +2295,17 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
 
         if (response.data.result === 'pass_fail') {
-          _this.pass_fail = true;
-          _this.inputEditUserData.password = '';
+          _this2.pass_fail = true;
+          _this2.inputEditUserData.password = '';
         }
 
         if (response.data.result === 'mail_exists_fail') {
-          _this.email_fail = true;
+          _this2.email_fail = true;
         }
 
         if (response.data.result === 'edit_mail_ok' || response.data.result === 'mantenido_mail_ok') {
           $('#editEmailModal').modal('hide');
-          _this.userEmailVue = _this.inputEditUserData.email;
+          _this2.userEmailVue = _this2.inputEditUserData.email;
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -2316,6 +2318,9 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.pass_fail = false;
       }
+    },
+    actualiza: function actualiza() {
+      location.reload();
     }
   },
   computed: {
@@ -2382,13 +2387,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProfilePhoto",
-  props: ['route_profile_photo', 'route_upload_photo', 'route_base_photo'],
+  props: ['route_profile_photo', 'route_upload_photo', 'route_base_photo', 'current_photo', 'route_delete_photo', 'user_name', 'user_surnames'],
   created: function created() {
-    this.route_profile_photo_vue = this.route_profile_photo;
     this.route_upload_photo_vue = this.route_upload_photo;
     this.route_base_photo_vue = this.route_base_photo;
+    this.current_photo_vue = this.current_photo;
+    this.route_profile_photo_vue = this.route_base_photo_vue + '/' + this.current_photo_vue;
+    this.route_delete_photo_vue = this.route_delete_photo;
+    this.user_name_vue = this.user_name;
+    this.user_surnames_vue = this.user_surnames;
+    this.getInitials();
   },
   data: function data() {
     return {
@@ -2396,7 +2424,11 @@ __webpack_require__.r(__webpack_exports__);
       selectedFile: null,
       route_upload_photo_vue: '',
       route_base_photo_vue: '',
-      upload_fail: false
+      upload_fail: false,
+      current_photo_vue: '',
+      initials: '',
+      user_name_vue: '',
+      user_surnames_vue: ''
     };
   },
   methods: {
@@ -2413,7 +2445,9 @@ __webpack_require__.r(__webpack_exports__);
           //mostrar aviso de fallo.
           _this.upload_fail = true;
         } else {
-          _this.route_profile_photo_vue = _this.route_base_photo + '/' + response.data.result_img;
+          _this.current_photo_vue = response.data.result_img;
+          _this.route_profile_photo_vue = _this.route_base_photo + '/' + response.data.result_img; // this.showPhoto = true;
+          // this.showAvatar = false;
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -2424,6 +2458,44 @@ __webpack_require__.r(__webpack_exports__);
       console.log(event);
       this.selectedFile = event.target.files[0];
       this.uploadPhoto();
+    },
+    deletePhoto: function deletePhoto() {
+      var _this2 = this;
+
+      var url = this.route_delete_photo_vue;
+      axios["delete"](url).then(function (response) {
+        console.log(response.data);
+        _this2.user_name_vue = response.data.name;
+        _this2.user_surnames_vue = response.data.surnames;
+
+        _this2.getInitials();
+
+        _this2.route_profile_photo_vue = '';
+        _this2.current_photo_vue = '';
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getInitials: function getInitials() {
+      var name = this.user_name_vue.charAt(0);
+      var surname = this.user_surnames_vue.charAt(0);
+      this.initials = name.toUpperCase() + surname.toUpperCase();
+    }
+  },
+  computed: {
+    showPhoto: function showPhoto() {
+      if (this.current_photo_vue !== '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    showAvatar: function showAvatar() {
+      if (this.current_photo_vue !== '') {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 });
@@ -37802,7 +37874,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-md-5" }, [
         _c("div", { staticClass: "card" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -38122,7 +38194,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-md-5" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _vm._v(" Información de la cuenta\n                    ")
@@ -38132,7 +38204,7 @@ var render = function() {
             _c("div", { staticClass: "account-data" }, [
               _c("p", { staticClass: "label-info" }, [
                 _vm._v(
-                  "Nombre: " +
+                  " " +
                     _vm._s(this.userNameVue) +
                     " " +
                     _vm._s(this.userSurnamesVue)
@@ -38153,7 +38225,7 @@ var render = function() {
           _c("div", { staticClass: "card-body custom-card" }, [
             _c("div", { staticClass: "account-data" }, [
               _c("p", { staticClass: "label-info" }, [
-                _vm._v("E-mail: " + _vm._s(this.userEmailVue))
+                _vm._v(" " + _vm._s(this.userEmailVue))
               ]),
               _vm._v(" "),
               _c(
@@ -38441,7 +38513,10 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "button", disabled: _vm.isDisabled },
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledSaveEmail
+                      },
                       on: { click: _vm.saveEmail }
                     },
                     [_vm._v("Guardar")]
@@ -38528,28 +38603,74 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", {}, [
-          _c(
-            "a",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.$refs.fileInput.click()
-                }
-              }
-            },
-            [
-              _c("img", {
-                staticClass: "card-img",
-                staticStyle: { width: "50%", cursor: "pointer" },
-                attrs: {
-                  src: this.route_profile_photo_vue,
-                  alt: "profile_photo"
-                }
-              })
-            ]
-          ),
+      _c("div", { staticClass: "col-md-5" }, [
+        _c("div", [
+          _c("div", { staticClass: "image-profile-container" }, [
+            _vm.showPhoto
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "image-container",
+                    on: {
+                      click: function($event) {
+                        return _vm.$refs.fileInput.click()
+                      }
+                    }
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "card-img",
+                      attrs: {
+                        src: this.route_profile_photo_vue,
+                        alt: "profile_photo"
+                      }
+                    })
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "image-profile-container " }, [
+            _vm.showPhoto
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger delete-photo action-photo",
+                    attrs: { type: "button", name: "delete" },
+                    on: { click: _vm.deletePhoto }
+                  },
+                  [_vm._v("Quitar foto")]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _vm.showAvatar
+            ? _c("div", { staticClass: "image-profile-container" }, [
+                _c("div", { staticClass: "avatar-circle" }, [
+                  _c("span", { staticClass: "initials" }, [
+                    _vm._v(_vm._s(this.initials))
+                  ])
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "image-profile-container action-photo" }, [
+            _vm.showAvatar
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary delete-photo action-photo",
+                    attrs: { type: "button", name: "upload" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$refs.fileInput.click()
+                      }
+                    }
+                  },
+                  [_vm._v("Añadir Photo")]
+                )
+              : _vm._e()
+          ]),
           _vm._v(" "),
           _vm.upload_fail
             ? _c(
@@ -38571,22 +38692,12 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
-            _c("table", { staticClass: "table" }, [
-              _c("tr", [
-                _vm._m(1),
-                _vm._v(" "),
-                _c("td", { attrs: { width: "30" } }, [
-                  _c("input", {
-                    ref: "fileInput",
-                    staticStyle: { display: "none" },
-                    attrs: { type: "file", name: "select_file" },
-                    on: { change: _vm.onFileSelected }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(2)
-            ])
+            _c("input", {
+              ref: "fileInput",
+              staticStyle: { display: "none" },
+              attrs: { type: "file", name: "select_file" },
+              on: { change: _vm.onFileSelected }
+            })
           ])
         ])
       ])
@@ -38610,28 +38721,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { attrs: { width: "40%", align: "right" } }, [
-      _c("label", [_vm._v("Select File for Upload")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", { attrs: { width: "40%", align: "right" } }),
-      _vm._v(" "),
-      _c("td", { attrs: { width: "30" } }, [
-        _c("span", { staticClass: "text-muted" }, [_vm._v("jpg, png, gif")])
-      ]),
-      _vm._v(" "),
-      _c("td", { attrs: { width: "30%", align: "left" } })
-    ])
   }
 ]
 render._withStripped = true

@@ -2,7 +2,7 @@
     <div class="container">
 
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-header">
                         <a data-toggle="collapse" href="#collapse-password"  aria-expanded="false"

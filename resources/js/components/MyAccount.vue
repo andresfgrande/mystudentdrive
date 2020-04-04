@@ -1,19 +1,19 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-header"> Información de la cuenta
                     </div>
                     <div class="card-body ">
                         <div class="account-data">
-                            <p class="label-info">Nombre: {{this.userNameVue}} {{this.userSurnamesVue}}</p>
+                            <p class="label-info"> {{this.userNameVue}} {{this.userSurnamesVue}}</p>
                             <button class="btn btn-success btn-edit"  @click="editNameModal">Editar</button>
                         </div>
                     </div>
                     <div class="card-body custom-card">
                         <div class="account-data">
-                            <p class="label-info">E-mail: {{this.userEmailVue}}</p>
+                            <p class="label-info"> {{this.userEmailVue}}</p>
                             <button class="btn btn-success btn-edit"  @click="editEmailModal">Editar</button>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" :disabled='isDisabled' @click="saveEmail">Guardar</button>
+                        <button type="button" class="btn btn-primary" :disabled='isDisabledSaveEmail' @click="saveEmail">Guardar</button>
                     </div>
 
                 </form>
@@ -150,15 +150,15 @@
                 console.log(url);
                 axios.put(url,{params:this.inputEditUserData}).then(response => {
                     console.log(response);
+                    this.userNameVue = this.inputEditUserData.name;
+                    this.userSurnamesVue = this.inputEditUserData.surnames;
+                    $('#editNameModal').modal('hide');
+                    this.actualiza();
                 })
                     .catch(errors => {
                         console.log(errors);
                     });
                 /*********************************/
-                //this.editedAccount = null;
-                this.userNameVue = this.inputEditUserData.name;
-                this.userSurnamesVue = this.inputEditUserData.surnames;
-                $('#editNameModal').modal('hide');
             },
             saveEmail(){
                 var url = this.route_edit_user_account_vue;
@@ -191,7 +191,10 @@
                 }else{
                     this.pass_fail=false;
                 }
-                          }
+            },
+            actualiza(){
+                location.reload();
+            }
         },
         computed:{
             isDisabled: function(){

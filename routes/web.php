@@ -26,3 +26,4 @@ Route::get('/', 'IndexController@index' );
 Route::resource('account', 'UserController');
 Route::put('update/password','vuejs\UpdatePasswordController@updatePass')->name('updatePass');
 Route::post('/uploadphoto', 'vuejs\UploadPhotoController@uploadProfilePhoto')->name('uploadphoto');
+route::delete('/deletephoto','vuejs\UploadPhotoController@deleteProfilePhoto')->name('deletephoto');

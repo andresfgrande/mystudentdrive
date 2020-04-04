@@ -7,11 +7,14 @@
 
     </div>
 
-
 {{--aqui envio nombre de foto de la BD--}}
-    <profile-photo route_profile_photo="{{url('/images/profile/bob.jpg')}}"
+    <profile-photo route_profile_photo="{{url("/images/profile/bob.jpg")}}"
                    route_upload_photo="{{route('uploadphoto')}}"
-                   route_base_photo="{{url('/images/profile/')}}">
+                   route_base_photo="{{url('/images/profile/')}}"
+                   current_photo="{{Auth::user()->photo}}"
+                   route_delete_photo="{{route('deletephoto')}}"
+                   user_name="{{ Auth::user()->name}}"
+                   user_surnames="{{ Auth::user()->surnames}}">
     </profile-photo>
 
     <br>

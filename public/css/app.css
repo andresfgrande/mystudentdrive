@@ -21759,3 +21759,68 @@ a.text-dark:focus {
   margin-top: 1.5em;
 }
 
+.image-profile-container {
+  text-align: center;
+  display: block;
+}
+
+.image-profile-container .image-container {
+  width: 130px;
+  height: 130px;
+}
+
+.image-profile-container .image-container .card-img {
+  border-radius: 50%;
+  width: 130px;
+  height: 130px;
+  cursor: pointer;
+  box-shadow: 0px 0px 17px 8px rgba(0, 0, 0, 0.35);
+}
+
+.image-profile-container .image-container .card-img:hover {
+  margin-top: 3px;
+  margin-bottom: -3px;
+  box-shadow: 0px -4px 20px 0px rgba(0, 0, 0, 0.68);
+}
+
+.image-profile-container .avatar-circle {
+  width: 130px;
+  height: 130px;
+  background-color: lightgreen;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0px 0px 25px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.image-profile-container .avatar-circle .initials {
+  position: relative;
+  top: 45px;
+  /* 25% of parent */
+  font-size: 50px;
+  /* 50% of parent */
+  line-height: 50px;
+  /* 50% of parent */
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+}
+
+.image-profile-container .avatar-circle:hover {
+  margin-top: 3px;
+  margin-bottom: -3px;
+  box-shadow: 0px -4px 20px 0px rgba(0, 0, 0, 0.68);
+}
+
+.label-info {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.action-photo {
+  margin-top: 1em;
+}
+
