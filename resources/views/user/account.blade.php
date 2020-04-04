@@ -7,12 +7,29 @@
 
     </div>
 
+{{--aqui envio nombre de foto de la BD--}}
+    <profile-photo route_profile_photo="{{url("/images/profile/bob.jpg")}}"
+                   route_upload_photo="{{route('uploadphoto')}}"
+                   route_base_photo="{{url('/images/profile/')}}"
+                   current_photo="{{Auth::user()->photo}}"
+                   route_delete_photo="{{route('deletephoto')}}"
+                   user_name="{{ Auth::user()->name}}"
+                   user_surnames="{{ Auth::user()->surnames}}">
+    </profile-photo>
+
+    <br>
     <my-account user_name="{{ Auth::user()->name}}"
                 user_id="{{ Auth::user()->id}}"
                 user_email="{{ Auth::user()->email}}"
                 user_surnames="{{ Auth::user()->surnames}}"
                 route_edit_user_account="{{route('account.update',['account' => Auth::user()->id ])}}"
     ></my-account>
+
+    <br>
+
+    <change-password route_update_password="{{route('updatePass')}}">
+
+    </change-password>
 
 {{--    <div class="container">--}}
 {{--        <div class="row justify-content-center">--}}
