@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'myStudentDrive') }}</title>
+    <link rel="icon" href="{!! asset('images/logo_title.png') !!}"/>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -26,7 +27,8 @@
             <div class="container">
                 <h2 class="nav-title">
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'myStudentDrive') }}
+{{--                        {{ config('app.name', 'myStudentDrive') }}--}}
+                        <img src="{{asset('images/logo_completo.png')}}">
                     </a>
                 </h2>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
