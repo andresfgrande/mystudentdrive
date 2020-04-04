@@ -2391,20 +2391,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProfilePhoto",
   props: ['route_profile_photo', 'route_upload_photo', 'route_base_photo', 'current_photo', 'route_delete_photo', 'user_name', 'user_surnames'],
@@ -38682,7 +38668,7 @@ var render = function() {
                 [
                   _c("strong", [
                     _vm._v(
-                      "La foto escogida no tiene una extensión valida o es mayor de 10 MB."
+                      "La foto escogida no tiene una extensión válida (jpeg, jpg, png, gif)."
                     )
                   ]),
                   _vm._v(" "),
