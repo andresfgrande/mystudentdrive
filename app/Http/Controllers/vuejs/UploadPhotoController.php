@@ -13,7 +13,7 @@ class UploadPhotoController extends Controller
         $user = Auth::User();
         try{
             $this->validate($request, [
-                'image'  => 'required|image|mimes:jpg,png,gif|max:10240'
+                'image'  => 'required|image|mimes:jpeg,jpg,png,gif'
             ]);
         } catch (\Exception $exception) {
             return Response::json(array('success'=>false,'result'=>"img_validation_file"));

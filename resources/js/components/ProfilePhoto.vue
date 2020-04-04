@@ -26,28 +26,14 @@
                 </div>
 
                 <div class="alert alert-danger alert-dismissible fade show" v-if="upload_fail" role="alert">
-                    <strong>La foto escogida no tiene una extensión valida o es mayor de 10 MB.</strong>
+                    <strong>La foto escogida no tiene una extensión válida (jpeg, jpg, png, gif).</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <div class="form-group">
-<!--                    <table class="table">-->
-<!--                        <tr>-->
-<!--                            <td width="40%" align="right"><label>Select File for Upload</label></td>-->
-<!--                            <td width="30">-->
-
-                                <input style="display:none" type="file" name="select_file" ref="fileInput" @change="onFileSelected"/>
-<!--                            </td>-->
-<!--                            <td width="30%" align="left"><input type="button" name="upload" @click="uploadPhoto" class="btn btn-primary" value="Upload"></td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <td width="40%" align="right"></td>-->
-<!--                            <td width="30"><span class="text-muted">jpg, png, gif</span></td>-->
-<!--                            <td width="30%" align="left"></td>-->
-<!--                        </tr>-->
-<!--                    </table>-->
+                    <input style="display:none" type="file" name="select_file" ref="fileInput" @change="onFileSelected"/>
                 </div>
             </div>
         </div>
