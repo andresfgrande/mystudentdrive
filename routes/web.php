@@ -34,4 +34,8 @@ Route::get('/testajax', 'vuejs\UploadPhotoController@testFunction')->name('test'
 /******ESTUDIOS******/
 Route::resource('studies', 'StudyController');
 Route::get('/yearsbystudy','vuejs\StudyController@getYearsByStudy')->name('get_years_by_study');
-Route::get('/subjectsbyperiod','vuejs\StudyController@getSubjectsByPeriod')->name('get_subjects_by_period');
+Route::get('/subjectsbyyear','vuejs\StudyController@getSubjectsByYear')->name('get_subjects_by_year');
+Route::post('/addstudy','vuejs\StudyController@addStudy')->name('add_study');
+Route::post('/addperiod','vuejs\StudyController@addPeriod')->name('add_period');
+Route::post('/addsubject','vuejs\StudyController@addSubject')->name('add_subject');
+Route::get('/getstudiesajax','vuejs\StudyController@getStudiesAjax')->name('get_studies_ajax');
