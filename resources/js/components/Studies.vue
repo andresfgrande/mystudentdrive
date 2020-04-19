@@ -20,8 +20,7 @@
                     <br>
                     <div>
                         <button type="button" class="btn btn-primary" @click="addStudyModal">Añadir estudios</button>
-<!--                        <button class="btn btn-success btn-edit"  @click="editNameModal">Editar</button>-->
-                        <button type="button" class="btn btn-primary" @click="addYear">Añadir curso</button>
+                        <button type="button" class="btn btn-primary" @click="addYearModal">Añadir año academico</button>
                     </div>
                 </div>
             </div>
@@ -76,6 +75,48 @@
             </div>
         </div>
         <!--/******************************************-->
+        <!--/**********ADD YEAR****************/-->
+        <div class="modal fade" id="addYearModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="addYearLabel">Nuevo año academico</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="year_academico_start">Fecha de inicio</label>
+                                <input class="form-control" v-model="yearToAdd.year_start"
+                                       id="year_academico_start" type="date" name="year_academico_star"
+                                       placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="year_academico_end">Fecha de finalización</label>
+                                <input class="form-control" v-model="yearToAdd.year_end"
+                                       id="year_academico_end" type="date" name="year_academico_end"
+                                       placeholder="" required>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible fade show" v-if="showYearExists" role="alert">
+                                <strong>  Las fechas seleccionadas coinciden con las de otro año academico.</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" :disabled='isDisabledSaveYear' @click="addYear">Guardar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--/******************************************-->
 
     </div>
 </template>
@@ -84,13 +125,13 @@
     export default {
         name: "Estudios",
         props:['estudios','route_get_years_by_study','route_get_subjects_by_year',
-                'route_add_study','route_add_period','route_add_subject','route_get_studies'],
+                'route_add_study','route_add_year','route_add_subject','route_get_studies'],
         created(){
             this.estudios_vue = this.estudios;
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
             this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year ;
             this.route_add_study_vue = this.route_add_study;
-            this.route_add_period_vue = this.route_add_period;
+            this.route_add_year_vue = this.route_add_year;
             this.route_add_subject_vue = this.route_add_subject;
             this.route_get_studies_vue = this.route_get_studies;
             this.getStudiesArray();
@@ -115,11 +156,17 @@
                 chosenStudy: '',
                 subjectsArray:'',
                 route_add_study_vue:'',
-                route_add_period_vue:'',
+                route_add_year_vue:'',
                 route_add_subject_vue:'',
                 route_get_studies_vue:'',
                 studyToAdd:'',
                 showNameExists:false,
+                yearToAdd:{
+                    year_start:'',
+                    year_end:'',
+                },
+                showYearExists:true,
+
             }
         },
 
@@ -190,7 +237,14 @@
                     });
             },
             addYear(){
-                console.log('add academic year');
+                //console.log('add academic year');
+                var url = this.route_add_year_vue;
+                axios.post(url ,{params:this.yearToAdd}).then(response => {
+                    console.log(response.data.result);
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
             },
             addSubject(){
                 console.log('add subject');
@@ -210,7 +264,10 @@
             },
             cleanMessage(){
                 this.showNameExists = false;
-            }
+            },
+            addYearModal(){
+                $('#addYearModal').modal('show');
+            },
 
         },
         computed:{
@@ -218,7 +275,14 @@
                 return this.chosenStudy !== '';
             },
             isDisabled: function(){
-                if(this.newSubject === ''){
+                if(this.studyToAdd === ''){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            isDisabledSaveYear: function(){
+                if(this.yearToAdd === ''){
                     return true;
                 }else{
                     return false;

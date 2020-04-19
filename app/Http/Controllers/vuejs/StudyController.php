@@ -88,13 +88,11 @@ class StudyController extends Controller
             //ya existe este estudio para este usuario
             return Response::json(array('success'=>false,'result'=>'error_study_exists'));
         }
-
-
         return Response::json(array('success'=>true,'result'=>'study_created'));
     }
 
-    public function addPeriod(Request $request){
-
+    public function addYear(Request $request){
+        dd($request);
     }
 
     public function addSubject(Request $request){
