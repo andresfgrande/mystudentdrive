@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\DB;
 class StudyController extends Controller
 {
     public function index(){
-        $user = Auth::User();
-        $estudios =  DB::table('studies')->where('user_id', $user->id)->get();
+
 
         if (Auth::check()) {
+            $user = Auth::User();
+            $estudios =  DB::table('studies')->where('user_id', $user->id)->get();
             // The user is logged in...
             return view('user.studies',compact('estudios'));
         }

@@ -10,9 +10,10 @@
                                role="button"  aria-controls="collapseExample">
                                 {{ item.name }}
                             </a>
+                            <a style="cursor:pointer;float:right;"  @click="addYearModal(item.id)">Añadir curso</a>
                         </div>
-                        <ul class="collapse" v-bind:id="getRefId2(item.id)" >
-                            <li v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name)">
+                        <ul class="" v-bind:id="getRefId2(item.id)" >
+                            <li v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name,hey.start_date,hey.end_date)">
                                 {{hey.start_date}} / {{hey.end_date}}
                             </li>
                         </ul>
@@ -20,7 +21,7 @@
                     <br>
                     <div>
                         <button type="button" class="btn btn-primary" @click="addStudyModal">Añadir estudios</button>
-                        <button type="button" class="btn btn-primary" @click="addYearModal">Añadir año academico</button>
+<!--                        <button type="button" class="btn btn-primary" @click="addYearModal">Añadir año academico</button>-->
                     </div>
                 </div>
             </div>
@@ -28,11 +29,11 @@
                 <div style="width:75%;">
                     <h3 style="text-align:center;">Asignaturas</h3>
                     <div class="card-header" v-if="showSubjectsHeader">
-                      {{this.chosenStudy}}
+                      {{this.chosenStudy}}      {{this.yearStartChosen}} / {{this.yearEndChosen}}
                     </div>
                     <ul>
                         <li v-for="subject in subjectsArray">
-                            <p>{{subject.subject_name}} - {{subject.period_name}}</p>
+                            <p>{{subject.subject_name}}   -   {{subject.period_name}}</p>
                         </li>
                     </ul>
                     <br>
@@ -154,6 +155,8 @@
                 indexArray:0,
                 route_get_subjects_by_year_vue:'',
                 chosenStudy: '',
+                yearStartChosen:'',
+                yearEndChosen:'',
                 subjectsArray:'',
                 route_add_study_vue:'',
                 route_add_year_vue:'',
@@ -162,10 +165,11 @@
                 studyToAdd:'',
                 showNameExists:false,
                 yearToAdd:{
+                    study_id:'',
                     year_start:'',
                     year_end:'',
                 },
-                showYearExists:true,
+                showYearExists:false,
 
             }
         },
@@ -203,12 +207,14 @@
                 });
                this.studiesArray.studies = aux;
             },
-            getSubjectsByYear(year_id, study_name){
+            getSubjectsByYear(year_id, study_name, start_date,end_date){
                 this.data.year = year_id;
                 var url = this.route_get_subjects_by_year_vue;
                 axios.get(url ,{params:this.data}).then(response => {
                     console.log(response.data.result);
                     this.chosenStudy = study_name;
+                    this.yearStartChosen = start_date;
+                    this.yearEndChosen = end_date;
                     this.subjectsArray = response.data.result;
                     console.log(this.subjectsArray);
                 })
@@ -237,10 +243,15 @@
                     });
             },
             addYear(){
-                //console.log('add academic year');
                 var url = this.route_add_year_vue;
                 axios.post(url ,{params:this.yearToAdd}).then(response => {
                     console.log(response.data.result);
+                    this.getStudiesAjax();
+                    this.getStudiesArray();
+                    this.getAcademicYears();
+                    if(response.data.result === 'year_created_ok'){
+                        $('#addYearModal').modal('hide');
+                    }
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -261,11 +272,16 @@
             },
             addStudyModal(){
                 $('#addStudyModal').modal('show');
+                this.studyToAdd = '';
             },
             cleanMessage(){
                 this.showNameExists = false;
             },
-            addYearModal(){
+            addYearModal(study_id){
+                console.log(study_id);
+                this.yearToAdd.year_start = '';
+                this.yearToAdd.year_end = '';
+                this.yearToAdd.study_id = study_id;
                 $('#addYearModal').modal('show');
             },
 
@@ -282,7 +298,7 @@
                 }
             },
             isDisabledSaveYear: function(){
-                if(this.yearToAdd === ''){
+                if(this.yearToAdd.year_start === '' || this.yearToAdd.year_end === ''){
                     return true;
                 }else{
                     return false;

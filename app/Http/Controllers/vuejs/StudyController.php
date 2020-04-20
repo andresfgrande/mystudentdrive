@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\vuejs;
 
+use App\AcademicYear;
 use App\Http\Controllers\Controller;
 use App\Study;
 use Illuminate\Http\Request;
@@ -92,7 +93,49 @@ class StudyController extends Controller
     }
 
     public function addYear(Request $request){
-        dd($request);
+        $study_id = $request->params['study_id'];
+        $year_start = $request->params['year_start'];
+        $year_end = $request->params['year_end'];
+
+        $request->request->add(['study_id' => $request->params['study_id']]);
+        $request->request->add(['year_start' => $request->params['year_start']]);
+        $request->request->add(['year_end' => $request->params['year_end']]);
+        try {
+            $this->validate($request, [
+                'study_id' => 'required',
+                'year_start' => 'required',
+                'year_end' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json(array('success'=>false,'result'=>'error_year_dates_required'));
+        }
+
+        if($year_start > $year_end){
+            return Response::json(array('success'=>false,'result'=>'error_end_date_greater'));
+        }else{
+            $aux1 = $this->checkSolapaStartDate($study_id, $year_start);
+            if($aux1){
+                return Response::json(array('success'=>false,'result'=>'solapa_start'));
+            }
+            $aux2 = $this->checkSolapaEndDate($study_id, $year_end);
+            if($aux2){
+                return Response::json(array('success'=>false,'result'=>'solapa_end'));
+            }
+            $aux3 = $this->checkSolapaDates($study_id, $year_start, $year_end);
+            if($aux3){
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
+            }
+            try {
+                $year = new AcademicYear();
+                $year->study_id = $study_id;
+                $year->start_date = $year_start;
+                $year->end_date = $year_end;
+                $year->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_create_year'));
+            }
+            return Response::json(array('success'=>true,'result'=>'year_created_ok'));
+        }
     }
 
     public function addSubject(Request $request){
@@ -104,5 +147,45 @@ class StudyController extends Controller
         $estudios =  DB::table('studies')->where('user_id', $user->id)->get();
         $arrayEstudios = $estudios->toArray();
         return Response::json(array('success'=>true,'result'=>$arrayEstudios));
+    }
+
+    public function checkSolapaStartDate($study_id, $year_start){
+        $solapa_start =  DB::table('academic_years')
+            ->where('study_id', $study_id)
+            ->where('start_date','<', $year_start)
+            ->where('end_date','>', $year_start)
+            ->get('id');
+
+        if(empty($solapa_start->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSolapaEndDate($study_id, $year_end){
+        $solapa_end =  DB::table('academic_years')
+            ->where('study_id', $study_id)
+            ->where('start_date','<', $year_end)
+            ->where('end_date','>', $year_end)
+            ->get('id');
+        if(empty($solapa_end->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSolapaDates($study_id, $year_start, $year_end){
+        $solapa_end =  DB::table('academic_years')
+            ->where('study_id', $study_id)
+            ->where('start_date','>', $year_start)
+            ->where('end_date','<', $year_end)
+            ->get('id');
+        if(empty($solapa_end->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
     }
 }

@@ -2620,6 +2620,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Estudios",
   props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies'],
@@ -2651,6 +2652,8 @@ __webpack_require__.r(__webpack_exports__);
       indexArray: 0,
       route_get_subjects_by_year_vue: '',
       chosenStudy: '',
+      yearStartChosen: '',
+      yearEndChosen: '',
       subjectsArray: '',
       route_add_study_vue: '',
       route_add_year_vue: '',
@@ -2659,10 +2662,11 @@ __webpack_require__.r(__webpack_exports__);
       studyToAdd: '',
       showNameExists: false,
       yearToAdd: {
+        study_id: '',
         year_start: '',
         year_end: ''
       },
-      showYearExists: true
+      showYearExists: false
     };
   },
   methods: {
@@ -2699,7 +2703,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.studiesArray.studies = aux;
     },
-    getSubjectsByYear: function getSubjectsByYear(year_id, study_name) {
+    getSubjectsByYear: function getSubjectsByYear(year_id, study_name, start_date, end_date) {
       var _this2 = this;
 
       this.data.year = year_id;
@@ -2709,6 +2713,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log(response.data.result);
         _this2.chosenStudy = study_name;
+        _this2.yearStartChosen = start_date;
+        _this2.yearEndChosen = end_date;
         _this2.subjectsArray = response.data.result;
         console.log(_this2.subjectsArray);
       })["catch"](function (errors) {
@@ -2741,12 +2747,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addYear: function addYear() {
-      //console.log('add academic year');
+      var _this4 = this;
+
       var url = this.route_add_year_vue;
       axios.post(url, {
         params: this.yearToAdd
       }).then(function (response) {
         console.log(response.data.result);
+
+        _this4.getStudiesAjax();
+
+        _this4.getStudiesArray();
+
+        _this4.getAcademicYears();
+
+        if (response.data.result === 'year_created_ok') {
+          $('#addYearModal').modal('hide');
+        }
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2755,23 +2772,28 @@ __webpack_require__.r(__webpack_exports__);
       console.log('add subject');
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this4.estudios_vue = response.data.result;
+        _this5.estudios_vue = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     addStudyModal: function addStudyModal() {
       $('#addStudyModal').modal('show');
+      this.studyToAdd = '';
     },
     cleanMessage: function cleanMessage() {
       this.showNameExists = false;
     },
-    addYearModal: function addYearModal() {
+    addYearModal: function addYearModal(study_id) {
+      console.log(study_id);
+      this.yearToAdd.year_start = '';
+      this.yearToAdd.year_end = '';
+      this.yearToAdd.study_id = study_id;
       $('#addYearModal').modal('show');
     }
   },
@@ -2787,7 +2809,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     isDisabledSaveYear: function isDisabledSaveYear() {
-      if (this.yearToAdd === '') {
+      if (this.yearToAdd.year_start === '' || this.yearToAdd.year_end === '') {
         return true;
       } else {
         return false;
@@ -39174,20 +39196,30 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                            " +
+                        "\n                                " +
                           _vm._s(item.name) +
-                          "\n                        "
+                          "\n                            "
                       )
                     ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticStyle: { cursor: "pointer", float: "right" },
+                      on: {
+                        click: function($event) {
+                          return _vm.addYearModal(item.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Añadir curso")]
                   )
                 ]),
                 _vm._v(" "),
                 _c(
                   "ul",
-                  {
-                    staticClass: "collapse",
-                    attrs: { id: _vm.getRefId2(item.id) }
-                  },
+                  { attrs: { id: _vm.getRefId2(item.id) } },
                   _vm._l(_vm.auxArray[index], function(hey) {
                     return hey !== "vacio"
                       ? _c(
@@ -39195,17 +39227,22 @@ var render = function() {
                           {
                             on: {
                               click: function($event) {
-                                return _vm.getSubjectsByYear(hey.id, item.name)
+                                return _vm.getSubjectsByYear(
+                                  hey.id,
+                                  item.name,
+                                  hey.start_date,
+                                  hey.end_date
+                                )
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n                            " +
+                              "\n                                " +
                                 _vm._s(hey.start_date) +
                                 " / " +
                                 _vm._s(hey.end_date) +
-                                "\n                        "
+                                "\n                            "
                             )
                           ]
                         )
@@ -39227,16 +39264,6 @@ var render = function() {
                   on: { click: _vm.addStudyModal }
                 },
                 [_vm._v("Añadir estudios")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: { click: _vm.addYearModal }
-                },
-                [_vm._v("Añadir año academico")]
               )
             ])
           ],
@@ -39253,9 +39280,13 @@ var render = function() {
           _vm.showSubjectsHeader
             ? _c("div", { staticClass: "card-header" }, [
                 _vm._v(
-                  "\n                  " +
+                  "\n                      " +
                     _vm._s(this.chosenStudy) +
-                    "\n                "
+                    "      " +
+                    _vm._s(this.yearStartChosen) +
+                    " / " +
+                    _vm._s(this.yearEndChosen) +
+                    "\n                    "
                 )
               ])
             : _vm._e(),
@@ -39267,7 +39298,7 @@ var render = function() {
                 _c("p", [
                   _vm._v(
                     _vm._s(subject.subject_name) +
-                      " - " +
+                      "   -   " +
                       _vm._s(subject.period_name)
                   )
                 ])
@@ -39355,7 +39386,7 @@ var render = function() {
                     _vm.showNameExists
                       ? _c("small", { staticClass: "text-danger" }, [
                           _vm._v(
-                            "\n                                Ya tienes unos estudios con este nombre.\n                            "
+                            "\n                                    Ya tienes unos estudios con este nombre.\n                                "
                           )
                         ])
                       : _vm._e()
