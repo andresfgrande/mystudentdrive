@@ -111,15 +111,15 @@ class StudyController extends Controller
         }
 
         if($year_start > $year_end){
-            return Response::json(array('success'=>false,'result'=>'error_end_date_greater'));
+            return Response::json(array('success'=>false,'result'=>'error_start_date_greater'));
         }else{
             $aux1 = $this->checkSolapaStartDate($study_id, $year_start);
             if($aux1){
-                return Response::json(array('success'=>false,'result'=>'solapa_start'));
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
             }
             $aux2 = $this->checkSolapaEndDate($study_id, $year_end);
             if($aux2){
-                return Response::json(array('success'=>false,'result'=>'solapa_end'));
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
             }
             $aux3 = $this->checkSolapaDates($study_id, $year_start, $year_end);
             if($aux3){
@@ -139,7 +139,7 @@ class StudyController extends Controller
     }
 
     public function addSubject(Request $request){
-
+        dd($request);
     }
 
     public function getStudiesAjax(){

@@ -2621,6 +2621,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Estudios",
   props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies'],
@@ -2666,7 +2668,8 @@ __webpack_require__.r(__webpack_exports__);
         year_start: '',
         year_end: ''
       },
-      showYearExists: false
+      showYearExists: false,
+      showYearGreater: false
     };
   },
   methods: {
@@ -2764,6 +2767,14 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.result === 'year_created_ok') {
           $('#addYearModal').modal('hide');
         }
+
+        if (response.data.result === 'solapa_dates') {
+          _this4.showYearExists = true;
+        }
+
+        if (response.data.result === 'error_start_date_greater') {
+          _this4.showYearGreater = true;
+        }
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2789,8 +2800,13 @@ __webpack_require__.r(__webpack_exports__);
     cleanMessage: function cleanMessage() {
       this.showNameExists = false;
     },
+    cleanMessageDates: function cleanMessageDates() {
+      this.showYearExists = false;
+      this.showGrater = false;
+    },
     addYearModal: function addYearModal(study_id) {
-      console.log(study_id);
+      this.showYearExists = false;
+      this.showGrater = false;
       this.yearToAdd.year_start = '';
       this.yearToAdd.year_end = '';
       this.yearToAdd.study_id = study_id;
@@ -39310,15 +39326,21 @@ var render = function() {
           _c("br"),
           _vm._v(" "),
           _c("div", [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: { click: _vm.addSubject }
-              },
-              [_vm._v("Añadir asignatura")]
-            )
+            _vm.showSubjectsHeader
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.addSubject }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Añadir asignatura\n                        "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ])
       ])
@@ -39469,6 +39491,7 @@ var render = function() {
                       },
                       domProps: { value: _vm.yearToAdd.year_start },
                       on: {
+                        change: _vm.cleanMessageDates,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -39507,6 +39530,7 @@ var render = function() {
                       },
                       domProps: { value: _vm.yearToAdd.year_end },
                       on: {
+                        change: _vm.cleanMessageDates,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -39534,9 +39558,25 @@ var render = function() {
                             _vm._v(
                               "  Las fechas seleccionadas coinciden con las de otro año academico."
                             )
-                          ]),
-                          _vm._v(" "),
-                          _vm._m(2)
+                          ])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.showYearGreater
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "alert alert-danger alert-dismissible fade show",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("strong", [
+                            _vm._v(
+                              "La fecha de inicio es posterior a la fecha de finalización."
+                            )
+                          ])
                         ]
                       )
                     : _vm._e()
@@ -39619,23 +39659,6 @@ var staticRenderFns = [
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: {
-          type: "button",
-          "data-dismiss": "alert",
-          "aria-label": "Close"
-        }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
   }
 ]
 render._withStripped = true

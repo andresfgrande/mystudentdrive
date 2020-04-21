@@ -38,7 +38,9 @@
                     </ul>
                     <br>
                     <div>
-                        <button type="button" class="btn btn-primary" @click="addSubject">Añadir asignatura</button>
+                        <button type="button" v-if="showSubjectsHeader" class="btn btn-primary" @click="addSubject">
+                            Añadir asignatura
+                        </button>
                     </div>
                 </div>
             </div>
@@ -92,19 +94,19 @@
                                 <label for="year_academico_start">Fecha de inicio</label>
                                 <input class="form-control" v-model="yearToAdd.year_start"
                                        id="year_academico_start" type="date" name="year_academico_star"
-                                       placeholder="" required>
+                                       placeholder="" v-on:change="cleanMessageDates" required>
                             </div>
                             <div class="form-group">
                                 <label for="year_academico_end">Fecha de finalización</label>
                                 <input class="form-control" v-model="yearToAdd.year_end"
                                        id="year_academico_end" type="date" name="year_academico_end"
-                                       placeholder="" required>
+                                       placeholder="" v-on:change="cleanMessageDates" required>
                             </div>
                             <div class="alert alert-danger alert-dismissible fade show" v-if="showYearExists" role="alert">
                                 <strong>  Las fechas seleccionadas coinciden con las de otro año academico.</strong>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="showYearGreater">
+                                <strong>La fecha de inicio es posterior a la fecha de finalización.</strong>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -170,6 +172,7 @@
                     year_end:'',
                 },
                 showYearExists:false,
+                showYearGreater:false,
 
             }
         },
@@ -252,6 +255,12 @@
                     if(response.data.result === 'year_created_ok'){
                         $('#addYearModal').modal('hide');
                     }
+                    if(response.data.result === 'solapa_dates'){
+                        this.showYearExists = true;
+                    }
+                    if(response.data.result === 'error_start_date_greater'){
+                        this.showYearGreater= true;
+                    }
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -277,8 +286,13 @@
             cleanMessage(){
                 this.showNameExists = false;
             },
+            cleanMessageDates(){
+                this.showYearExists = false;
+                this.showGrater = false;
+            },
             addYearModal(study_id){
-                console.log(study_id);
+                this.showYearExists = false;
+                this.showGrater = false;
                 this.yearToAdd.year_start = '';
                 this.yearToAdd.year_end = '';
                 this.yearToAdd.study_id = study_id;
