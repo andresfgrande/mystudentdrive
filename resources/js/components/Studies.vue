@@ -21,7 +21,6 @@
                     <br>
                     <div>
                         <button type="button" class="btn btn-primary" @click="addStudyModal">Añadir estudios</button>
-<!--                        <button type="button" class="btn btn-primary" @click="addYearModal">Añadir año academico</button>-->
                     </div>
                 </div>
             </div>
@@ -38,7 +37,7 @@
                     </ul>
                     <br>
                     <div>
-                        <button type="button" v-if="showSubjectsHeader" class="btn btn-primary" @click="addSubject">
+                        <button type="button" v-if="showSubjectsHeader" class="btn btn-primary" @click="addSubjectModal">
                             Añadir asignatura
                         </button>
                     </div>
@@ -46,7 +45,7 @@
             </div>
         </div>
 
-        <!--/**********ADD STUDIES****************/-->
+        <!--/*********************************ADD STUDIES*********************************************/-->
         <div class="modal fade" id="addStudyModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -77,8 +76,8 @@
                 </div>
             </div>
         </div>
-        <!--/******************************************-->
-        <!--/**********ADD YEAR****************/-->
+        <!--/***********************************************************************************************-->
+        <!--/*****************************************ADD YEAR**********************************************/-->
         <div class="modal fade" id="addYearModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -119,7 +118,57 @@
                 </div>
             </div>
         </div>
-        <!--/******************************************-->
+        <!--/************************************************************************************************-->
+        <!--/***********************************ADD SUBJECT*************************************************/-->
+        <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="addSubjectLabel">Nueva asignatura</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="subject_name">Nombre</label>
+                                <input class="form-control" v-model="subjectToAdd.name"
+                                       id="subject_name" type="text" name="subject_name"
+                                       placeholder="" required>
+                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label for="subject_period">Periodo</label>-->
+<!--                                <input class="form-control" v-model="subjectToAdd.period_id"-->
+<!--                                       id="subject_period" type="text" name="subject_period"-->
+<!--                                       placeholder="" required>-->
+<!--                            </div>-->
+                            <div class="form-group">
+                                <select v-model="subjectToAdd.period_id">
+                                    <option disabled value="">Seleccione un periodo</option>
+                                    <option value="1">A</option>
+                                    <option value="2">B</option>
+                                    <option value="3">C</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject_color">Color</label>
+                                <input class="form-control" v-model="subjectToAdd.color"
+                                       id="subject_color" type="text" name="subject_color"
+                                       placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary"  @click="addSubject">Guardar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--/*********************************************************************************+******************-->
 
     </div>
 </template>
@@ -128,7 +177,7 @@
     export default {
         name: "Estudios",
         props:['estudios','route_get_years_by_study','route_get_subjects_by_year',
-                'route_add_study','route_add_year','route_add_subject','route_get_studies'],
+                'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year'],
         created(){
             this.estudios_vue = this.estudios;
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
@@ -137,6 +186,7 @@
             this.route_add_year_vue = this.route_add_year;
             this.route_add_subject_vue = this.route_add_subject;
             this.route_get_studies_vue = this.route_get_studies;
+            this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
             this.getStudiesArray();
             this.getAcademicYears();
         },
@@ -159,11 +209,15 @@
                 chosenStudy: '',
                 yearStartChosen:'',
                 yearEndChosen:'',
+                yearIdChosen: {
+                    year_id:''
+                },
                 subjectsArray:'',
                 route_add_study_vue:'',
                 route_add_year_vue:'',
                 route_add_subject_vue:'',
                 route_get_studies_vue:'',
+                route_get_periods_by_year_vue:'',
                 studyToAdd:'',
                 showNameExists:false,
                 yearToAdd:{
@@ -173,6 +227,11 @@
                 },
                 showYearExists:false,
                 showYearGreater:false,
+                subjectToAdd:{
+                    period_id:'',
+                    name:'',
+                    color:'',
+                }
 
             }
         },
@@ -218,6 +277,9 @@
                     this.chosenStudy = study_name;
                     this.yearStartChosen = start_date;
                     this.yearEndChosen = end_date;
+                    this.yearIdChosen.year_id = year_id;
+                    console.log('----------');
+                    console.log(this.yearIdChosen);
                     this.subjectsArray = response.data.result;
                     console.log(this.subjectsArray);
                 })
@@ -267,7 +329,13 @@
                     });
             },
             addSubject(){
-                console.log('add subject');
+                var url = this.route_add_subject_vue;
+                axios.post(url ,{params:this.subjectToAdd}).then(response => {
+                    console.log(response.data.result);
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
             },
             getStudiesAjax(){
                 var url = this.route_get_studies_vue;
@@ -282,6 +350,11 @@
             addStudyModal(){
                 $('#addStudyModal').modal('show');
                 this.studyToAdd = '';
+            },
+            addSubjectModal(){
+                this.getPeriodsByYear();
+                $('#addSubjectModal').modal('show');
+               // this.studyToAdd = '';
             },
             cleanMessage(){
                 this.showNameExists = false;
@@ -298,6 +371,15 @@
                 this.yearToAdd.study_id = study_id;
                 $('#addYearModal').modal('show');
             },
+            getPeriodsByYear(){
+                var url = this.route_get_periods_by_year_vue;
+                axios.get(url,{params:this.yearIdChosen}).then(response => {
+                    console.log(response.data.result);
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            }
 
         },
         computed:{

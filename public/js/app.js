@@ -2623,9 +2623,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Estudios",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -2634,6 +2683,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_year_vue = this.route_add_year;
     this.route_add_subject_vue = this.route_add_subject;
     this.route_get_studies_vue = this.route_get_studies;
+    this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
     this.getStudiesArray();
     this.getAcademicYears();
   },
@@ -2656,11 +2706,15 @@ __webpack_require__.r(__webpack_exports__);
       chosenStudy: '',
       yearStartChosen: '',
       yearEndChosen: '',
+      yearIdChosen: {
+        year_id: ''
+      },
       subjectsArray: '',
       route_add_study_vue: '',
       route_add_year_vue: '',
       route_add_subject_vue: '',
       route_get_studies_vue: '',
+      route_get_periods_by_year_vue: '',
       studyToAdd: '',
       showNameExists: false,
       yearToAdd: {
@@ -2669,7 +2723,12 @@ __webpack_require__.r(__webpack_exports__);
         year_end: ''
       },
       showYearExists: false,
-      showYearGreater: false
+      showYearGreater: false,
+      subjectToAdd: {
+        period_id: '',
+        name: '',
+        color: ''
+      }
     };
   },
   methods: {
@@ -2718,6 +2777,9 @@ __webpack_require__.r(__webpack_exports__);
         _this2.chosenStudy = study_name;
         _this2.yearStartChosen = start_date;
         _this2.yearEndChosen = end_date;
+        _this2.yearIdChosen.year_id = year_id;
+        console.log('----------');
+        console.log(_this2.yearIdChosen);
         _this2.subjectsArray = response.data.result;
         console.log(_this2.subjectsArray);
       })["catch"](function (errors) {
@@ -2780,7 +2842,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addSubject: function addSubject() {
-      console.log('add subject');
+      var url = this.route_add_subject_vue;
+      axios.post(url, {
+        params: this.subjectToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
     },
     getStudiesAjax: function getStudiesAjax() {
       var _this5 = this;
@@ -2797,6 +2866,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#addStudyModal').modal('show');
       this.studyToAdd = '';
     },
+    addSubjectModal: function addSubjectModal() {
+      this.getPeriodsByYear();
+      $('#addSubjectModal').modal('show'); // this.studyToAdd = '';
+    },
     cleanMessage: function cleanMessage() {
       this.showNameExists = false;
     },
@@ -2811,6 +2884,16 @@ __webpack_require__.r(__webpack_exports__);
       this.yearToAdd.year_end = '';
       this.yearToAdd.study_id = study_id;
       $('#addYearModal').modal('show');
+    },
+    getPeriodsByYear: function getPeriodsByYear() {
+      var url = this.route_get_periods_by_year_vue;
+      axios.get(url, {
+        params: this.yearIdChosen
+      }).then(function (response) {
+        console.log(response.data.result);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
     }
   },
   computed: {
@@ -39332,7 +39415,7 @@ var render = function() {
                   {
                     staticClass: "btn btn-primary",
                     attrs: { type: "button" },
-                    on: { click: _vm.addSubject }
+                    on: { click: _vm.addSubjectModal }
                   },
                   [
                     _vm._v(
@@ -39610,6 +39693,181 @@ var render = function() {
           ]
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addSubjectModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_name" } }, [
+                      _vm._v("Nombre")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectToAdd.name,
+                          expression: "subjectToAdd.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "subject_name",
+                        type: "text",
+                        name: "subject_name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.subjectToAdd.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.subjectToAdd,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.subjectToAdd.period_id,
+                            expression: "subjectToAdd.period_id"
+                          }
+                        ],
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.subjectToAdd,
+                              "period_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { disabled: "", value: "" } }, [
+                          _vm._v("Seleccione un periodo")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "1" } }, [_vm._v("A")]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "2" } }, [_vm._v("B")]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "3" } }, [_vm._v("C")])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_color" } }, [
+                      _vm._v("Color")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectToAdd.color,
+                          expression: "subjectToAdd.color"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "subject_color",
+                        type: "text",
+                        name: "subject_color",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.subjectToAdd.color },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.subjectToAdd,
+                            "color",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.addSubject }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
@@ -39645,6 +39903,31 @@ var staticRenderFns = [
       _c("h5", { staticClass: "modal-title", attrs: { id: "addYearLabel" } }, [
         _vm._v("Nuevo año academico")
       ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "addSubjectLabel" } },
+        [_vm._v("Nueva asignatura")]
+      ),
       _vm._v(" "),
       _c(
         "button",

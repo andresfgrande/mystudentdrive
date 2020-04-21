@@ -39,3 +39,4 @@ Route::post('/addstudy','vuejs\StudyController@addStudy')->name('add_study');
 Route::post('/addyear','vuejs\StudyController@addYear')->name('add_year');
 Route::post('/addsubject','vuejs\StudyController@addSubject')->name('add_subject');
 Route::get('/getstudiesajax','vuejs\StudyController@getStudiesAjax')->name('get_studies_ajax');
+Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('get_periods_by_year');

@@ -142,6 +142,10 @@ class StudyController extends Controller
         dd($request);
     }
 
+    public function getPeriodsByYear(Request $request){
+        dd($request);
+    }
+
     public function getStudiesAjax(){
         $user = Auth::User();
         $estudios =  DB::table('studies')->where('user_id', $user->id)->get();

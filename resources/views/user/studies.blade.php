@@ -14,6 +14,7 @@
         route_add_year="{{route('add_year')}}"
         route_add_subject="{{route('add_subject')}}"
         route_get_studies="{{route('get_studies_ajax')}}"
+        route_get_periods_by_year="{{route('get_periods_by_year')}}"
     ></studies>
 
 
