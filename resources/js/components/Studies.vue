@@ -124,7 +124,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="addSubjectLabel">Nueva asignatura</h5>
+                        <h5 class="modal-title"  id="addSubjectLabel">Nueva asignatura de {{this.chosenStudy}} {{this.yearStartChosen}}/{{this.yearEndChosen}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -137,30 +137,50 @@
                                        id="subject_name" type="text" name="subject_name"
                                        placeholder="" required>
                             </div>
-<!--                            <div class="form-group">-->
-<!--                                <label for="subject_period">Periodo</label>-->
-<!--                                <input class="form-control" v-model="subjectToAdd.period_id"-->
-<!--                                       id="subject_period" type="text" name="subject_period"-->
-<!--                                       placeholder="" required>-->
-<!--                            </div>-->
-                            <div class="form-group">
-                                <select v-model="subjectToAdd.period_id">
-                                    <option disabled value="">Seleccione un periodo</option>
-                                    <option value="1">A</option>
-                                    <option value="2">B</option>
-                                    <option value="3">C</option>
-                                </select>
-                            </div>
                             <div class="form-group">
                                 <label for="subject_color">Color</label>
-                                <input class="form-control" v-model="subjectToAdd.color"
-                                       id="subject_color" type="text" name="subject_color"
-                                       placeholder="" required>
+                                <input type="color" id="subject_color" name="subject_color" v-model="subjectToAdd.color" required>
                             </div>
+                            <div class="form-group">
+                                <label for="subject_period">Seleccione un periodo</label>
+                                <select id="subject_period" v-model="subjectToAdd.period_id">
+                                    <option disabled value="">Seleccione un periodo</option>
+                                    <option v-for="period in periodsArray" v-bind:value="period.id">
+                                       {{period.name}}
+                                    </option>
+                                </select>
+<!--     --------------         TODO AÑADIR PERIODO -------------------- -->
+                                <a data-toggle="collapse" href="#collapse-new-period"  aria-expanded="false"
+                                   role="button"  aria-controls="collapseExample">
+                                   Añadir nuevo periodo
+                                </a>
+                                <div class="collapse" id="collapse-new-period">
+                                    <div class="form-group">
+                                        <label for="yfdsfdf">Nombre del periodo</label>
+                                        <input class="form-control"
+                                               id="yfdsfdf" type="text" name="year_academico_end"
+                                               placeholder="" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="year_academico_startt">Fecha de inicio</label>
+                                        <input class="form-control"
+                                               id="year_academico_startt" type="date" name="year_academico_start"
+                                               placeholder=""  required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="year_academico_endd">Fecha de finalización</label>
+                                        <input class="form-control"
+                                               id="year_academico_endd" type="date" name="year_academico_end"
+                                               placeholder=""  required>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" @click="addPeriod" >Guardar periodo</button>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary"  @click="addSubject">Guardar</button>
+                            <button type="button" class="btn btn-primary" :disabled='isDisabledSaveSubject' @click="addSubject">Guardar asignatura</button>
                         </div>
 
                     </form>
@@ -177,7 +197,8 @@
     export default {
         name: "Estudios",
         props:['estudios','route_get_years_by_study','route_get_subjects_by_year',
-                'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year'],
+                'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year',
+                    'route_add_period'],
         created(){
             this.estudios_vue = this.estudios;
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
@@ -185,6 +206,7 @@
             this.route_add_study_vue = this.route_add_study;
             this.route_add_year_vue = this.route_add_year;
             this.route_add_subject_vue = this.route_add_subject;
+            this.route_add_period_vue = this.route_add_period;
             this.route_get_studies_vue = this.route_get_studies;
             this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
             this.getStudiesArray();
@@ -216,6 +238,7 @@
                 route_add_study_vue:'',
                 route_add_year_vue:'',
                 route_add_subject_vue:'',
+                route_add_period_vue:'',
                 route_get_studies_vue:'',
                 route_get_periods_by_year_vue:'',
                 studyToAdd:'',
@@ -231,8 +254,17 @@
                     period_id:'',
                     name:'',
                     color:'',
-                }
-
+                },
+                periodToAdd:{
+                    year_id:'',
+                    name:'',
+                    start_date:'',
+                    end_date:'',
+                },
+                periodsArray:'',
+                // testStyle: {
+                //    backgroundColor: 'red',
+                // },
             }
         },
 
@@ -287,7 +319,7 @@
                         console.log(errors);
                     });
             },
-            addStudy(){
+            addStudy(){ //OK
                 var url = this.route_add_study_vue;
                 axios.post(url ,{study:this.studyToAdd}).then(response => {
                     console.log(response.data.result);
@@ -307,7 +339,7 @@
                         console.log(errors);
                     });
             },
-            addYear(){
+            addYear(){ //OK
                 var url = this.route_add_year_vue;
                 axios.post(url ,{params:this.yearToAdd}).then(response => {
                     console.log(response.data.result);
@@ -328,13 +360,27 @@
                         console.log(errors);
                     });
             },
-            addSubject(){
+            addSubject(){ //TODO AÑADIR TODAS LAS COMPROBACIONES EN SUBJECT
                 var url = this.route_add_subject_vue;
                 axios.post(url ,{params:this.subjectToAdd}).then(response => {
                     console.log(response.data.result);
+                    this.getSubjectsByYear( this.data.year,this.chosenStudy,this.yearStartChosen, this.yearEndChosen);
+                    if(response.data.result === 'subject_created_ok'){
+                        $('#addSubjectModal').modal('hide');
+                    }
                 })
-                    .catch(errors => {
+                    .catch(errors => {this.
                         console.log(errors);
+                    });
+            },
+            addPeriod(){ //TODO AÑADIR PERIODO, AÑADIR TODAS LAS COMPROBACIONES EN PERIOD
+                var url = this.route_add_period_vue;
+                axios.post(url ,{params:this.periodToAdd}).then(response => {
+                    console.log(response.data.result);
+
+                })
+                    .catch(errors => {this.
+                    console.log(errors);
                     });
             },
             getStudiesAjax(){
@@ -374,7 +420,7 @@
             getPeriodsByYear(){
                 var url = this.route_get_periods_by_year_vue;
                 axios.get(url,{params:this.yearIdChosen}).then(response => {
-                    console.log(response.data.result);
+                    this.periodsArray = response.data.result;
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -395,6 +441,13 @@
             },
             isDisabledSaveYear: function(){
                 if(this.yearToAdd.year_start === '' || this.yearToAdd.year_end === ''){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            isDisabledSaveSubject: function(){
+                if(this.subjectToAdd.period_id === '' || this.subjectToAdd.name === ''){
                     return true;
                 }else{
                     return false;

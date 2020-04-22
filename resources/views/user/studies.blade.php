@@ -13,6 +13,7 @@
         route_add_study="{{route('add_study')}}"
         route_add_year="{{route('add_year')}}"
         route_add_subject="{{route('add_subject')}}"
+        route_add_period="{{route('add_period')}}"
         route_get_studies="{{route('get_studies_ajax')}}"
         route_get_periods_by_year="{{route('get_periods_by_year')}}"
     ></studies>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vuejs;
 use App\AcademicYear;
 use App\Http\Controllers\Controller;
 use App\Study;
+use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -139,11 +140,44 @@ class StudyController extends Controller
     }
 
     public function addSubject(Request $request){
+        $period_id = $request->params['period_id'];
+        $name = $request->params['name'];
+        $color = $request->params['color'];
+
+        $request->request->add(['period_id' => $request->params['period_id']]);
+        $request->request->add(['name' => $request->params['name']]);
+        $request->request->add(['color' => $request->params['color']]);
+        try {
+            $this->validate($request, [
+                'period_id' => 'required',
+                'name' => 'required',
+                'color' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json(array('success'=>false,'result'=>'error_subject_required'));
+        }
+        try {
+            $subject = new Subject();
+            $subject->period_id = $period_id;
+            $subject->name = $name;
+            $subject->color = $color;
+            $subject->save();
+        } catch (\Throwable $e) {
+            return Response::json(array('success'=>false,'result'=>'error_create_subject'));
+        }
+        return Response::json(array('success'=>true,'result'=>'subject_created_ok'));
+    }
+
+    public function addPeriod(Request $request){
         dd($request);
     }
 
     public function getPeriodsByYear(Request $request){
-        dd($request);
+        $yearId = $request->get('year_id');
+        $periods =  DB::table('periods')->where('academic_year_id', $yearId)->get();
+        $periodsArray = $periods->toArray();
+
+        return Response::json(array('success'=>true,'result'=>$periodsArray));
     }
 
     public function getStudiesAjax(){
