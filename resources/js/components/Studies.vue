@@ -135,7 +135,10 @@
                                 <label for="subject_name">Nombre</label>
                                 <input class="form-control" v-model="subjectToAdd.name"
                                        id="subject_name" type="text" name="subject_name"
-                                       placeholder="" required>
+                                       placeholder="" v-on:keyup="cleanMessage" required>
+                                <small v-if="show_exists" id="passwordHelp" class="text-danger">
+                                    Ya existe una asignatura con este nombre en el periodo escogido.
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label for="subject_color">Color</label>
@@ -157,19 +160,19 @@
                                 <div class="collapse" id="collapse-new-period">
                                     <div class="form-group">
                                         <label for="yfdsfdf">Nombre del periodo</label>
-                                        <input class="form-control"
+                                        <input class="form-control" v-model="periodToAdd.name"
                                                id="yfdsfdf" type="text" name="year_academico_end"
                                                placeholder="" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="year_academico_startt">Fecha de inicio</label>
-                                        <input class="form-control"
+                                        <input class="form-control" v-model="periodToAdd.start_date"
                                                id="year_academico_startt" type="date" name="year_academico_start"
                                                placeholder=""  required>
                                     </div>
                                     <div class="form-group">
                                         <label for="year_academico_endd">Fecha de finalización</label>
-                                        <input class="form-control"
+                                        <input class="form-control" v-model="periodToAdd.end_date"
                                                id="year_academico_endd" type="date" name="year_academico_end"
                                                placeholder=""  required>
                                     </div>
@@ -253,7 +256,7 @@
                 subjectToAdd:{
                     period_id:'',
                     name:'',
-                    color:'',
+                    color:'#000000',
                 },
                 periodToAdd:{
                     year_id:'',
@@ -262,6 +265,7 @@
                     end_date:'',
                 },
                 periodsArray:'',
+                show_exists: false,
                 // testStyle: {
                 //    backgroundColor: 'red',
                 // },
@@ -360,7 +364,7 @@
                         console.log(errors);
                     });
             },
-            addSubject(){ //TODO AÑADIR TODAS LAS COMPROBACIONES EN SUBJECT
+            addSubject(){
                 var url = this.route_add_subject_vue;
                 axios.post(url ,{params:this.subjectToAdd}).then(response => {
                     console.log(response.data.result);
@@ -368,13 +372,17 @@
                     if(response.data.result === 'subject_created_ok'){
                         $('#addSubjectModal').modal('hide');
                     }
+                    if(response.data.result === 'name_exists'){
+                        this.show_exists = true;
+                    }
                 })
                     .catch(errors => {this.
                         console.log(errors);
                     });
             },
-            addPeriod(){ //TODO AÑADIR PERIODO, AÑADIR TODAS LAS COMPROBACIONES EN PERIOD
+            addPeriod(){ //TODO AÑADIR PERIODO, AÑADIR TODAS LAS COMPROBACIONES EN PERIOD Y DEJAR LISTO EL MODAL
                 var url = this.route_add_period_vue;
+                this.periodToAdd.year_id = this.data.year;
                 axios.post(url ,{params:this.periodToAdd}).then(response => {
                     console.log(response.data.result);
 
@@ -399,11 +407,15 @@
             },
             addSubjectModal(){
                 this.getPeriodsByYear();
+                this.subjectToAdd.name='';
+                this.subjectToAdd.period_id='';
+                this.subjectToAdd.color='#000000';
                 $('#addSubjectModal').modal('show');
-               // this.studyToAdd = '';
+
             },
             cleanMessage(){
                 this.showNameExists = false;
+                this.show_exists = false;
             },
             cleanMessageDates(){
                 this.showYearExists = false;

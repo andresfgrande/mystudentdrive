@@ -2672,9 +2672,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Estudios",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -2682,6 +2705,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_study_vue = this.route_add_study;
     this.route_add_year_vue = this.route_add_year;
     this.route_add_subject_vue = this.route_add_subject;
+    this.route_add_period_vue = this.route_add_period;
     this.route_get_studies_vue = this.route_get_studies;
     this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
     this.getStudiesArray();
@@ -2713,6 +2737,7 @@ __webpack_require__.r(__webpack_exports__);
       route_add_study_vue: '',
       route_add_year_vue: '',
       route_add_subject_vue: '',
+      route_add_period_vue: '',
       route_get_studies_vue: '',
       route_get_periods_by_year_vue: '',
       studyToAdd: '',
@@ -2727,8 +2752,19 @@ __webpack_require__.r(__webpack_exports__);
       subjectToAdd: {
         period_id: '',
         name: '',
-        color: ''
-      }
+        color: '#000000'
+      },
+      periodToAdd: {
+        year_id: '',
+        name: '',
+        start_date: '',
+        end_date: ''
+      },
+      periodsArray: '',
+      show_exists: false // testStyle: {
+      //    backgroundColor: 'red',
+      // },
+
     };
   },
   methods: {
@@ -2789,6 +2825,7 @@ __webpack_require__.r(__webpack_exports__);
     addStudy: function addStudy() {
       var _this3 = this;
 
+      //OK
       var url = this.route_add_study_vue;
       axios.post(url, {
         study: this.studyToAdd
@@ -2814,6 +2851,7 @@ __webpack_require__.r(__webpack_exports__);
     addYear: function addYear() {
       var _this4 = this;
 
+      //OK
       var url = this.route_add_year_vue;
       axios.post(url, {
         params: this.yearToAdd
@@ -2842,22 +2880,48 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addSubject: function addSubject() {
+      var _this5 = this;
+
       var url = this.route_add_subject_vue;
       axios.post(url, {
         params: this.subjectToAdd
       }).then(function (response) {
         console.log(response.data.result);
+
+        _this5.getSubjectsByYear(_this5.data.year, _this5.chosenStudy, _this5.yearStartChosen, _this5.yearEndChosen);
+
+        if (response.data.result === 'subject_created_ok') {
+          $('#addSubjectModal').modal('hide');
+        }
+
+        if (response.data.result === 'name_exists') {
+          _this5.show_exists = true;
+        }
       })["catch"](function (errors) {
-        console.log(errors);
+        _this5.console.log(errors);
+      });
+    },
+    addPeriod: function addPeriod() {
+      var _this6 = this;
+
+      //TODO AÑADIR PERIODO, AÑADIR TODAS LAS COMPROBACIONES EN PERIOD Y DEJAR LISTO EL MODAL
+      var url = this.route_add_period_vue;
+      this.periodToAdd.year_id = this.data.year;
+      axios.post(url, {
+        params: this.periodToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+      })["catch"](function (errors) {
+        _this6.console.log(errors);
       });
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this5 = this;
+      var _this7 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this5.estudios_vue = response.data.result;
+        _this7.estudios_vue = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2868,10 +2932,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     addSubjectModal: function addSubjectModal() {
       this.getPeriodsByYear();
-      $('#addSubjectModal').modal('show'); // this.studyToAdd = '';
+      this.subjectToAdd.name = '';
+      this.subjectToAdd.period_id = '';
+      this.subjectToAdd.color = '#000000';
+      $('#addSubjectModal').modal('show');
     },
     cleanMessage: function cleanMessage() {
       this.showNameExists = false;
+      this.show_exists = false;
     },
     cleanMessageDates: function cleanMessageDates() {
       this.showYearExists = false;
@@ -2886,11 +2954,13 @@ __webpack_require__.r(__webpack_exports__);
       $('#addYearModal').modal('show');
     },
     getPeriodsByYear: function getPeriodsByYear() {
+      var _this8 = this;
+
       var url = this.route_get_periods_by_year_vue;
       axios.get(url, {
         params: this.yearIdChosen
       }).then(function (response) {
-        console.log(response.data.result);
+        _this8.periodsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2909,6 +2979,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     isDisabledSaveYear: function isDisabledSaveYear() {
       if (this.yearToAdd.year_start === '' || this.yearToAdd.year_end === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDisabledSaveSubject: function isDisabledSaveSubject() {
+      if (this.subjectToAdd.period_id === '' || this.subjectToAdd.name === '') {
         return true;
       } else {
         return false;
@@ -39716,7 +39793,27 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "addSubjectLabel" }
+                  },
+                  [
+                    _vm._v(
+                      "Nueva asignatura de " +
+                        _vm._s(this.chosenStudy) +
+                        " " +
+                        _vm._s(this.yearStartChosen) +
+                        "/" +
+                        _vm._s(this.yearEndChosen)
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
               _vm._v(" "),
               _c("form", [
                 _c("div", { staticClass: "modal-body" }, [
@@ -39744,6 +39841,7 @@ var render = function() {
                       },
                       domProps: { value: _vm.subjectToAdd.name },
                       on: {
+                        keyup: _vm.cleanMessage,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -39755,10 +39853,65 @@ var render = function() {
                           )
                         }
                       }
+                    }),
+                    _vm._v(" "),
+                    _vm.show_exists
+                      ? _c(
+                          "small",
+                          {
+                            staticClass: "text-danger",
+                            attrs: { id: "passwordHelp" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Ya existe una asignatura con este nombre en el periodo escogido.\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_color" } }, [
+                      _vm._v("Color")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectToAdd.color,
+                          expression: "subjectToAdd.color"
+                        }
+                      ],
+                      attrs: {
+                        type: "color",
+                        id: "subject_color",
+                        name: "subject_color",
+                        required: ""
+                      },
+                      domProps: { value: _vm.subjectToAdd.color },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.subjectToAdd,
+                            "color",
+                            $event.target.value
+                          )
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_period" } }, [
+                      _vm._v("Seleccione un periodo")
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "select",
                       {
@@ -39770,6 +39923,7 @@ var render = function() {
                             expression: "subjectToAdd.period_id"
                           }
                         ],
+                        attrs: { id: "subject_period" },
                         on: {
                           change: function($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -39795,51 +39949,177 @@ var render = function() {
                           _vm._v("Seleccione un periodo")
                         ]),
                         _vm._v(" "),
-                        _c("option", { attrs: { value: "1" } }, [_vm._v("A")]),
+                        _vm._l(_vm.periodsArray, function(period) {
+                          return _c(
+                            "option",
+                            { domProps: { value: period.id } },
+                            [
+                              _vm._v(
+                                "\n                                       " +
+                                  _vm._s(period.name) +
+                                  "\n                                    "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          "data-toggle": "collapse",
+                          href: "#collapse-new-period",
+                          "aria-expanded": "false",
+                          role: "button",
+                          "aria-controls": "collapseExample"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                   Añadir nuevo periodo\n                                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "collapse",
+                        attrs: { id: "collapse-new-period" }
+                      },
+                      [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "yfdsfdf" } }, [
+                            _vm._v("Nombre del periodo")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.name,
+                                expression: "periodToAdd.name"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "yfdsfdf",
+                              type: "text",
+                              name: "year_academico_end",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
-                        _c("option", { attrs: { value: "2" } }, [_vm._v("B")]),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            { attrs: { for: "year_academico_startt" } },
+                            [_vm._v("Fecha de inicio")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.start_date,
+                                expression: "periodToAdd.start_date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "year_academico_startt",
+                              type: "date",
+                              name: "year_academico_start",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.start_date },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "start_date",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
-                        _c("option", { attrs: { value: "3" } }, [_vm._v("C")])
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            { attrs: { for: "year_academico_endd" } },
+                            [_vm._v("Fecha de finalización")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.end_date,
+                                expression: "periodToAdd.end_date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "year_academico_endd",
+                              type: "date",
+                              name: "year_academico_end",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.end_date },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "end_date",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.addPeriod }
+                          },
+                          [_vm._v("Guardar periodo")]
+                        )
                       ]
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "subject_color" } }, [
-                      _vm._v("Color")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.subjectToAdd.color,
-                          expression: "subjectToAdd.color"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "subject_color",
-                        type: "text",
-                        name: "subject_color",
-                        placeholder: "",
-                        required: ""
-                      },
-                      domProps: { value: _vm.subjectToAdd.color },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.subjectToAdd,
-                            "color",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
                   ])
                 ]),
                 _vm._v(" "),
@@ -39857,10 +40137,13 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "button" },
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledSaveSubject
+                      },
                       on: { click: _vm.addSubject }
                     },
-                    [_vm._v("Guardar")]
+                    [_vm._v("Guardar asignatura")]
                   )
                 ])
               ])
@@ -39922,26 +40205,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "addSubjectLabel" } },
-        [_vm._v("Nueva asignatura")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true

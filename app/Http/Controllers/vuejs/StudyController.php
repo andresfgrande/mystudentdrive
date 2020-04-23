@@ -6,6 +6,7 @@ use App\AcademicYear;
 use App\Http\Controllers\Controller;
 use App\Study;
 use App\Subject;
+use App\Period;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,7 @@ class StudyController extends Controller
 
         return Response::json(array('success'=>true,'result'=>$result->toArray()));
     }
-
+    /******** ADD STUDY ********/
     public function addStudy(Request $request){
         $user = Auth::User();
         $user_id = $user->getAuthIdentifier();
@@ -93,6 +94,7 @@ class StudyController extends Controller
         return Response::json(array('success'=>true,'result'=>'study_created'));
     }
 
+    /******** ADD YEAR ********/
     public function addYear(Request $request){
         $study_id = $request->params['study_id'];
         $year_start = $request->params['year_start'];
@@ -139,7 +141,9 @@ class StudyController extends Controller
         }
     }
 
+    /******** ADD SUBJECT ********/
     public function addSubject(Request $request){
+
         $period_id = $request->params['period_id'];
         $name = $request->params['name'];
         $color = $request->params['color'];
@@ -156,6 +160,12 @@ class StudyController extends Controller
         } catch (ValidationException $e) {
             return Response::json(array('success'=>false,'result'=>'error_subject_required'));
         }
+
+        $nameExist = $this->checkSubjectExistInPeriod($name, $period_id);
+        if($nameExist){
+            return Response::json(array('success'=>false,'result'=>'name_exists'));
+        }
+
         try {
             $subject = new Subject();
             $subject->period_id = $period_id;
@@ -168,8 +178,24 @@ class StudyController extends Controller
         return Response::json(array('success'=>true,'result'=>'subject_created_ok'));
     }
 
+    /******** ADD PERIOD ********/
     public function addPeriod(Request $request){
-        dd($request);
+        $year_id = $request->params['year_id'];
+        $name = $request->params['name'];
+        $start_date = $request->params['start_date'];
+        $end_date = $request->params['end_date'];
+
+        try {
+            $period = new Period();
+            $period->academic_year_id = $year_id;
+            $period->name = $name;
+            $period->start_date = $start_date;
+            $period->end_date = $start_date;
+            $period->save();
+        } catch (\Throwable $e) {
+            return Response::json(array('success'=>false,'result'=>$e));
+        }
+        return Response::json(array('success'=>true,'result'=>'period_created_ok'));
     }
 
     public function getPeriodsByYear(Request $request){
@@ -222,6 +248,18 @@ class StudyController extends Controller
             ->get('id');
         if(empty($solapa_end->toArray())){
             // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSubjectExistInPeriod($newName, $period_id){
+        $data = DB::table('subjects')
+            ->where('name', $newName)
+            ->where('period_id', $period_id)
+            ->get('id');
+        if(empty($data->toArray())){
+            // correcto, no existe
             return false;
         }
         return true;
