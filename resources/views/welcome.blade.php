@@ -85,7 +85,7 @@
                 </div>
                 <p>By: Andrés Grande</p>
                 <div id="app">
-                    <example-component></example-component>
+                    <test route_test="{{route('test')}}"> </test>
                 </div>
 
 {{--                <div class="links">--}}

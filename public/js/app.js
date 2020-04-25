@@ -2488,6 +2488,735 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Studies.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Estudios",
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2'],
+  created: function created() {
+    this.estudios_vue = this.estudios;
+    this.route_get_years_by_study_vue = this.route_get_years_by_study;
+    this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year;
+    this.route_add_study_vue = this.route_add_study;
+    this.route_add_year_vue = this.route_add_year;
+    this.route_add_subject_vue = this.route_add_subject;
+    this.route_add_period_vue = this.route_add_period;
+    this.route_get_studies_vue = this.route_get_studies;
+    this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
+    this.route_photo_vue = this.route_photo;
+    this.route_photo_vue_2 = this.route_photo_2;
+    this.getStudiesArray();
+    this.getAcademicYears();
+  },
+  data: function data() {
+    return {
+      estudios_vue: '',
+      route_get_years_by_study_vue: '',
+      yearsArray: {
+        type: Object
+      },
+      auxArray: [],
+      data: {
+        year: ''
+      },
+      studiesArray: {
+        studies: []
+      },
+      indexArray: 0,
+      route_get_subjects_by_year_vue: '',
+      chosenStudy: '',
+      yearStartChosen: '',
+      yearEndChosen: '',
+      yearIdChosen: {
+        year_id: ''
+      },
+      subjectsArray: '',
+      route_add_study_vue: '',
+      route_add_year_vue: '',
+      route_add_subject_vue: '',
+      route_add_period_vue: '',
+      route_get_studies_vue: '',
+      route_get_periods_by_year_vue: '',
+      studyToAdd: '',
+      showNameExists: false,
+      yearToAdd: {
+        study_id: '',
+        year_start: '',
+        year_end: ''
+      },
+      showYearExists: false,
+      showYearGreater: false,
+      subjectToAdd: {
+        period_id: '',
+        name: '',
+        color: '#000000'
+      },
+      periodToAdd: {
+        year_id: '',
+        name: '',
+        start_date: '',
+        end_date: ''
+      },
+      periodsArray: '',
+      show_exists: false,
+      // testStyle: {
+      //    backgroundColor: 'red',
+      // },
+      showPeriodDatesExist: false,
+      showPeriodGreater: false,
+      showPeriodNameExist: false,
+      showPeriodDatesOutYear: false,
+      showPhotoEmpty: false,
+      route_photo_vue: '',
+      route_photo_vue_2: '' // showPhotoEmptySubjects: false,
+
+    };
+  },
+  methods: {
+    getRefId: function getRefId(id) {
+      return "#collapse-list" + id;
+    },
+    getRefId2: function getRefId2(id) {
+      return "collapse-list" + id;
+    },
+    getAcademicYears: function getAcademicYears() {
+      var _this = this;
+
+      var url = this.route_get_years_by_study_vue;
+      axios.get(url, {
+        params: this.studiesArray
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'no_studies') {
+          _this.showPhotoEmpty = true;
+          console.log('No hay estudios');
+        } else {
+          _this.showPhotoEmpty = false;
+          var aux2 = [];
+          response.data.result.forEach(function (valor, indice) {
+            aux2.push(valor);
+            console.log('/////////////////');
+            console.log(valor);
+          });
+          _this.auxArray = aux2;
+          console.log(_this.auxArray);
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    test: function test(num) {//console.log('hellooooo'+ num);
+    },
+    getStudiesArray: function getStudiesArray() {
+      var aux = [];
+      this.estudios_vue.forEach(function (valor, indice) {
+        aux.push(valor.id);
+      });
+      this.studiesArray.studies = aux;
+    },
+    getSubjectsByYear: function getSubjectsByYear(year_id, study_name, start_date, end_date) {
+      var _this2 = this;
+
+      this.data.year = year_id;
+      var url = this.route_get_subjects_by_year_vue;
+      axios.get(url, {
+        params: this.data
+      }).then(function (response) {
+        console.log(response.data.result);
+        _this2.chosenStudy = study_name;
+        _this2.yearStartChosen = start_date;
+        _this2.yearEndChosen = end_date;
+        _this2.yearIdChosen.year_id = year_id;
+        console.log('----------');
+        console.log(_this2.yearIdChosen);
+        _this2.subjectsArray = response.data.result;
+        console.log(_this2.subjectsArray);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addStudy: function addStudy() {
+      var _this3 = this;
+
+      //OK
+      var url = this.route_add_study_vue;
+      axios.post(url, {
+        study: this.studyToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this3.getStudiesAjax();
+
+        _this3.getStudiesArray();
+
+        _this3.getAcademicYears();
+
+        if (response.data.result === 'error_study_exists') {
+          _this3.showNameExists = true;
+        } else {
+          $('#addStudyModal').modal('hide');
+          _this3.studyToAdd = '';
+          _this3.showPhotoEmpty = false;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addYear: function addYear() {
+      var _this4 = this;
+
+      //OK
+      var url = this.route_add_year_vue;
+      axios.post(url, {
+        params: this.yearToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this4.getStudiesAjax();
+
+        _this4.getStudiesArray();
+
+        _this4.getAcademicYears();
+
+        if (response.data.result === 'year_created_ok') {
+          $('#addYearModal').modal('hide');
+        }
+
+        if (response.data.result === 'solapa_dates') {
+          _this4.showYearExists = true;
+        }
+
+        if (response.data.result === 'error_start_date_greater') {
+          _this4.showYearGreater = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addSubject: function addSubject() {
+      var _this5 = this;
+
+      var url = this.route_add_subject_vue;
+      axios.post(url, {
+        params: this.subjectToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this5.getSubjectsByYear(_this5.data.year, _this5.chosenStudy, _this5.yearStartChosen, _this5.yearEndChosen);
+
+        if (response.data.result === 'subject_created_ok') {
+          $('#addSubjectModal').modal('hide');
+        }
+
+        if (response.data.result === 'name_exists') {
+          _this5.show_exists = true;
+        }
+      })["catch"](function (errors) {
+        _this5.console.log(errors);
+      });
+    },
+    addPeriod: function addPeriod() {
+      var _this6 = this;
+
+      //TODO AÑADIR PERIODO, AÑADIR TODAS LAS COMPROBACIONES EN PERIOD Y DEJAR LISTO EL MODAL
+      var url = this.route_add_period_vue;
+      this.periodToAdd.year_id = this.data.year;
+      axios.post(url, {
+        params: this.periodToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'period_created_ok') {
+          _this6.getPeriodsByYear();
+
+          _this6.subjectToAdd.period_id = response.data.period[0].id;
+          $('#toggle-period').click();
+          $('#toggle-period2').click();
+          _this6.periodToAdd.start_date = '';
+          _this6.periodToAdd.end_date = '';
+          _this6.periodToAdd.name = '';
+        }
+
+        if (response.data.result === 'period_name_exist') {
+          _this6.showPeriodNameExist = true;
+        }
+
+        if (response.data.result === 'solapa_dates') {
+          _this6.showPeriodDatesExist = true;
+        }
+
+        if (response.data.result === 'error_start_date_greater') {
+          _this6.showPeriodGreater = true;
+        }
+
+        if (response.data.result === 'period_out_of_year') {
+          _this6.showPeriodDatesOutYear = true;
+        }
+      })["catch"](function (errors) {
+        _this6.console.log(errors);
+      });
+    },
+    getStudiesAjax: function getStudiesAjax() {
+      var _this7 = this;
+
+      var url = this.route_get_studies_vue;
+      axios.get(url).then(function (response) {
+        console.log(response.data.result);
+        _this7.estudios_vue = response.data.result;
+        _this7.showPhotoEmpty = false;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addStudyModal: function addStudyModal() {
+      $('#addStudyModal').modal('show');
+      this.studyToAdd = '';
+    },
+    addSubjectModal: function addSubjectModal() {
+      this.getPeriodsByYear();
+      this.subjectToAdd.name = '';
+      this.subjectToAdd.period_id = '';
+      this.subjectToAdd.color = '#000000';
+      this.periodToAdd.name = '';
+      this.periodToAdd.start_date = '';
+      this.periodToAdd.end_date = '';
+      $('#addSubjectModal').modal('show');
+    },
+    cleanMessage: function cleanMessage() {
+      this.showNameExists = false;
+      this.show_exists = false;
+    },
+    cleanMessageDates: function cleanMessageDates() {
+      this.showYearExists = false;
+      this.showGrater = false;
+    },
+    addYearModal: function addYearModal(study_id) {
+      this.showYearExists = false;
+      this.showGrater = false;
+      this.yearToAdd.year_start = '';
+      this.yearToAdd.year_end = '';
+      this.yearToAdd.study_id = study_id;
+      $('#addYearModal').modal('show');
+    },
+    getPeriodsByYear: function getPeriodsByYear() {
+      var _this8 = this;
+
+      var url = this.route_get_periods_by_year_vue;
+      axios.get(url, {
+        params: this.yearIdChosen
+      }).then(function (response) {
+        _this8.periodsArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    cleanMessagePeriodName: function cleanMessagePeriodName() {
+      this.showPeriodNameExist = false;
+    },
+    cleanMessagePeriodDates: function cleanMessagePeriodDates() {
+      this.showPeriodGreater = false;
+      this.showPeriodDatesExist = false;
+      this.showPeriodDatesOutYear = false;
+    },
+    formatDateYear: function formatDateYear(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.getFullYear();
+    },
+    formatDateFull: function formatDateFull(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.toLocaleDateString();
+    }
+  },
+  computed: {
+    showSubjectsHeader: function showSubjectsHeader() {
+      return this.chosenStudy !== '';
+    },
+    isDisabled: function isDisabled() {
+      if (this.studyToAdd === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDisabledSaveYear: function isDisabledSaveYear() {
+      if (this.yearToAdd.year_start === '' || this.yearToAdd.year_end === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDisabledSaveSubject: function isDisabledSaveSubject() {
+      if (this.subjectToAdd.period_id === '' || this.subjectToAdd.name === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    showPhotoEmptySubjects: function showPhotoEmptySubjects() {
+      if (this.subjectsArray.length === 0) {
+        return true;
+      }
+
+      return false;
+    } // formatDate: function(fecha){
+    //
+    //     return fecha;
+    // }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Test.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Test2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Test2 */ "./resources/js/components/Test2.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Test",
+  props: ['route_test'],
+  components: {
+    Test2: _Test2__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  created: function created() {
+    this.route_test_vue = this.route_test;
+  },
+  data: function data() {
+    return {
+      // rawHtml:'<p>'+ 'dddd'+ '</p>',
+      datotest: 'Hola soy dato de vuejs',
+      datotest2: '',
+      string: undefined,
+      currentComponent: ''
+    };
+  },
+  methods: {
+    loadContent: function loadContent() {
+      var _this = this;
+
+      var url = this.route_test_vue;
+      var aux = ['1', '2', '3'];
+      axios.get(url, {
+        params: aux
+      }).then(function (response) {
+        console.log(response.data.dataTest);
+        _this.datotest = response.data.dataTest;
+        _this.currentComponent = "test2";
+        console.log(response.data.dataTest2[0]);
+        _this.datotest2 = response.data.dataTest2;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test2.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Test2.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Test2",
+  props: ['datotest', 'datotest2'],
+  created: function created() {
+    this.datotest_vue = this.datotest;
+    this.datotest2_vue = this.datotest2;
+  },
+  data: function data() {
+    return {
+      datotest_vue: '',
+      datotest2_vue: ''
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -38715,6 +39444,1153 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container studies" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col " }, [
+        _c("h3", { staticStyle: { "text-align": "center" } }, [
+          _vm._v("Cursos")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "button-add-study" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.addStudyModal }
+            },
+            [_vm._v("Añadir estudios")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "courses" },
+          [
+            _vm._l(_vm.estudios_vue, function(item, index) {
+              return _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-header",
+                    attrs: {
+                      "data-toggle": "collapse",
+                      role: "button",
+                      href: _vm.getRefId(item.id),
+                      "aria-controls": "collapseExample",
+                      "aria-expanded": "false"
+                    },
+                    on: {
+                      load: function($event) {
+                        return _vm.test(item.id)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "study-name-title",
+                        attrs: {
+                          "data-toggle": "collapse",
+                          href: _vm.getRefId(item.id),
+                          "aria-expanded": "false",
+                          role: "button",
+                          "aria-controls": "collapseExample"
+                        },
+                        on: {
+                          load: function($event) {
+                            return _vm.test(item.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(item.name) +
+                            "\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button-add-course",
+                        on: {
+                          click: function($event) {
+                            return _vm.addYearModal(item.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Añadir curso")]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  {
+                    staticClass: "collapse year-list",
+                    attrs: { id: _vm.getRefId2(item.id) }
+                  },
+                  _vm._l(_vm.auxArray[index], function(hey) {
+                    return hey !== "vacio"
+                      ? _c(
+                          "li",
+                          {
+                            staticClass: "years-list-item",
+                            on: {
+                              click: function($event) {
+                                return _vm.getSubjectsByYear(
+                                  hey.id,
+                                  item.name,
+                                  hey.start_date,
+                                  hey.end_date
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("p", { staticClass: "year-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateYear(hey.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateYear(hey.end_date))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "date-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateFull(hey.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateFull(hey.end_date))
+                              )
+                            ])
+                          ]
+                        )
+                      : _vm._e()
+                  }),
+                  0
+                )
+              ])
+            }),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _vm.showPhotoEmpty
+              ? _c("p", { staticClass: "empty-text" }, [
+                  _vm._v("Comienza añadiendo un nuevo curso...")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmpty
+              ? _c("img", {
+                  staticClass: "empty-img",
+                  attrs: { src: this.route_photo_vue, alt: "profile_photo" }
+                })
+              : _vm._e()
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticStyle: { width: "75%" } }, [
+          _c("h3", { staticStyle: { "text-align": "center" } }, [
+            _vm._v("Asignaturas")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "button-add-subject" }, [
+            _vm.showSubjectsHeader
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.addSubjectModal }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Añadir asignatura\n                    "
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "subjects" }, [
+            _vm.showSubjectsHeader
+              ? _c("div", { staticClass: "card-header" }, [
+                  _c("div", { staticClass: "study-year-title" }, [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _vm._v(
+                        "  " +
+                          _vm._s(this.chosenStudy) +
+                          "  " +
+                          _vm._s(_vm.formatDateYear(this.yearStartChosen)) +
+                          " - " +
+                          _vm._s(_vm.formatDateYear(this.yearEndChosen))
+                      )
+                    ])
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.showPhotoEmptySubjects
+              ? _c("div", { staticClass: "subjects-section" }, [
+                  _c(
+                    "ul",
+                    { staticClass: "subjects-list" },
+                    _vm._l(_vm.subjectsArray, function(subject) {
+                      return _c(
+                        "li",
+                        {
+                          staticClass: "subjects-list-item",
+                          style: {
+                            borderLeftWidth: 23 + "px",
+                            borderLeftStyle: "solid",
+                            borderLeftColor: subject.subject_color
+                          }
+                        },
+                        [
+                          _c("p", { staticClass: "item name" }, [
+                            _vm._v(_vm._s(subject.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "item period" }, [
+                            _vm._v(" " + _vm._s(subject.period_name))
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmptySubjects
+              ? _c("p", { staticClass: "empty-text-subjects" }, [
+                  _vm._v("Aqui verás las asignaturas de tus cursos...")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmptySubjects
+              ? _c("img", {
+                  staticClass: "empty-img-subjects",
+                  attrs: { src: this.route_photo_vue_2, alt: "profile_photo" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("br")
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addStudyModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Nombre del estudio")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.studyToAdd,
+                          expression: "studyToAdd"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name",
+                        type: "text",
+                        name: "name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.studyToAdd },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.studyToAdd = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExists
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                Ya tienes unos estudios con este nombre.\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.isDisabled },
+                      on: { click: _vm.addStudy }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addYearModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "year_academico_start" } }, [
+                      _vm._v("Fecha de inicio")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.yearToAdd.year_start,
+                          expression: "yearToAdd.year_start"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "year_academico_start",
+                        type: "date",
+                        name: "year_academico_star",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.yearToAdd.year_start },
+                      on: {
+                        change: _vm.cleanMessageDates,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.yearToAdd,
+                            "year_start",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "year_academico_end" } }, [
+                      _vm._v("Fecha de finalización")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.yearToAdd.year_end,
+                          expression: "yearToAdd.year_end"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "year_academico_end",
+                        type: "date",
+                        name: "year_academico_end",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.yearToAdd.year_end },
+                      on: {
+                        change: _vm.cleanMessageDates,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.yearToAdd,
+                            "year_end",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm.showYearExists
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "alert alert-danger alert-dismissible fade show",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("strong", [
+                            _vm._v(
+                              "  Las fechas seleccionadas coinciden con las de otro año academico."
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.showYearGreater
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "alert alert-danger alert-dismissible fade show",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("strong", [
+                            _vm._v(
+                              "La fecha de inicio es posterior a la fecha de finalización."
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledSaveYear
+                      },
+                      on: { click: _vm.addYear }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addSubjectModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "addSubjectLabel" }
+                  },
+                  [
+                    _vm._v(
+                      "Nueva asignatura de " +
+                        _vm._s(this.chosenStudy) +
+                        " " +
+                        _vm._s(this.yearStartChosen) +
+                        "/" +
+                        _vm._s(this.yearEndChosen)
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_name" } }, [
+                      _vm._v("Nombre")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectToAdd.name,
+                          expression: "subjectToAdd.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "subject_name",
+                        type: "text",
+                        name: "subject_name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.subjectToAdd.name },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.subjectToAdd,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.show_exists
+                      ? _c(
+                          "small",
+                          {
+                            staticClass: "text-danger",
+                            attrs: { id: "passwordHelp" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Ya existe una asignatura con este nombre en el periodo escogido.\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_color" } }, [
+                      _vm._v("Color")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectToAdd.color,
+                          expression: "subjectToAdd.color"
+                        }
+                      ],
+                      attrs: {
+                        type: "color",
+                        id: "subject_color",
+                        name: "subject_color",
+                        required: ""
+                      },
+                      domProps: { value: _vm.subjectToAdd.color },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.subjectToAdd,
+                            "color",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject_period" } }, [
+                      _vm._v("Selecciona un periodo")
+                    ]),
+                    _vm._v(" "),
+                    _vm.periodsArray.length === 0
+                      ? _c("div", [
+                          _c("p", [_vm._v("Aun no tienes periodos...")]),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                id: "toggle-period2",
+                                "data-toggle": "collapse",
+                                href: "#collapse-new-period",
+                                "aria-expanded": "false",
+                                role: "button",
+                                "aria-controls": "collapseExample"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Crea un periodo para tu asignatura\n                                "
+                              )
+                            ]
+                          )
+                        ])
+                      : _c("div", [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.subjectToAdd.period_id,
+                                  expression: "subjectToAdd.period_id"
+                                }
+                              ],
+                              attrs: { id: "subject_period" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.subjectToAdd,
+                                    "period_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { disabled: "", value: "" } },
+                                [_vm._v("Selecciona un periodo")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.periodsArray, function(period) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: period.id } },
+                                  [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(period.name) +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                id: "toggle-period",
+                                "data-toggle": "collapse",
+                                href: "#collapse-new-period",
+                                "aria-expanded": "false",
+                                role: "button",
+                                "aria-controls": "collapseExample"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Añadir nuevo periodo\n                                "
+                              )
+                            ]
+                          )
+                        ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "collapse",
+                        attrs: { id: "collapse-new-period" }
+                      },
+                      [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "period_name" } }, [
+                            _vm._v("Nombre del periodo")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.name,
+                                expression: "periodToAdd.name"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "period_name",
+                              type: "text",
+                              name: "period_name",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.name },
+                            on: {
+                              keyup: _vm.cleanMessagePeriodName,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.showPeriodNameExist
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "Ya tienes un periodo con este nombre."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "period_start" } }, [
+                            _vm._v("Fecha de inicio")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.start_date,
+                                expression: "periodToAdd.start_date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "period_start",
+                              type: "date",
+                              name: "period_start",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.start_date },
+                            on: {
+                              change: _vm.cleanMessagePeriodDates,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "start_date",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "period_end" } }, [
+                            _vm._v("Fecha de finalización")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.periodToAdd.end_date,
+                                expression: "periodToAdd.end_date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              id: "period_end",
+                              type: "date",
+                              name: "period_end",
+                              placeholder: "",
+                              required: ""
+                            },
+                            domProps: { value: _vm.periodToAdd.end_date },
+                            on: {
+                              change: _vm.cleanMessagePeriodDates,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.periodToAdd,
+                                  "end_date",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.showPeriodDatesExist
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "  Las fechas seleccionadas coinciden con las de otro periodo."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.showPeriodGreater
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "La fecha de inicio es posterior a la fecha de finalización."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.showPeriodDatesOutYear
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "Las fechas de este periodo estan fuera el año actual."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.addPeriod }
+                          },
+                          [_vm._v("Guardar periodo")]
+                        )
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledSaveSubject
+                      },
+                      on: { click: _vm.addSubject }
+                    },
+                    [_vm._v("Guardar asignatura")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "editNameLabel" } }, [
+        _vm._v("Nombre de tu nuevo estudio")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "addYearLabel" } }, [
+        _vm._v("Nuevo año academico")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("button", { on: { click: _vm.loadContent } }, [_vm._v("load 1")]),
+      _vm._v(" "),
+      _c(_vm.currentComponent, {
+        tag: "component",
+        attrs: { datotest: this.datotest, datotest2: this.datotest2 }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("h1", [_vm._v("HELLO FROM ANOTEHR COMPONENT!!!!!")]),
+    _vm._v(
+      "\n    " +
+        _vm._s(this.datotest_vue) +
+        "\n    " +
+        _vm._s(this.datotest2[0]) +
+        "\n"
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -50901,6 +52777,9 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('my-account', __webpack_require__(/*! ./components/MyAccount.vue */ "./resources/js/components/MyAccount.vue")["default"]);
 Vue.component('change-password', __webpack_require__(/*! ./components/ChangePassword.vue */ "./resources/js/components/ChangePassword.vue")["default"]);
 Vue.component('profile-photo', __webpack_require__(/*! ./components/ProfilePhoto.vue */ "./resources/js/components/ProfilePhoto.vue")["default"]);
+Vue.component('test', __webpack_require__(/*! ./components/Test.vue */ "./resources/js/components/Test.vue")["default"]);
+Vue.component('test2', __webpack_require__(/*! ./components/Test2.vue */ "./resources/js/components/Test2.vue")["default"]);
+Vue.component('studies', __webpack_require__(/*! ./components/Studies.vue */ "./resources/js/components/Studies.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -51229,6 +53108,213 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfilePhoto_vue_vue_type_template_id_982ca518_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfilePhoto_vue_vue_type_template_id_982ca518_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Studies.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Studies.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Studies.vue?vue&type=template&id=28014e0c&scoped=true& */ "./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true&");
+/* harmony import */ var _Studies_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Studies.vue?vue&type=script&lang=js& */ "./resources/js/components/Studies.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Studies_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "28014e0c",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Studies.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Studies.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Studies.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Studies_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Studies.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Studies_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Studies.vue?vue&type=template&id=28014e0c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Studies_vue_vue_type_template_id_28014e0c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Test.vue":
+/*!******************************************!*\
+  !*** ./resources/js/components/Test.vue ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Test.vue?vue&type=template&id=5f45227d&scoped=true& */ "./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true&");
+/* harmony import */ var _Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Test.vue?vue&type=script&lang=js& */ "./resources/js/components/Test.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "5f45227d",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Test.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Test.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Test.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Test.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Test.vue?vue&type=template&id=5f45227d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test.vue?vue&type=template&id=5f45227d&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_5f45227d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Test2.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Test2.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Test2.vue?vue&type=template&id=ed1252f6&scoped=true& */ "./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true&");
+/* harmony import */ var _Test2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Test2.vue?vue&type=script&lang=js& */ "./resources/js/components/Test2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Test2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "ed1252f6",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Test2.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Test2.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/Test2.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Test2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Test2.vue?vue&type=template&id=ed1252f6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Test2.vue?vue&type=template&id=ed1252f6&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test2_vue_vue_type_template_id_ed1252f6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
