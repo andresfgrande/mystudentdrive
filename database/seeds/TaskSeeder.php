@@ -19,7 +19,7 @@ class TaskSeeder extends Seeder
             'user_id' => 1,
             'subject_id' => 1,
             'description' => 'Apuntarse al SAF.',
-            'date' =>  date("Y-m-d"),
+            'date' =>  date("Y/m/d"),
             'hour' => date("H:i:s"),
             'is_done' => false,
             'created_at' => date("Y-m-d H:i:s")
@@ -28,7 +28,7 @@ class TaskSeeder extends Seeder
             'user_id' => 11,
             'subject_id' => 3,
             'description' => 'Arreglar la cámara.',
-            'date' =>  date("Y-m-d"),
+            'date' =>  date("Y/m/d"),
             'hour' => date("H:i:s"),
             'is_done' => false,
             'created_at' => date("Y-m-d H:i:s")

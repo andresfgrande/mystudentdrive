@@ -45,4 +45,10 @@ class UploadPhotoController extends Controller
         return Response::json(array('success'=>true,'result'=>'deleted_photo_ok','name'=>$user->name,'surnames'=>$user->surnames));
     }
 
+    public function testFunction(Request $request){
+        $dataTest='string desde controller';
+        $dataTest2 = array('1w','qwerwq','gdg','dsgf');
+        return response()->json(array('success' => true, 'dataTest'=>$dataTest,'dataTest2'=>$dataTest2));
+    }
+
 }

@@ -10,11 +10,12 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
 
 
+/***************DESKTOP**************/
+
 .alert.alert-succes{
     background: #d4edda;
     margin-top: 1.5em;
 }
-
 
 .image-profile-container{
     text-align: center;
@@ -74,6 +75,153 @@
     margin-top: 1em;
 }
 
+/*******Pagina estudios********/
 
+.studies{
+    .empty-text{
+        text-align:center;
+        font-size: 18px;
+    }
+    .empty-text-subjects{
+        text-align: center;
+        font-size: 18px;
+        margin-top: 4.5em;
+    }
+    .empty-img{
+        width: 85%;
+    }
+    .empty-img-subjects{
+        width: 85%;
+    }
+    //.years-list-item:nth-child(odd){
+    //    background: rgba(52, 144, 220, 0.25) !important;
+    //
+    //}
+    .button-add-study{
+        float: right;
+        margin-right: 8em;
+        margin-bottom: 1em;
+    }
+    .courses{
+        .button-add-course{
+            cursor: pointer;
+            float: right;
+            &:hover{
+                font-weight: bold;
+            }
+        }
+        height: 550px;
+        width: 100%;
+        overflow-y: scroll;
+        margin-bottom: 2em;
+        .card-header{
+            margin-right: 7em;
+            cursor: pointer;
+            .study-name-title {
+                font-size: 16px;
+                text-decoration: none;
+                &:hover{
+                    font-weight: bold;
+                }
+            }
+            &:hover{
+                background: lightgrey;
+                .study-name-title {
+                    font-weight: bold;
+
+                }
+            }
+        }
+
+        .years-list-item{
+            //background: rgba(52, 144, 220, 0.25) !important;
+            border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+            cursor: pointer;
+            padding-bottom: 0.3em;
+            &:hover{
+                background: rgba(52, 144, 220, 0.25) !important;
+            }
+        }
+        .year-list-item{
+            border: 5px solid blue;
+        }
+        .year-list{
+            list-style: none;
+            padding-left: 0;
+            margin-right: 7em;
+            .year-range{
+                padding-left: 20px;
+                font-weight: bold;
+                padding-top: 0.6em;
+                /* padding-bottom: 0.6em; */
+                margin-bottom: 0;
+            }
+            .date-range{
+                padding-left: 20px;
+                padding-top: 0.6em;
+                /* padding-bottom: 0.6em; */
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .subjects{
+
+        .card-header{
+            margin-top: 4em;
+            .study-year-title {
+                font-size: 16px;
+                text-decoration: none;
+                &:hover{
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+            }
+        }
+        .subjects-section{
+            height: 505px;
+            width: 100%;
+            overflow-y: scroll;
+            margin-bottom: 2em;
+            .subjects-list{
+                list-style: none;
+                padding-left: 0;
+                .subjects-list-item{
+                    border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+                    //border-left: 20px solid coral;
+                    padding-top: 0.7em;
+                    padding-bottom: 0.7em;
+                    cursor:pointer;
+                    .item{
+                        padding-left: 20px;
+                    }
+                    .item.name{
+                        display: inline-block;
+                        float: left;
+                        margin-bottom: 0;
+                    }
+                    .item.period{
+                        display: inline-block;
+                        margin-bottom: 0;
+                    }
+                    &:hover{
+                        background: rgba(52, 144, 220, 0.25) !important;
+                        .item{
+                            font-weight: bold;
+                        }
+                    }
+                }
+                //.subjects-list-item:nth-child(odd){
+                //    background: rgba(52, 144, 220, 0.25) !important;
+                //}
+            }
+        }
+    }
+    .button-add-subject{
+        float: right;
+    }
+}
+
+/**************************************************/
 
 
