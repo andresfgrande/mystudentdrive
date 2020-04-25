@@ -19,10 +19,18 @@ class StudyController extends Controller
     public function getYearsByStudy(Request $request){
 
         $arrayIds = $request->get('studies');
+        if(empty($arrayIds)){
+            return Response::json(array('success'=>false,'result'=>'no_studies'));
+        }
 
         $aux = array();
+//        $aux2= array();
         foreach($arrayIds as $id){
             $years =  DB::table('academic_years')->where('study_id', $id)->get();
+//            foreach($years as $year){
+//                $aux2 = $year->start_date->format();
+//            }
+
             if(empty($years->toArray())){
                 array_push($aux, ['vacio']);
             }else{
@@ -47,6 +55,7 @@ class StudyController extends Controller
         $result = DB::table('subjects')
             ->join('periods','subjects.period_id','=','periods.id')
             ->whereIn('periods.id', $auxArray)
+            ->orderBy('periods.start_date', 'desc')
             ->get(array(
                 'periods.id AS period_id',
                 'periods.name AS period_name',
@@ -185,17 +194,65 @@ class StudyController extends Controller
         $start_date = $request->params['start_date'];
         $end_date = $request->params['end_date'];
 
+        $request->request->add(['year_id' => $request->params['year_id']]);
+        $request->request->add(['name' => $request->params['name']]);
+        $request->request->add(['start_date' => $request->params['start_date']]);
+        $request->request->add(['end_date' => $request->params['end_date']]);
+
         try {
-            $period = new Period();
-            $period->academic_year_id = $year_id;
-            $period->name = $name;
-            $period->start_date = $start_date;
-            $period->end_date = $start_date;
-            $period->save();
-        } catch (\Throwable $e) {
-            return Response::json(array('success'=>false,'result'=>$e));
+            $this->validate($request, [
+                'year_id' => 'required',
+                'name' => 'required',
+                'start_date' => 'required',
+                'end_date' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json(array('success'=>false,'result'=>'error_period_required'));
         }
-        return Response::json(array('success'=>true,'result'=>'period_created_ok'));
+
+        $nameExist = $this->checkPeriodNameExist($year_id, $name);
+        if($nameExist){
+            return Response::json(array('success' => false, 'result' => 'period_name_exist'));
+        }
+
+        if($start_date > $end_date) {
+            return Response::json(array('success' => false, 'result' => 'error_start_date_greater'));
+        }else{
+            $aux1 = $this->checkSolapaStartDatePeriod($year_id, $start_date);
+            if($aux1){
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
+            }
+            $aux2 = $this->checkSolapaEndDatePeriod($year_id, $end_date);
+            if($aux2){
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
+            }
+            $aux3 = $this->checkSolapaDatesPeriod($year_id, $start_date, $end_date);
+            if($aux3){
+                return Response::json(array('success'=>false,'result'=>'solapa_dates'));
+            }
+            /*********************/
+            $periodInYearOk = $this->checkPeriodInYear($year_id, $start_date, $end_date);
+            if(!$periodInYearOk){
+                return Response::json(array('success'=>false,'result'=>'period_out_of_year'));
+            }
+            /*********************/
+            try {
+                $period = new Period();
+                $period->academic_year_id = $year_id;
+                $period->name = $name;
+                $period->start_date = $start_date;
+                $period->end_date = $end_date;
+                $period->save();
+                $data = DB::table('periods')
+                    ->where('name', $name)
+                    ->where('academic_year_id', $year_id)
+                    ->get('id');
+                $aux = $data->toArray();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_create_period'));
+            }
+            return Response::json(array('success'=>true,'result'=>'period_created_ok','period'=>$aux));
+        }
     }
 
     public function getPeriodsByYear(Request $request){
@@ -216,8 +273,8 @@ class StudyController extends Controller
     public function checkSolapaStartDate($study_id, $year_start){
         $solapa_start =  DB::table('academic_years')
             ->where('study_id', $study_id)
-            ->where('start_date','<', $year_start)
-            ->where('end_date','>', $year_start)
+            ->where('start_date','<=', $year_start)
+            ->where('end_date','>=', $year_start)
             ->get('id');
 
         if(empty($solapa_start->toArray())){
@@ -230,8 +287,8 @@ class StudyController extends Controller
     public function checkSolapaEndDate($study_id, $year_end){
         $solapa_end =  DB::table('academic_years')
             ->where('study_id', $study_id)
-            ->where('start_date','<', $year_end)
-            ->where('end_date','>', $year_end)
+            ->where('start_date','<=', $year_end)
+            ->where('end_date','>=', $year_end)
             ->get('id');
         if(empty($solapa_end->toArray())){
             // no solapa
@@ -241,12 +298,12 @@ class StudyController extends Controller
     }
 
     public function checkSolapaDates($study_id, $year_start, $year_end){
-        $solapa_end =  DB::table('academic_years')
+        $solapa =  DB::table('academic_years')
             ->where('study_id', $study_id)
-            ->where('start_date','>', $year_start)
-            ->where('end_date','<', $year_end)
+            ->where('start_date','>=', $year_start)
+            ->where('end_date','<=', $year_end)
             ->get('id');
-        if(empty($solapa_end->toArray())){
+        if(empty($solapa->toArray())){
             // no solapa
             return false;
         }
@@ -260,6 +317,78 @@ class StudyController extends Controller
             ->get('id');
         if(empty($data->toArray())){
             // correcto, no existe
+            return false;
+        }
+        return true;
+    }
+
+    public function checkPeriodInYear($year_id, $start_date, $end_date){
+        $result =  DB::table('academic_years')
+            ->where('id', $year_id)
+            ->get(array(
+                'id',
+                'start_date',
+                'end_date'
+                ));
+
+       $year = $result->toArray();
+
+       if($start_date >= $year[0]->start_date && $end_date <= $year[0]->end_date){
+           return true;
+       }else{
+           return false;
+       }
+
+    }
+
+    public function checkSolapaStartDatePeriod($year_id, $year_start){
+        $solapa_start =  DB::table('periods')
+            ->where('academic_year_id', $year_id)
+            ->where('start_date','<=', $year_start)
+            ->where('end_date','>=', $year_start)
+            ->get('id');
+
+        if(empty($solapa_start->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSolapaEndDatePeriod($year_id, $year_end){
+        $solapa_end =  DB::table('periods')
+            ->where('academic_year_id', $year_id)
+            ->where('start_date','<=', $year_end)
+            ->where('end_date','>=', $year_end)
+            ->get('id');
+        if(empty($solapa_end->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSolapaDatesPeriod($year_id, $start_date, $end_date){
+        $solapa =  DB::table('periods')
+            ->where('academic_year_id', $year_id)
+            ->where('start_date','>=', $start_date)
+            ->where('end_date','<=', $end_date)
+            ->get('id');
+        if(empty($solapa->toArray())){
+            // no solapa
+            return false;
+        }
+        return true;
+    }
+
+    public function checkPeriodNameExist($year_id, $name){
+        $result =  DB::table('periods')
+            ->where('academic_year_id', $year_id)
+            ->where('name', $name)
+            ->get('id');
+
+        if(empty($result->toArray())){
+            //no existe
             return false;
         }
         return true;

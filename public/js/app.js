@@ -2695,9 +2695,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Estudios",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -2708,6 +2749,8 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_period_vue = this.route_add_period;
     this.route_get_studies_vue = this.route_get_studies;
     this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
+    this.route_photo_vue = this.route_photo;
+    this.route_photo_vue_2 = this.route_photo_2;
     this.getStudiesArray();
     this.getAcademicYears();
   },
@@ -2761,9 +2804,17 @@ __webpack_require__.r(__webpack_exports__);
         end_date: ''
       },
       periodsArray: '',
-      show_exists: false // testStyle: {
+      show_exists: false,
+      // testStyle: {
       //    backgroundColor: 'red',
       // },
+      showPeriodDatesExist: false,
+      showPeriodGreater: false,
+      showPeriodNameExist: false,
+      showPeriodDatesOutYear: false,
+      showPhotoEmpty: false,
+      route_photo_vue: '',
+      route_photo_vue_2: '' // showPhotoEmptySubjects: false,
 
     };
   },
@@ -2781,13 +2832,22 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url, {
         params: this.studiesArray
       }).then(function (response) {
-        //console.log(response.data.result);
-        var aux2 = [];
-        response.data.result.forEach(function (valor, indice) {
-          aux2.push(valor); //console.log(valor);
-        });
-        _this.auxArray = aux2;
-        console.log(_this.auxArray);
+        console.log(response.data.result);
+
+        if (response.data.result === 'no_studies') {
+          _this.showPhotoEmpty = true;
+          console.log('No hay estudios');
+        } else {
+          _this.showPhotoEmpty = false;
+          var aux2 = [];
+          response.data.result.forEach(function (valor, indice) {
+            aux2.push(valor);
+            console.log('/////////////////');
+            console.log(valor);
+          });
+          _this.auxArray = aux2;
+          console.log(_this.auxArray);
+        }
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2843,6 +2903,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           $('#addStudyModal').modal('hide');
           _this3.studyToAdd = '';
+          _this3.showPhotoEmpty = false;
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -2911,6 +2972,33 @@ __webpack_require__.r(__webpack_exports__);
         params: this.periodToAdd
       }).then(function (response) {
         console.log(response.data.result);
+
+        if (response.data.result === 'period_created_ok') {
+          _this6.getPeriodsByYear();
+
+          _this6.subjectToAdd.period_id = response.data.period[0].id;
+          $('#toggle-period').click();
+          $('#toggle-period2').click();
+          _this6.periodToAdd.start_date = '';
+          _this6.periodToAdd.end_date = '';
+          _this6.periodToAdd.name = '';
+        }
+
+        if (response.data.result === 'period_name_exist') {
+          _this6.showPeriodNameExist = true;
+        }
+
+        if (response.data.result === 'solapa_dates') {
+          _this6.showPeriodDatesExist = true;
+        }
+
+        if (response.data.result === 'error_start_date_greater') {
+          _this6.showPeriodGreater = true;
+        }
+
+        if (response.data.result === 'period_out_of_year') {
+          _this6.showPeriodDatesOutYear = true;
+        }
       })["catch"](function (errors) {
         _this6.console.log(errors);
       });
@@ -2922,6 +3010,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url).then(function (response) {
         console.log(response.data.result);
         _this7.estudios_vue = response.data.result;
+        _this7.showPhotoEmpty = false;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -2935,6 +3024,9 @@ __webpack_require__.r(__webpack_exports__);
       this.subjectToAdd.name = '';
       this.subjectToAdd.period_id = '';
       this.subjectToAdd.color = '#000000';
+      this.periodToAdd.name = '';
+      this.periodToAdd.start_date = '';
+      this.periodToAdd.end_date = '';
       $('#addSubjectModal').modal('show');
     },
     cleanMessage: function cleanMessage() {
@@ -2964,6 +3056,22 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (errors) {
         console.log(errors);
       });
+    },
+    cleanMessagePeriodName: function cleanMessagePeriodName() {
+      this.showPeriodNameExist = false;
+    },
+    cleanMessagePeriodDates: function cleanMessagePeriodDates() {
+      this.showPeriodGreater = false;
+      this.showPeriodDatesExist = false;
+      this.showPeriodDatesOutYear = false;
+    },
+    formatDateYear: function formatDateYear(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.getFullYear();
+    },
+    formatDateFull: function formatDateFull(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.toLocaleDateString();
     }
   },
   computed: {
@@ -2990,7 +3098,18 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return false;
       }
-    }
+    },
+    showPhotoEmptySubjects: function showPhotoEmptySubjects() {
+      if (this.subjectsArray.length === 0) {
+        return true;
+      }
+
+      return false;
+    } // formatDate: function(fecha){
+    //
+    //     return fecha;
+    // }
+
   }
 });
 
@@ -39340,67 +39459,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container studies" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col" }, [
+      _c("div", { staticClass: "col " }, [
+        _c("h3", { staticStyle: { "text-align": "center" } }, [
+          _vm._v("Cursos")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "button-add-study" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.addStudyModal }
+            },
+            [_vm._v("Añadir estudios")]
+          )
+        ]),
+        _vm._v(" "),
         _c(
           "div",
-          { staticStyle: { width: "75%" } },
+          { staticClass: "courses" },
           [
-            _c("h3", { staticStyle: { "text-align": "center" } }, [
-              _vm._v("Cursos")
-            ]),
-            _vm._v(" "),
             _vm._l(_vm.estudios_vue, function(item, index) {
               return _c("div", [
-                _c("div", { staticClass: "card-header" }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        "data-toggle": "collapse",
-                        href: _vm.getRefId(item.id),
-                        "aria-expanded": "false",
-                        role: "button",
-                        "aria-controls": "collapseExample"
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-header",
+                    attrs: {
+                      "data-toggle": "collapse",
+                      role: "button",
+                      href: _vm.getRefId(item.id),
+                      "aria-controls": "collapseExample",
+                      "aria-expanded": "false"
+                    },
+                    on: {
+                      load: function($event) {
+                        return _vm.test(item.id)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "study-name-title",
+                        attrs: {
+                          "data-toggle": "collapse",
+                          href: _vm.getRefId(item.id),
+                          "aria-expanded": "false",
+                          role: "button",
+                          "aria-controls": "collapseExample"
+                        },
+                        on: {
+                          load: function($event) {
+                            return _vm.test(item.id)
+                          }
+                        }
                       },
-                      on: {
-                        load: function($event) {
-                          return _vm.test(item.id)
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(item.name) +
+                            "\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button-add-course",
+                        on: {
+                          click: function($event) {
+                            return _vm.addYearModal(item.id)
+                          }
                         }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(item.name) +
-                          "\n                            "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticStyle: { cursor: "pointer", float: "right" },
-                      on: {
-                        click: function($event) {
-                          return _vm.addYearModal(item.id)
-                        }
-                      }
-                    },
-                    [_vm._v("Añadir curso")]
-                  )
-                ]),
+                      },
+                      [_vm._v("Añadir curso")]
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "ul",
-                  { attrs: { id: _vm.getRefId2(item.id) } },
+                  {
+                    staticClass: "collapse year-list",
+                    attrs: { id: _vm.getRefId2(item.id) }
+                  },
                   _vm._l(_vm.auxArray[index], function(hey) {
                     return hey !== "vacio"
                       ? _c(
                           "li",
                           {
+                            staticClass: "years-list-item",
                             on: {
                               click: function($event) {
                                 return _vm.getSubjectsByYear(
@@ -39413,13 +39567,21 @@ var render = function() {
                             }
                           },
                           [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(hey.start_date) +
-                                " / " +
-                                _vm._s(hey.end_date) +
-                                "\n                            "
-                            )
+                            _c("p", { staticClass: "year-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateYear(hey.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateYear(hey.end_date))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "date-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateFull(hey.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateFull(hey.end_date))
+                              )
+                            ])
                           ]
                         )
                       : _vm._e()
@@ -39431,17 +39593,18 @@ var render = function() {
             _vm._v(" "),
             _c("br"),
             _vm._v(" "),
-            _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: { click: _vm.addStudyModal }
-                },
-                [_vm._v("Añadir estudios")]
-              )
-            ])
+            _vm.showPhotoEmpty
+              ? _c("p", { staticClass: "empty-text" }, [
+                  _vm._v("Comienza añadiendo un nuevo curso...")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmpty
+              ? _c("img", {
+                  staticClass: "empty-img",
+                  attrs: { src: this.route_photo_vue, alt: "profile_photo" }
+                })
+              : _vm._e()
           ],
           2
         )
@@ -39453,39 +39616,7 @@ var render = function() {
             _vm._v("Asignaturas")
           ]),
           _vm._v(" "),
-          _vm.showSubjectsHeader
-            ? _c("div", { staticClass: "card-header" }, [
-                _vm._v(
-                  "\n                      " +
-                    _vm._s(this.chosenStudy) +
-                    "      " +
-                    _vm._s(this.yearStartChosen) +
-                    " / " +
-                    _vm._s(this.yearEndChosen) +
-                    "\n                    "
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "ul",
-            _vm._l(_vm.subjectsArray, function(subject) {
-              return _c("li", [
-                _c("p", [
-                  _vm._v(
-                    _vm._s(subject.subject_name) +
-                      "   -   " +
-                      _vm._s(subject.period_name)
-                  )
-                ])
-              ])
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("div", [
+          _c("div", { staticClass: "button-add-subject" }, [
             _vm.showSubjectsHeader
               ? _c(
                   "button",
@@ -39496,12 +39627,78 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                            Añadir asignatura\n                        "
+                      "\n                        Añadir asignatura\n                    "
                     )
                   ]
                 )
               : _vm._e()
-          ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "subjects" }, [
+            _vm.showSubjectsHeader
+              ? _c("div", { staticClass: "card-header" }, [
+                  _c("div", { staticClass: "study-year-title" }, [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _vm._v(
+                        "  " +
+                          _vm._s(this.chosenStudy) +
+                          "  " +
+                          _vm._s(_vm.formatDateYear(this.yearStartChosen)) +
+                          " - " +
+                          _vm._s(_vm.formatDateYear(this.yearEndChosen))
+                      )
+                    ])
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.showPhotoEmptySubjects
+              ? _c("div", { staticClass: "subjects-section" }, [
+                  _c(
+                    "ul",
+                    { staticClass: "subjects-list" },
+                    _vm._l(_vm.subjectsArray, function(subject) {
+                      return _c(
+                        "li",
+                        {
+                          staticClass: "subjects-list-item",
+                          style: {
+                            borderLeftWidth: 23 + "px",
+                            borderLeftStyle: "solid",
+                            borderLeftColor: subject.subject_color
+                          }
+                        },
+                        [
+                          _c("p", { staticClass: "item name" }, [
+                            _vm._v(_vm._s(subject.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "item period" }, [
+                            _vm._v(" " + _vm._s(subject.period_name))
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmptySubjects
+              ? _c("p", { staticClass: "empty-text-subjects" }, [
+                  _vm._v("Aqui verás las asignaturas de tus cursos...")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showPhotoEmptySubjects
+              ? _c("img", {
+                  staticClass: "empty-img-subjects",
+                  attrs: { src: this.route_photo_vue_2, alt: "profile_photo" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("br")
         ])
       ])
     ]),
@@ -39568,7 +39765,7 @@ var render = function() {
                     _vm.showNameExists
                       ? _c("small", { staticClass: "text-danger" }, [
                           _vm._v(
-                            "\n                                    Ya tienes unos estudios con este nombre.\n                                "
+                            "\n                                Ya tienes unos estudios con este nombre.\n                            "
                           )
                         ])
                       : _vm._e()
@@ -39864,7 +40061,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                                    Ya existe una asignatura con este nombre en el periodo escogido.\n                                "
+                              "\n                                Ya existe una asignatura con este nombre en el periodo escogido.\n                            "
                             )
                           ]
                         )
@@ -39909,80 +40106,109 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "subject_period" } }, [
-                      _vm._v("Seleccione un periodo")
+                      _vm._v("Selecciona un periodo")
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.subjectToAdd.period_id,
-                            expression: "subjectToAdd.period_id"
-                          }
-                        ],
-                        attrs: { id: "subject_period" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.subjectToAdd,
-                              "period_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("option", { attrs: { disabled: "", value: "" } }, [
-                          _vm._v("Seleccione un periodo")
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.periodsArray, function(period) {
-                          return _c(
-                            "option",
-                            { domProps: { value: period.id } },
+                    _vm.periodsArray.length === 0
+                      ? _c("div", [
+                          _c("p", [_vm._v("Aun no tienes periodos...")]),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                id: "toggle-period2",
+                                "data-toggle": "collapse",
+                                href: "#collapse-new-period",
+                                "aria-expanded": "false",
+                                role: "button",
+                                "aria-controls": "collapseExample"
+                              }
+                            },
                             [
                               _vm._v(
-                                "\n                                       " +
-                                  _vm._s(period.name) +
-                                  "\n                                    "
+                                "\n                                    Crea un periodo para tu asignatura\n                                "
                               )
                             ]
                           )
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          "data-toggle": "collapse",
-                          href: "#collapse-new-period",
-                          "aria-expanded": "false",
-                          role: "button",
-                          "aria-controls": "collapseExample"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                   Añadir nuevo periodo\n                                "
-                        )
-                      ]
-                    ),
+                        ])
+                      : _c("div", [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.subjectToAdd.period_id,
+                                  expression: "subjectToAdd.period_id"
+                                }
+                              ],
+                              attrs: { id: "subject_period" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.subjectToAdd,
+                                    "period_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { disabled: "", value: "" } },
+                                [_vm._v("Selecciona un periodo")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.periodsArray, function(period) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: period.id } },
+                                  [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(period.name) +
+                                        "\n                                    "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                id: "toggle-period",
+                                "data-toggle": "collapse",
+                                href: "#collapse-new-period",
+                                "aria-expanded": "false",
+                                role: "button",
+                                "aria-controls": "collapseExample"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Añadir nuevo periodo\n                                "
+                              )
+                            ]
+                          )
+                        ]),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -39992,7 +40218,7 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "yfdsfdf" } }, [
+                          _c("label", { attrs: { for: "period_name" } }, [
                             _vm._v("Nombre del periodo")
                           ]),
                           _vm._v(" "),
@@ -40007,14 +40233,15 @@ var render = function() {
                             ],
                             staticClass: "form-control",
                             attrs: {
-                              id: "yfdsfdf",
+                              id: "period_name",
                               type: "text",
-                              name: "year_academico_end",
+                              name: "period_name",
                               placeholder: "",
                               required: ""
                             },
                             domProps: { value: _vm.periodToAdd.name },
                             on: {
+                              keyup: _vm.cleanMessagePeriodName,
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
@@ -40029,12 +40256,28 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
+                        _vm.showPeriodNameExist
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "Ya tienes un periodo con este nombre."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
-                          _c(
-                            "label",
-                            { attrs: { for: "year_academico_startt" } },
-                            [_vm._v("Fecha de inicio")]
-                          ),
+                          _c("label", { attrs: { for: "period_start" } }, [
+                            _vm._v("Fecha de inicio")
+                          ]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -40047,14 +40290,15 @@ var render = function() {
                             ],
                             staticClass: "form-control",
                             attrs: {
-                              id: "year_academico_startt",
+                              id: "period_start",
                               type: "date",
-                              name: "year_academico_start",
+                              name: "period_start",
                               placeholder: "",
                               required: ""
                             },
                             domProps: { value: _vm.periodToAdd.start_date },
                             on: {
+                              change: _vm.cleanMessagePeriodDates,
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
@@ -40070,11 +40314,9 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
-                          _c(
-                            "label",
-                            { attrs: { for: "year_academico_endd" } },
-                            [_vm._v("Fecha de finalización")]
-                          ),
+                          _c("label", { attrs: { for: "period_end" } }, [
+                            _vm._v("Fecha de finalización")
+                          ]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -40087,14 +40329,15 @@ var render = function() {
                             ],
                             staticClass: "form-control",
                             attrs: {
-                              id: "year_academico_endd",
+                              id: "period_end",
                               type: "date",
-                              name: "year_academico_end",
+                              name: "period_end",
                               placeholder: "",
                               required: ""
                             },
                             domProps: { value: _vm.periodToAdd.end_date },
                             on: {
+                              change: _vm.cleanMessagePeriodDates,
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
@@ -40108,6 +40351,60 @@ var render = function() {
                             }
                           })
                         ]),
+                        _vm._v(" "),
+                        _vm.showPeriodDatesExist
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "  Las fechas seleccionadas coinciden con las de otro periodo."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.showPeriodGreater
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "La fecha de inicio es posterior a la fecha de finalización."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.showPeriodDatesOutYear
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "alert alert-danger alert-dismissible fade show",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _c("strong", [
+                                  _vm._v(
+                                    "Las fechas de este periodo estan fuera el año actual."
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "button",
