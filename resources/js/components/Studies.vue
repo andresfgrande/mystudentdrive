@@ -19,8 +19,8 @@
                         </div>
                         <ul class="collapse year-list" v-bind:id="getRefId2(item.id)" >
                             <li class="years-list-item" v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name,hey.start_date,hey.end_date)">
-                              <p class="year-range">{{formatDateYear(hey.start_date)}} - {{formatDateYear(hey.end_date)}}</p>
-                              <p class="date-range">{{formatDateFull(hey.start_date)}} - {{formatDateFull(hey.end_date)}}</p>
+                                <p class="year-range">{{formatDateYear(hey.start_date)}} - {{formatDateYear(hey.end_date)}}</p>
+                                <p class="date-range">{{formatDateFull(hey.start_date)}} - {{formatDateFull(hey.end_date)}}</p>
                             </li>
                         </ul>
                     </div>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="col">
-                <div style="width:75%;">
+                <div>
                     <h3 style="text-align:center;">Asignaturas</h3>
                     <div class="button-add-subject">
                         <button type="button" v-if="showSubjectsHeader" class="btn btn-primary" @click="addSubjectModal">
@@ -217,7 +217,7 @@
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="showPeriodDatesOutYear">
                                         <strong>Las fechas de este periodo estan fuera el año actual.</strong>
                                     </div>
-                                    <button type="button" class="btn btn-secondary" @click="addPeriod" >Guardar periodo</button>
+                                    <button type="button" class="btn btn-secondary" :disabled='isDisabledSavePeriod' @click="addPeriod" >Guardar periodo</button>
                                 </div>
                             </div>
 
@@ -558,6 +558,13 @@
             },
             isDisabledSaveSubject: function(){
                 if(this.subjectToAdd.period_id === '' || this.subjectToAdd.name === ''){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            isDisabledSavePeriod: function(){
+                if(this.periodToAdd.name === '' || this.periodToAdd.start_date === '' || this.periodToAdd.end_date === ''){
                     return true;
                 }else{
                     return false;

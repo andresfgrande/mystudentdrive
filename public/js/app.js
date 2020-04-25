@@ -3099,6 +3099,13 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
     },
+    isDisabledSavePeriod: function isDisabledSavePeriod() {
+      if (this.periodToAdd.name === '' || this.periodToAdd.start_date === '' || this.periodToAdd.end_date === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     showPhotoEmptySubjects: function showPhotoEmptySubjects() {
       if (this.subjectsArray.length === 0) {
         return true;
@@ -39611,7 +39618,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col" }, [
-        _c("div", { staticStyle: { width: "75%" } }, [
+        _c("div", [
           _c("h3", { staticStyle: { "text-align": "center" } }, [
             _vm._v("Asignaturas")
           ]),
@@ -40410,7 +40417,10 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-secondary",
-                            attrs: { type: "button" },
+                            attrs: {
+                              type: "button",
+                              disabled: _vm.isDisabledSavePeriod
+                            },
                             on: { click: _vm.addPeriod }
                           },
                           [_vm._v("Guardar periodo")]

@@ -21988,3 +21988,29 @@ a.text-dark:focus {
 
 /**************************************************/
 
+/**************************MOBILE*************************************/
+
+@media only screen and (max-width: 1400px) {
+  .studies .courses .card-header {
+    margin-right: 0;
+  }
+
+  .studies .courses .year-list {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .studies .courses .card-header {
+    margin-right: 0;
+  }
+
+  .studies .courses .year-list {
+    margin-right: 0;
+  }
+
+  .row {
+    display: block;
+  }
+}
+
