@@ -21854,7 +21854,8 @@ a.text-dark:focus {
 }
 
 .studies .courses {
-  height: 550px;
+  height: auto;
+  max-height: 550px;
   width: 100%;
   overflow-y: scroll;
   margin-bottom: 2em;
@@ -21987,4 +21988,30 @@ a.text-dark:focus {
 }
 
 /**************************************************/
+
+/**************************MOBILE*************************************/
+
+@media only screen and (max-width: 1400px) {
+  .studies .courses .card-header {
+    margin-right: 0;
+  }
+
+  .studies .courses .year-list {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .studies .courses .card-header {
+    margin-right: 0;
+  }
+
+  .studies .courses .year-list {
+    margin-right: 0;
+  }
+
+  .row {
+    display: block;
+  }
+}
 
