@@ -110,7 +110,9 @@
                 font-weight: bold;
             }
         }
-        height: 550px;
+        //height: 550px;
+        height: auto;
+        max-height: 550px;
         width: 100%;
         overflow-y: scroll;
         margin-bottom: 2em;

@@ -32,7 +32,7 @@
             </div>
 
             <div class="col">
-                <div>
+                <div id="section-subjects">
                     <h3 style="text-align:center;">Asignaturas</h3>
                     <div class="button-add-subject">
                         <button type="button" v-if="showSubjectsHeader" class="btn btn-primary" @click="addSubjectModal">
@@ -142,7 +142,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="addSubjectLabel">Nueva asignatura de {{this.chosenStudy}} {{this.yearStartChosen}}/{{this.yearEndChosen}}</h5>
+                        <h5 class="modal-title"  id="addSubjectLabel">Nueva asignatura de <strong>{{this.chosenStudy}} {{formatDateYear(this.yearStartChosen)}}-{{formatDateYear(this.yearEndChosen)}}</strong></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -163,7 +163,7 @@
                                 <input type="color" id="subject_color" name="subject_color" v-model="subjectToAdd.color" required>
                             </div>
                             <div class="form-group">
-                                <label for="subject_period">Selecciona un periodo</label>
+                                <label for="subject_period">Selecciona un periodo de este curso <strong> {{formatDateFull(this.yearStartChosen)}}-{{formatDateFull(this.yearEndChosen)}}</strong></label>
                                 <div v-if="periodsArray.length === 0">
                                     <p>Aun no tienes periodos...</p>
                                     <a id="toggle-period2" data-toggle="collapse" href="#collapse-new-period"  aria-expanded="false"
@@ -376,6 +376,9 @@
                     console.log(this.yearIdChosen);
                     this.subjectsArray = response.data.result;
                     console.log(this.subjectsArray);
+                    var elmnt = document.getElementById("section-subjects");
+                    elmnt.scrollIntoView();
+
                 })
                     .catch(errors => {
                         console.log(errors);

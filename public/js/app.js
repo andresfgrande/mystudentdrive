@@ -2878,6 +2878,8 @@ __webpack_require__.r(__webpack_exports__);
         console.log(_this2.yearIdChosen);
         _this2.subjectsArray = response.data.result;
         console.log(_this2.subjectsArray);
+        var elmnt = document.getElementById("section-subjects");
+        elmnt.scrollIntoView();
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -39618,7 +39620,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col" }, [
-        _c("div", [
+        _c("div", { attrs: { id: "section-subjects" } }, [
           _c("h3", { staticStyle: { "text-align": "center" } }, [
             _vm._v("Asignaturas")
           ]),
@@ -40005,14 +40007,16 @@ var render = function() {
                     attrs: { id: "addSubjectLabel" }
                   },
                   [
-                    _vm._v(
-                      "Nueva asignatura de " +
+                    _vm._v("Nueva asignatura de "),
+                    _c("strong", [
+                      _vm._v(
                         _vm._s(this.chosenStudy) +
-                        " " +
-                        _vm._s(this.yearStartChosen) +
-                        "/" +
-                        _vm._s(this.yearEndChosen)
-                    )
+                          " " +
+                          _vm._s(_vm.formatDateYear(this.yearStartChosen)) +
+                          "-" +
+                          _vm._s(_vm.formatDateYear(this.yearEndChosen))
+                      )
+                    ])
                   ]
                 ),
                 _vm._v(" "),
@@ -40113,7 +40117,15 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "subject_period" } }, [
-                      _vm._v("Selecciona un periodo")
+                      _vm._v("Selecciona un periodo de este curso "),
+                      _c("strong", [
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm.formatDateFull(this.yearStartChosen)) +
+                            "-" +
+                            _vm._s(_vm.formatDateFull(this.yearEndChosen))
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _vm.periodsArray.length === 0
