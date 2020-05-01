@@ -130,7 +130,7 @@ class UploadFileController extends Controller
 
             $uploader = new MultipartUploader($s3, $source, [
                 'bucket' => $bucketName,
-                'key' => 'test2.zip',
+                'key' => $file->getClientOriginalName(),
             ]);
 
             try {
