@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\aws;
 
 use App\Http\Controllers\Controller;
+use Aws\Exception\AwsException;
 use Aws\Exception\MultipartUploadException;
 use Aws\S3\MultipartUploader;
 use Aws\S3\ObjectUploader;
@@ -133,14 +134,19 @@ class UploadFileController extends Controller
                 'key' => $file->getClientOriginalName(),
             ]);
 
+            $promise = $uploader->promise();
+//            try {
+//                $result = $uploader->upload();
+//                echo "Upload complete: {$result['ObjectURL']}\n";
+//            } catch (MultipartUploadException $e) {
+//                echo $e->getMessage() . "\n";
+//            }
             try {
-                $result = $uploader->upload();
+                $result = $promise->wait();
                 echo "Upload complete: {$result['ObjectURL']}\n";
-            } catch (MultipartUploadException $e) {
+            } catch (AwsException $e) {
                 echo $e->getMessage() . "\n";
             }
-
-
 
         } catch (S3Exception $e) {
             die('Error:' . $e->getMessage());
