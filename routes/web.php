@@ -41,3 +41,8 @@ Route::post('/addsubject','vuejs\StudyController@addSubject')->name('add_subject
 Route::post('/addperiod','vuejs\StudyController@addPeriod')->name('add_period');
 Route::get('/getstudiesajax','vuejs\StudyController@getStudiesAjax')->name('get_studies_ajax');
 Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('get_periods_by_year');
+
+/*****SUBIR ARCHIVOS******/
+Route::post('/uploadfile', 'aws\UploadFileController@uploadFile')->name('upload_file');
+Route::get('/downloadfile', 'aws\UploadFileController@downloadFile')->name('download_file');
+

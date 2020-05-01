@@ -85,7 +85,9 @@
                 </div>
                 <p>By: Andrés Grande</p>
                 <div id="app">
-                    <test route_test="{{route('test')}}"> </test>
+                    <test route_test="{{route('test')}}"
+                          route_upload="{{route('upload_file')}}"
+                          route_download="{{route('download_file')}}"> </test>
                 </div>
 
 {{--                <div class="links">--}}
