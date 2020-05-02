@@ -135,20 +135,20 @@ class UploadFileController extends Controller
             ]);
 
 
-            try {
-                $result = $uploader->upload();
-                echo "Upload complete: {$result['ObjectURL']}\n";
-            } catch (MultipartUploadException $e) {
-                echo $e->getMessage() . "\n";
-            }
-            
-//            $promise = $uploader->promise();
 //            try {
-//                $result = $promise->wait();
+//                $result = $uploader->upload();
 //                echo "Upload complete: {$result['ObjectURL']}\n";
-//            } catch (AwsException $e) {
+//            } catch (MultipartUploadException $e) {
 //                echo $e->getMessage() . "\n";
 //            }
+
+            $promise = $uploader->promise();
+            try {
+                $result = $promise->wait();
+                echo "Upload complete: {$result['ObjectURL']}\n";
+            } catch (AwsException $e) {
+                echo $e->getMessage() . "\n";
+            }
 
         } catch (S3Exception $e) {
             die('Error:' . $e->getMessage());
@@ -156,7 +156,7 @@ class UploadFileController extends Controller
             die('Error:' . $e->getMessage());
         }
 
-        echo 'Done';
+        echo 'Done promises';
         return Response::json(array('success'=>true,'result'=>'file_upload_ok','result_img'=>$new_name));
     }
 
