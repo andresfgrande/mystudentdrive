@@ -134,19 +134,21 @@ class UploadFileController extends Controller
                 'key' => $file->getClientOriginalName(),
             ]);
 
-            $promise = $uploader->promise();
-//            try {
-//                $result = $uploader->upload();
-//                echo "Upload complete: {$result['ObjectURL']}\n";
-//            } catch (MultipartUploadException $e) {
-//                echo $e->getMessage() . "\n";
-//            }
+
             try {
-                $result = $promise->wait();
+                $result = $uploader->upload();
                 echo "Upload complete: {$result['ObjectURL']}\n";
-            } catch (AwsException $e) {
+            } catch (MultipartUploadException $e) {
                 echo $e->getMessage() . "\n";
             }
+            
+//            $promise = $uploader->promise();
+//            try {
+//                $result = $promise->wait();
+//                echo "Upload complete: {$result['ObjectURL']}\n";
+//            } catch (AwsException $e) {
+//                echo $e->getMessage() . "\n";
+//            }
 
         } catch (S3Exception $e) {
             die('Error:' . $e->getMessage());
