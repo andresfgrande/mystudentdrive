@@ -21987,7 +21987,121 @@ a.text-dark:focus {
   float: right;
 }
 
-/**************************************************/
+/***********PÁGINA STUDY***********/
+
+.py-4 {
+  padding-top: 0 !important;
+}
+
+.study {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  /* ---------------------------------------------------
+      SIDEBAR STYLE
+  ----------------------------------------------------- */
+}
+
+.study .wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.study #sidebar {
+  width: 315px;
+  position: fixed;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
+  background: #7386D5;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.study #sidebar.active {
+  margin-left: -250px;
+}
+
+.study #sidebar .sidebar-header {
+  padding: 20px;
+  background: #6d7fcc;
+}
+
+.study #sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #47748b;
+}
+
+.study #sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+.study #sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: white;
+}
+
+.study #sidebar ul li a:hover {
+  color: #7386D5;
+  background: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.study #sidebar ul li.active > a,
+.study a[aria-expanded=true] {
+  color: #fff;
+  background: #6d7fcc;
+}
+
+.study a[data-toggle=collapse] {
+  position: relative;
+}
+
+.study .dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+.study ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #6d7fcc;
+}
+
+.study ul.CTAs {
+  padding: 20px;
+}
+
+.study ul.CTAs a {
+  text-align: center;
+  font-size: 0.9em !important;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.study a.download {
+  background: #fff;
+  color: #7386D5;
+}
+
+.study a.article,
+.study a.article:hover {
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+
+.study .content {
+  padding-left: 315px;
+}
 
 /**************************MOBILE*************************************/
 
