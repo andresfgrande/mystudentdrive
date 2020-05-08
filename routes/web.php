@@ -45,3 +45,4 @@ Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('
 /**********VISTAS PRINCIPALES********/
 
 Route::resource('/study/{study_id}','StudyViewController', ['only' => ['index', 'create', 'store',]]);
+Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')->name('get_years_by_one_study');

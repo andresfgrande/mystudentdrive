@@ -31,6 +31,7 @@ Vue.component('studies', require('./components/Studies.vue').default);
 
 Vue.component('study', require('./components/Study.vue').default);
 Vue.component('year', require('./components/Year.vue').default);
+Vue.component('subject', require('./components/Subject.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

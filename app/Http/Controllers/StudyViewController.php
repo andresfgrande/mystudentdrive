@@ -12,6 +12,9 @@ class StudyViewController extends Controller
 
         if (Auth::check()) {
             // The user is logged in...
+
+            $chosenYearStudies = $request->get('year');
+
             $var_study =  DB::table('studies')->where('id', $request->study_id)
                 ->where('user_id',Auth::id())
                 ->get();
@@ -25,7 +28,17 @@ class StudyViewController extends Controller
             $aux2 = $var_years->toArray();
             $years = $aux2;
 
-            return view('user.study',compact('study','years'));
+            $indexChosenYear = null;
+            foreach($years as $key=>$year){
+                if($year->id ==  $chosenYearStudies ){
+                    $indexChosenYear = $key;
+                }
+            }
+            if($indexChosenYear == null){
+                $indexChosenYear = 0;
+            }
+
+            return view('user.study',compact('study','years','indexChosenYear'));
         }
         return view('auth.login');
     }

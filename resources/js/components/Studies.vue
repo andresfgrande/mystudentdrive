@@ -543,7 +543,7 @@
                 return date = date.toLocaleDateString();
             },
             studyLink(id){
-                return "/study/"+id;
+                return "/study/"+id+'/?year='+this.yearIdChosen.year_id;
             }
         },
         computed:{

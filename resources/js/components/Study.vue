@@ -6,51 +6,91 @@
                 <!------- Sidebar ------->
                 <nav id="sidebar">
                     <div class="sidebar-header">
-                        <h3>{{study_prop.name}}</h3>
+                        <h3>{{study_prop_vue.name}}</h3>
                     </div>
 
-                    <ul class="list-unstyled components">
-                        <li class="active" v-for="year in years_prop_vue" @click="choseYear(year)">
-                            <a href="#homeSubmenu"  aria-expanded="false" >{{formatDateYear(year.start_date)}} - {{formatDateYear(year.end_date)}}</a>
+                    <ul class="list-unstyled components years">
+                        <li class="active year-list-item" v-for="year in years_prop_vue" @click="choseYear(year)">
+                            <a href="#homeSubmenu" class="year-range" aria-expanded="false" >{{formatDateYear(year.start_date)}} - {{formatDateYear(year.end_date)}}</a>
+                            <a class="date-range">{{formatDateFull(year.start_date)}} - {{formatDateFull(year.end_date)}}</a>
                         </li>
 
-                        <button style="margin-top: 1em;" type="button" class="btn btn-secondary" >Añadir curso</button>
+<!--                        <button style="margin-top: 1em;" type="button" class="btn btn-secondary" >Añadir curso</button>-->
+                        <button class="btn btn-secondary"  type="button" @click="addYearModal(study_prop_vue.id)">Añadir curso</button>
+                        <button class="btn btn-secondary"  type="button" @click="getAcademicYears()">test get years</button>
                     </ul>
                 </nav>
                 <!---------------------->
             </div>
         </div>
 
-<!--        <div class="container content">-->
-<!--            <h3>Curso {{formatDateYear(chosedYear.start_date)}} - {{formatDateYear(chosedYear.end_date)}}</h3>-->
-<!--        </div>-->
-<!--        <year-->
-<!--            v-bind:chosed_year="chosedYear"-->
-<!--        ></year>-->
-<!--        <component :is="currentYear"-->
-<!--                   v-bind:test: fra-->
+        <Year :key="componentKey" v-bind:chosed_year = "chosedYear"
+        v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue">
+        </Year>
 
-<!--        </component>-->
-<Year :key="componentKey" v-bind:chosed_year ="chosedYear"
-></Year>
+        <!--/*****************************************ADD YEAR**********************************************/-->
+        <div class="modal fade" id="addYearModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="addYearLabel">Nuevo año academico</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="year_academico_start">Fecha de inicio</label>
+                                <input class="form-control" v-model="yearToAdd.year_start"
+                                       id="year_academico_start" type="date" name="year_academico_star"
+                                       placeholder="" v-on:change="cleanMessageDates" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="year_academico_end">Fecha de finalización</label>
+                                <input class="form-control" v-model="yearToAdd.year_end"
+                                       id="year_academico_end" type="date" name="year_academico_end"
+                                       placeholder="" v-on:change="cleanMessageDates" required>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible fade show" v-if="showYearExists" role="alert">
+                                <strong>  Las fechas seleccionadas coinciden con las de otro año academico.</strong>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="showYearGreater">
+                                <strong>La fecha de inicio es posterior a la fecha de finalización.</strong>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" :disabled='isDisabledSaveYear' @click="addYear">Guardar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--/************************************************************************************************-->
 
     </div>
 </template>
 
 <script>
     import Year from './Year';
-
     export default {
-
         name: "Study",
-        props:['study_prop','years_prop'],
+        props:['study_prop','years_prop','index_chosen_year','route_add_year',
+        'route_get_years_by_one_study','route_get_subjects_by_year'],
         components: {
             Year
         },
         created(){
             this.study_prop_vue = this.study_prop;
             this.years_prop_vue = this.years_prop;
-            this.chosedYear = this.years_prop_vue[0];
+            this.chosedYear = this.years_prop_vue[this.index_chosen_year];
+            this.index_chosen_year_vue = this.index_chosen_year;
+            this.route_add_year_vue = this.route_add_year;
+            this.route_get_years_by_one_study_vue = this.route_get_years_by_one_study;
+            this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year ;
         },
         data(){
             return{
@@ -58,9 +98,24 @@
                 years_prop_vue:'',
                 chosedYear:'',
                 currentYear:'year',
-
-                frase:3,
                 componentKey: 0,
+                index_chosen_year_vue:'',
+
+                /***************/
+                route_add_year_vue:'',
+                yearToAdd:{
+                    study_id:'',
+                    year_start:'',
+                    year_end:'',
+                },
+                showYearExists:false,
+                showYearGreater:false,
+                route_get_years_by_one_study_vue:'',
+                study_info:{
+                    study_id:'',
+                },
+                /***************/
+                route_get_subjects_by_year_vue:'',
             }
         },
         methods:{
@@ -72,16 +127,63 @@
                 this.currentYear = "year";
                 this.chosedYear = year;
                 console.log(this.chosedYear);
-                this.frase = 2;
                 this.componentKey += 1;
-
-            }
+            },
+            addYear(){ //OK
+                var url = this.route_add_year_vue;
+                axios.post(url ,{params:this.yearToAdd}).then(response => {
+                    console.log(response.data.result);
+                    this.getAcademicYears();
+                    if(response.data.result === 'year_created_ok'){
+                        $('#addYearModal').modal('hide');
+                    }
+                    if(response.data.result === 'solapa_dates'){
+                        this.showYearExists = true;
+                    }
+                    if(response.data.result === 'error_start_date_greater'){
+                        this.showYearGreater= true;
+                    }
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            addYearModal(study_id){
+                this.showYearExists = false;
+                this.showGrater = false;
+                this.yearToAdd.year_start = '';
+                this.yearToAdd.year_end = '';
+                this.yearToAdd.study_id = study_id;
+                $('#addYearModal').modal('show');
+            },
+            getAcademicYears(){
+                this.study_info.study_id= this.study_prop_vue.id;
+                var url = this.route_get_years_by_one_study_vue;
+                axios.get(url ,{params:this.study_info}).then(response => {
+                    console.log(response.data.result);
+                    this.years_prop_vue = response.data.result;
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            cleanMessageDates(){
+                this.showYearExists = false;
+                this.showGrater = false;
+            },
+            formatDateFull(date_to_format){
+                var date = new Date(date_to_format);
+                return date = date.toLocaleDateString();
+            },
         },
         computed:{
-            sendData: function() {
-                    return { test: this.frase }
-
-            }
+            isDisabledSaveYear: function(){
+                if(this.yearToAdd.year_start === '' || this.yearToAdd.year_end === ''){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>
