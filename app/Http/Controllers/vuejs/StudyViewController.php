@@ -21,4 +21,8 @@ class StudyViewController extends Controller
 
         return Response::json(array('success'=>true,'result'=>$years));
     }
+
+    public function getSectionsBySubject(Request $request){
+        dd($request);
+    }
 }

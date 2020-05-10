@@ -25,7 +25,12 @@
         </div>
 
         <Year :key="componentKey" v-bind:chosed_year = "chosedYear"
-        v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue">
+        v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue"
+        v-bind:chosed_study="chosedStudy"
+        v-bind:route_add_subject="route_add_subject_vue"
+        v-bind:route_add_period="route_add_period_vue"
+        v-bind:route_get_periods_by_year="route_get_periods_by_year_vue"
+        v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue">
         </Year>
 
         <!--/*****************************************ADD YEAR**********************************************/-->
@@ -79,7 +84,8 @@
     export default {
         name: "Study",
         props:['study_prop','years_prop','index_chosen_year','route_add_year',
-        'route_get_years_by_one_study','route_get_subjects_by_year'],
+        'route_get_years_by_one_study','route_get_subjects_by_year','route_add_subject','route_add_period',
+        'route_get_periods_by_year','route_get_sections_by_subject'],
         components: {
             Year
         },
@@ -91,12 +97,19 @@
             this.route_add_year_vue = this.route_add_year;
             this.route_get_years_by_one_study_vue = this.route_get_years_by_one_study;
             this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year ;
+            this.chosedStudy = this.study_prop_vue.name;
+            this.route_add_subject_vue = this.route_add_subject;
+            this.route_add_period_vue = this.route_add_period;
+            this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
+            //this.current_subject_vue = this.current_subject;
+            this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
         },
         data(){
             return{
                 study_prop_vue:'',
                 years_prop_vue:'',
                 chosedYear:'',
+                chosedStudy:'',
                 currentYear:'year',
                 componentKey: 0,
                 index_chosen_year_vue:'',
@@ -116,6 +129,10 @@
                 },
                 /***************/
                 route_get_subjects_by_year_vue:'',
+                route_add_subject_vue:';',
+                route_add_period_vue:'',
+                route_get_sections_by_subject_vue:'',
+                route_get_periods_by_year_vue:'',
             }
         },
         methods:{

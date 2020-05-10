@@ -22048,7 +22048,6 @@ a.text-dark:focus {
 .study #sidebar ul li a:hover {
   color: #7386D5;
   background: #fff;
-  font-weight: bold;
   text-decoration: none;
 }
 
@@ -22101,6 +22100,22 @@ a.text-dark:focus {
 
 .study .content {
   padding-left: 315px;
+}
+
+.study .years .year-list-item {
+  border-bottom: 1px solid rgba(228, 234, 239, 0.25);
+}
+
+.study .years .year-list-item .year-range {
+  font-weight: bold;
+}
+
+.study .years .year-list-item .date-range {
+  cursor: pointer;
+}
+
+.study .years .year-list-item:hover a {
+  background: #5e6a9a !important;
 }
 
 /**************************MOBILE*************************************/
