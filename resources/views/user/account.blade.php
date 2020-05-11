@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container content photo">
         <h2 class="page-title">Mi cuenta</h2>
 
     </div>

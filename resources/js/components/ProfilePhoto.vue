@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container content photo-component">
 
 
     <div class="row justify-content-center">

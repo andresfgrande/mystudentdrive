@@ -21756,9 +21756,39 @@ a.text-dark:focus {
 
 /***************DESKTOP**************/
 
+.page-title {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+  top: 0px;
+}
+
 .alert.alert-succes {
   background: #d4edda;
   margin-top: 1.5em;
+}
+
+.container.content.dashboard {
+  margin-top: 100px;
+}
+
+.container.content.login {
+  margin-top: 100px;
+}
+
+.container.content.register {
+  margin-top: 100px;
+}
+
+/***********Página mi cuenta******************/
+
+.container.content.photo {
+  margin-top: 100px;
 }
 
 .image-profile-container {
@@ -21826,7 +21856,13 @@ a.text-dark:focus {
   margin-top: 1em;
 }
 
+/********************************************/
+
 /*******Pagina estudios********/
+
+.content.content.studies {
+  margin-top: 100px;
+}
 
 .studies .empty-text {
   text-align: center;
@@ -22017,6 +22053,7 @@ a.text-dark:focus {
   background: #7386D5;
   color: #fff;
   transition: all 0.3s;
+  top: 85px;
 }
 
 .study #sidebar.active {
@@ -22098,10 +22135,6 @@ a.text-dark:focus {
   color: #fff !important;
 }
 
-.study .content {
-  padding-left: 315px;
-}
-
 .study .years .year-list-item {
   border-bottom: 1px solid rgba(228, 234, 239, 0.25);
 }
@@ -22116,6 +22149,59 @@ a.text-dark:focus {
 
 .study .years .year-list-item:hover a {
   background: #5e6a9a !important;
+}
+
+.study .content.year {
+  margin-top: 100px;
+}
+
+.subject .subject-content {
+  width: 50%;
+}
+
+/*************PÁGINA SUBJECT*************************************/
+
+.subject .subject-content {
+  margin-bottom: 2em;
+}
+
+.subject .subject-content .card-header {
+  margin-bottom: 1em;
+}
+
+.subject .subject-content .card-header a {
+  font-size: 18px;
+  color: #3490dc;
+  cursor: pointer;
+}
+
+.subject .subject-content .card-header button {
+  float: right;
+}
+
+.subject .subject-section {
+  margin-left: 20px;
+  margin-bottom: 1.5em;
+}
+
+.subject .subject-section .section-title {
+  font-size: 18px;
+}
+
+.subject .subject-section .section-title p {
+  margin-bottom: 0;
+}
+
+.subject .subject-section .section-item ul {
+  padding-left: 0;
+}
+
+.subject .subject-section .section-item ul li {
+  list-style: none;
+  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  padding-left: 1em;
 }
 
 /**************************MOBILE*************************************/
@@ -22143,4 +22229,51 @@ a.text-dark:focus {
     display: block;
   }
 }
+
+/********TEST**************/
+
+#sidebar-wrapper {
+  margin-top: 83px;
+  position: fixed;
+  min-height: 100vh;
+  margin-left: -100%;
+  transition: margin 0.25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+  width: 100%;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+    width: 15%;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 84%;
+    position: absolute;
+    left: 16%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -75%;
+  }
+}
+
+/************************/
 

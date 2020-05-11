@@ -3220,10 +3220,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Study",
-  props: ['study_prop', 'years_prop', 'index_chosen_year', 'route_add_year', 'route_get_years_by_one_study', 'route_get_subjects_by_year', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject'],
+  props: ['study_prop', 'years_prop', 'index_chosen_year', 'route_add_year', 'route_get_years_by_one_study', 'route_get_subjects_by_year', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
   components: {
     Year: _Year__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3241,6 +3249,8 @@ __webpack_require__.r(__webpack_exports__);
     this.route_get_periods_by_year_vue = this.route_get_periods_by_year; //this.current_subject_vue = this.current_subject;
 
     this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+    this.route_get_files_by_section_vue = this.route_get_files_by_section;
+    this.route_add_section_vue = this.route_add_section;
   },
   data: function data() {
     return {
@@ -3271,7 +3281,9 @@ __webpack_require__.r(__webpack_exports__);
       route_add_subject_vue: ';',
       route_add_period_vue: '',
       route_get_sections_by_subject_vue: '',
-      route_get_periods_by_year_vue: ''
+      route_get_periods_by_year_vue: '',
+      route_get_files_by_section_vue: '',
+      route_add_section_vue: ''
     };
   },
   methods: {
@@ -3341,6 +3353,9 @@ __webpack_require__.r(__webpack_exports__);
     formatDateFull: function formatDateFull(date_to_format) {
       var date = new Date(date_to_format);
       return date = date.toLocaleDateString();
+    },
+    toggleSidebar: function toggleSidebar() {
+      $("#wrapper").toggleClass("toggled");
     }
   },
   computed: {
@@ -3365,6 +3380,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SubjectSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubjectSection */ "./resources/js/components/SubjectSection.vue");
 //
 //
 //
@@ -3393,29 +3409,131 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Subject",
-  props: ['current_subject', 'route_get_sections_by_subject'],
+  props: ['current_subject', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
+  components: {
+    SubjectSection: _SubjectSection__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   created: function created() {
     this.current_subject_vue = this.current_subject;
     this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+    this.route_get_files_by_section_vue = this.route_get_files_by_section;
+    this.route_add_section_vue = this.route_add_section;
+    this.getSectionsBySubject();
+    this.test_id = this.current_subject_vue.subject_ID;
   },
   data: function data() {
     return {
-      current_subject_vue: '',
-      route_get_sections_by_subject_vue: ''
+      current_subject_vue: {},
+      route_get_sections_by_subject_vue: '',
+      subject_info: {
+        subject_id: ''
+      },
+      subjectSections: [],
+      componentKey: '',
+      route_get_files_by_section_vue: '',
+      sectionToAdd: {
+        subject_id: '',
+        name: ''
+      },
+      showNameExists: false,
+      route_add_section_vue: '',
+      test_id: '',
+      modalAbierto: ''
     };
   },
   methods: {
+    getRefId: function getRefId(id) {
+      return "addSectionModal" + id;
+    },
+    // getRefId2(id){
+    //     return "collapse-list" + id;
+    // },
     getSectionsBySubject: function getSectionsBySubject() {
+      var _this = this;
+
+      this.subject_info = this.current_subject_vue;
       var url = this.route_get_sections_by_subject_vue;
       axios.get(url, {
-        params: this.yearIdChosen
+        params: this.subject_info
       }).then(function (response) {
         console.log(response.data.result);
+        _this.subjectSections = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
+    },
+    addSectionModal: function addSectionModal(id) {
+      var aux = '#addSectionModal' + id;
+      $(aux).modal('show');
+      this.sectionToAdd.subject_id = '';
+      this.sectionToAdd.name = '';
+      this.modalAbierto = aux;
+    },
+    addSection: function addSection() {
+      var _this2 = this;
+
+      var url = this.route_add_section_vue;
+      this.sectionToAdd.subject_id = this.current_subject_vue.subject_ID;
+      axios.post(url, {
+        section: this.sectionToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this2.getSectionsBySubject();
+
+        if (response.data.result === 'error_section_exists') {
+          _this2.showNameExists = true;
+        } else {
+          $(_this2.modalAbierto).modal('hide');
+          _this2.studyToAdd = '';
+          _this2.showPhotoEmpty = false;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    cleanMessage: function cleanMessage() {
+      this.showNameExists = false;
+    }
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      if (this.sectionToAdd.name === '') {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 });
@@ -3435,8 +3553,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Section"
+  name: "Section",
+  props: ['current_section', 'route_get_files_by_section'],
+  created: function created() {
+    this.current_section_vue = this.current_section;
+    this.route_get_files_by_section_vue = this.route_get_files_by_section;
+    this.getFilesBySection();
+  },
+  data: function data() {
+    return {
+      current_section_vue: {},
+      componentKey: '',
+      route_get_files_by_section_vue: '',
+      section_info: {
+        section_id: ''
+      },
+      sectionFiles: ''
+    };
+  },
+  methods: {
+    getFilesBySection: function getFilesBySection() {
+      var _this = this;
+
+      this.section_info.section_id = this.current_section_vue.id;
+      var url = this.route_get_files_by_section_vue;
+      console.log(this.route_get_files_by_section_vue);
+      axios.get(url, {
+        params: this.section_info
+      }).then(function (response) {
+        console.log(response.data.result);
+        _this.sectionFiles = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3671,10 +3835,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Year",
-  props: ['chosed_year', 'route_get_subjects_by_year', 'route_get_subjects_by_year', 'chosed_study', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject'],
+  props: ['chosed_year', 'route_get_subjects_by_year', 'route_get_subjects_by_year', 'chosed_study', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
   components: {
     Subject: _Subject__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3688,6 +3854,8 @@ __webpack_require__.r(__webpack_exports__);
     this.route_get_periods_by_year_vue = this.route_get_periods_by_year; //this.current_subject_vue = this.current_subject;
 
     this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+    this.route_get_files_by_section_vue = this.route_get_files_by_section;
+    this.route_add_section_vue = this.route_add_section;
   },
   data: function data() {
     return {
@@ -3723,7 +3891,9 @@ __webpack_require__.r(__webpack_exports__);
       yearIdChosen: {
         year_id: ''
       },
-      route_get_sections_by_subject_vue: ''
+      route_get_sections_by_subject_vue: '',
+      route_get_files_by_section_vue: '',
+      route_add_section_vue: ''
     };
   },
   methods: {
@@ -39566,7 +39736,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container content account" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-5" }, [
         _c("div", { staticClass: "card" }, [
@@ -39975,7 +40145,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container content photo-component" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-5" }, [
         _c("div", [
@@ -40118,7 +40288,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container studies" }, [
+  return _c("div", { staticClass: "container content studies" }, [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col " }, [
         _c("h3", { staticStyle: { "text-align": "center" } }, [
@@ -41214,17 +41384,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container study" },
-    [
-      _c("div", { staticClass: "container sidebar" }, [
-        _c("div", { staticClass: "wrapper" }, [
-          _c("nav", { attrs: { id: "sidebar" } }, [
-            _c("div", { staticClass: "sidebar-header" }, [
-              _c("h3", [_vm._v(_vm._s(_vm.study_prop_vue.name))])
-            ]),
-            _vm._v(" "),
+  return _c("div", { staticClass: "container content study" }, [
+    _c("div", { staticClass: "d-flex", attrs: { id: "wrapper" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "bg-light border-right",
+          attrs: { id: "sidebar-wrapper" }
+        },
+        [
+          _c("div", { staticClass: "sidebar-heading" }, [
+            _vm._v(_vm._s(_vm.study_prop_vue.name) + "\n                    "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { id: "menu-toggle" },
+                on: { click: _vm.toggleSidebar }
+              },
+              [_vm._v("Toggle Menu")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "list-group list-group-flush" }, [
             _c(
               "ul",
               { staticClass: "list-unstyled components years" },
@@ -41233,7 +41415,8 @@ var render = function() {
                   return _c(
                     "li",
                     {
-                      staticClass: "active year-list-item",
+                      staticClass:
+                        "list-group-item list-group-item-action bg-light",
                       on: {
                         click: function($event) {
                           return _vm.choseYear(year)
@@ -41301,194 +41484,203 @@ var render = function() {
               2
             )
           ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("Year", {
-        key: _vm.componentKey,
-        attrs: {
-          chosed_year: _vm.chosedYear,
-          route_get_subjects_by_year: _vm.route_get_subjects_by_year_vue,
-          chosed_study: _vm.chosedStudy,
-          route_add_subject: _vm.route_add_subject_vue,
-          route_add_period: _vm.route_add_period_vue,
-          route_get_periods_by_year: _vm.route_get_periods_by_year_vue,
-          route_get_sections_by_subject: _vm.route_get_sections_by_subject_vue
-        }
-      }),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "modal fade",
-          attrs: {
-            id: "addYearModal",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "addNewLabel",
-            "aria-hidden": "true"
-          }
-        },
+        { attrs: { id: "page-content-wrapper" } },
         [
-          _c(
-            "div",
-            {
-              staticClass: "modal-dialog modal-dialog-centered",
-              attrs: { role: "document" }
-            },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("form", [
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "year_academico_start" } }, [
-                        _vm._v("Fecha de inicio")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.yearToAdd.year_start,
-                            expression: "yearToAdd.year_start"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "year_academico_start",
-                          type: "date",
-                          name: "year_academico_star",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.yearToAdd.year_start },
-                        on: {
-                          change: _vm.cleanMessageDates,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.yearToAdd,
-                              "year_start",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
+          _c("Year", {
+            key: _vm.componentKey,
+            attrs: {
+              chosed_year: _vm.chosedYear,
+              route_get_subjects_by_year: _vm.route_get_subjects_by_year_vue,
+              chosed_study: _vm.chosedStudy,
+              route_add_subject: _vm.route_add_subject_vue,
+              route_add_period: _vm.route_add_period_vue,
+              route_get_periods_by_year: _vm.route_get_periods_by_year_vue,
+              route_get_sections_by_subject:
+                _vm.route_get_sections_by_subject_vue,
+              route_get_files_by_section: _vm.route_get_files_by_section_vue,
+              route_add_section: _vm.route_add_section_vue
+            }
+          })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addYearModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "year_academico_start" } }, [
+                      _vm._v("Fecha de inicio")
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "year_academico_end" } }, [
-                        _vm._v("Fecha de finalización")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.yearToAdd.year_end,
-                            expression: "yearToAdd.year_end"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "year_academico_end",
-                          type: "date",
-                          name: "year_academico_end",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.yearToAdd.year_end },
-                        on: {
-                          change: _vm.cleanMessageDates,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.yearToAdd,
-                              "year_end",
-                              $event.target.value
-                            )
-                          }
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.yearToAdd.year_start,
+                          expression: "yearToAdd.year_start"
                         }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _vm.showYearExists
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "alert alert-danger alert-dismissible fade show",
-                            attrs: { role: "alert" }
-                          },
-                          [
-                            _c("strong", [
-                              _vm._v(
-                                "  Las fechas seleccionadas coinciden con las de otro año academico."
-                              )
-                            ])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.showYearGreater
-                      ? _c(
-                          "div",
-                          {
-                            staticClass:
-                              "alert alert-danger alert-dismissible fade show",
-                            attrs: { role: "alert" }
-                          },
-                          [
-                            _c("strong", [
-                              _vm._v(
-                                "La fecha de inicio es posterior a la fecha de finalización."
-                              )
-                            ])
-                          ]
-                        )
-                      : _vm._e()
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "year_academico_start",
+                        type: "date",
+                        name: "year_academico_star",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.yearToAdd.year_start },
+                      on: {
+                        change: _vm.cleanMessageDates,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.yearToAdd,
+                            "year_start",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Cancelar")]
-                    ),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "year_academico_end" } }, [
+                      _vm._v("Fecha de finalización")
+                    ]),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: {
-                          type: "button",
-                          disabled: _vm.isDisabledSaveYear
-                        },
-                        on: { click: _vm.addYear }
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.yearToAdd.year_end,
+                          expression: "yearToAdd.year_end"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "year_academico_end",
+                        type: "date",
+                        name: "year_academico_end",
+                        placeholder: "",
+                        required: ""
                       },
-                      [_vm._v("Guardar")]
-                    )
-                  ])
+                      domProps: { value: _vm.yearToAdd.year_end },
+                      on: {
+                        change: _vm.cleanMessageDates,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.yearToAdd,
+                            "year_end",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm.showYearExists
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "alert alert-danger alert-dismissible fade show",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("strong", [
+                            _vm._v(
+                              "  Las fechas seleccionadas coinciden con las de otro año academico."
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.showYearGreater
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "alert alert-danger alert-dismissible fade show",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("strong", [
+                            _vm._v(
+                              "La fecha de inicio es posterior a la fecha de finalización."
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledSaveYear
+                      },
+                      on: { click: _vm.addYear }
+                    },
+                    [_vm._v("Guardar")]
+                  )
                 ])
               ])
-            ]
-          )
-        ]
-      )
-    ],
-    1
-  )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -41537,29 +41729,200 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "subject" }, [
-    _vm._v("\n\n        " + _vm._s(_vm.current_subject_vue) + "\n\n        "),
-    _c("div", { staticClass: "col-md-5" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("a", [
-            _vm._v(
-              _vm._s(_vm.current_subject_vue.subject_name) +
-                " - " +
-                _vm._s(_vm.current_subject_vue.period_name)
+    _c(
+      "div",
+      { staticClass: "subject-content" },
+      [
+        _c("div", {}, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("a", [
+              _vm._v(
+                _vm._s(_vm.current_subject_vue.subject_ID) +
+                  " " +
+                  _vm._s(_vm.current_subject_vue.subject_name) +
+                  " - " +
+                  _vm._s(_vm.current_subject_vue.period_name)
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.addSectionModal(
+                      _vm.current_subject_vue.subject_ID
+                    )
+                  }
+                }
+              },
+              [_vm._v("crear una sección")]
             )
           ])
-        ])
-      ])
-    ]),
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.subjectSections, function(section) {
+          return _c(
+            "div",
+            [
+              _c("SubjectSection", {
+                key: _vm.componentKey,
+                attrs: {
+                  current_section: section,
+                  route_get_files_by_section: _vm.route_get_files_by_section_vue
+                }
+              })
+            ],
+            1
+          )
+        })
+      ],
+      2
+    ),
     _vm._v(" "),
     _c(
-      "button",
-      { attrs: { type: "button" }, on: { click: _vm.getSectionsBySubject } },
-      [_vm._v("test get sections")]
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.getRefId(_vm.current_subject_vue.subject_ID),
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "editNameLabel" }
+                  },
+                  [
+                    _vm._v(
+                      "Nombre de la sección " + _vm._s(_vm.current_subject_vue)
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0)
+              ]),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Nombre de la sección")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sectionToAdd.name,
+                          expression: "sectionToAdd.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name",
+                        type: "text",
+                        name: "name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.sectionToAdd.name },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.sectionToAdd,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExists
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                Ya tienes una sección con este nombre.\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.isDisabled },
+                      on: {
+                        click: function($event) {
+                          return _vm.addSection(
+                            _vm.current_subject_vue.subject_name
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -41581,7 +41944,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", { staticClass: "subject-section" }, [
+    _c("div", { staticClass: "section-title" }, [
+      _c("p", [_vm._v(_vm._s(_vm.current_section_vue.name) + " ")])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "section-item" }, [
+      _c(
+        "ul",
+        _vm._l(_vm.sectionFiles, function(file) {
+          return _c("li", [
+            _vm._v("\n                " + _vm._s(file.name) + "\n            ")
+          ])
+        }),
+        0
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41696,7 +42075,9 @@ var render = function() {
               attrs: {
                 current_subject: subject,
                 route_get_sections_by_subject:
-                  _vm.route_get_sections_by_subject_vue
+                  _vm.route_get_sections_by_subject_vue,
+                route_get_files_by_section: _vm.route_get_files_by_section_vue,
+                route_add_section: _vm.route_add_section_vue
               }
             })
           ],

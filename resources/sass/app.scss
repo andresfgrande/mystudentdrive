@@ -11,12 +11,38 @@
 
 
 /***************DESKTOP**************/
+.page-title{
+    //margin-top: 0.5em;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.navbar{
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    top: 0px;
+}
 
 .alert.alert-succes{
     background: #d4edda;
     margin-top: 1.5em;
 }
 
+.container.content.dashboard{
+    margin-top: 100px;
+}
+.container.content.login{
+    margin-top: 100px;
+}
+.container.content.register{
+    margin-top: 100px;
+}
+
+/***********Página mi cuenta******************/
+.container.content.photo{
+    margin-top: 100px;
+}
 .image-profile-container{
     text-align: center;
     display: block;
@@ -74,10 +100,14 @@
 .action-photo{
     margin-top: 1em;
 }
+/********************************************/
 
 /*******Pagina estudios********/
-
+.content.content.studies{
+    margin-top: 100px;
+}
 .studies{
+
     .empty-text{
         text-align:center;
         font-size: 18px;
@@ -253,6 +283,7 @@
         background: #7386D5;
         color: #fff;
         transition: all 0.3s;
+        top: 85px;
     }
 
     #sidebar.active {
@@ -335,7 +366,7 @@
     }
 
     .content{
-        padding-left: 315px;
+       // padding-left: 315px;
     }
 
     .years .year-list-item{
@@ -354,9 +385,60 @@
         }
 
     }
+    .content.year{
+        margin-top: 100px;
+    }
+}
+.subject{
+    .subject-content{
+        width: 50%;
+    }
 }
 
-///**************************************************/
+/*************PÁGINA SUBJECT*************************************/
+
+.subject{
+    .subject-content{
+        margin-bottom: 2em;
+
+        .card-header{
+            a{
+                font-size: 18px;
+                color: #3490dc;
+                cursor:pointer;
+            }
+            margin-bottom: 1em;
+            button{
+                float: right;
+            }
+        }
+    }
+    .subject-section{
+        margin-left: 20px;
+        margin-bottom: 1.5em;
+        .section-title{
+            font-size: 18px;
+            p{
+                margin-bottom: 0;
+            }
+        }
+        .section-item{
+            ul{
+                padding-left: 0;
+                li{
+                    list-style: none;
+                    border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+                    padding-top: 1.5em;
+                    padding-bottom: 1.5em;
+                    padding-left: 1em;
+                }
+            }
+        }
+
+    }
+}
+
+
 
 
 
@@ -383,3 +465,54 @@
     }
 }
 
+/********TEST**************/
+#sidebar-wrapper {
+    margin-top: 83px;
+    position: fixed;
+    min-height: 100vh;
+    //margin-left: -15rem;
+    margin-left: -100%;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    //width: 15rem;
+    width: 100%;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+        width: 15%;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 84%;
+        position: absolute;
+        left: 16%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -75%;
+        //margin-left: -15rem;
+    }
+}
+
+/************************/

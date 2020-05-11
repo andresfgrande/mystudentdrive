@@ -7,6 +7,8 @@
                 <Subject :key="componentKey"
                          v-bind:current_subject="subject"
                          v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"
+                         v-bind:route_get_files_by_section="route_get_files_by_section_vue"
+                         v-bind:route_add_section="route_add_section_vue"
                 ></Subject>
             </div>
 
@@ -121,7 +123,8 @@
     export default {
         name: "Year",
         props:['chosed_year','route_get_subjects_by_year','route_get_subjects_by_year','chosed_study',
-        'route_add_subject','route_add_period','route_get_periods_by_year','route_get_sections_by_subject'],
+        'route_add_subject','route_add_period','route_get_periods_by_year','route_get_sections_by_subject',
+        'route_get_files_by_section','route_add_section'],
         components: {
             Subject
         },
@@ -135,6 +138,8 @@
            this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
             //this.current_subject_vue = this.current_subject;
             this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+            this.route_get_files_by_section_vue = this.route_get_files_by_section;
+            this.route_add_section_vue = this.route_add_section;
         },
         data(){
             return{
@@ -171,6 +176,8 @@
                     year_id:''
                 },
                 route_get_sections_by_subject_vue:'',
+                route_get_files_by_section_vue:'',
+                route_add_section_vue:'',
             }
         },
         methods:{

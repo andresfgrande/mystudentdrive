@@ -1,37 +1,45 @@
 <template>
-    <div class="container study">
+    <div class="container content study">
 
-        <div class="container sidebar">
-            <div class="wrapper">
-                <!------- Sidebar ------->
-                <nav id="sidebar">
-                    <div class="sidebar-header">
-                        <h3>{{study_prop_vue.name}}</h3>
-                    </div>
+        <!-- Sidebar -->
 
+
+        <div class="d-flex" id="wrapper">
+
+            <div class="bg-light border-right" id="sidebar-wrapper">
+                <div class="sidebar-heading">{{study_prop_vue.name}}
+                    <button class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">Toggle Menu</button>
+                </div>
+                <div class="list-group list-group-flush">
                     <ul class="list-unstyled components years">
-                        <li class="active year-list-item" v-for="year in years_prop_vue" @click="choseYear(year)">
+                        <li class="list-group-item list-group-item-action bg-light" v-for="year in years_prop_vue" @click="choseYear(year)">
                             <a href="#homeSubmenu" class="year-range" aria-expanded="false" >{{formatDateYear(year.start_date)}} - {{formatDateYear(year.end_date)}}</a>
                             <a class="date-range">{{formatDateFull(year.start_date)}} - {{formatDateFull(year.end_date)}}</a>
                         </li>
-
-<!--                        <button style="margin-top: 1em;" type="button" class="btn btn-secondary" >Añadir curso</button>-->
                         <button class="btn btn-secondary"  type="button" @click="addYearModal(study_prop_vue.id)">Añadir curso</button>
                         <button class="btn btn-secondary"  type="button" @click="getAcademicYears()">test get years</button>
-                    </ul>
-                </nav>
-                <!---------------------->
-            </div>
-        </div>
 
-        <Year :key="componentKey" v-bind:chosed_year = "chosedYear"
-        v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue"
-        v-bind:chosed_study="chosedStudy"
-        v-bind:route_add_subject="route_add_subject_vue"
-        v-bind:route_add_period="route_add_period_vue"
-        v-bind:route_get_periods_by_year="route_get_periods_by_year_vue"
-        v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue">
-        </Year>
+                    </ul>
+                </div>
+            </div>
+            <div id="page-content-wrapper">
+<!--                <button style="margin-top: 100px" class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">Toggle Menu</button>-->
+                <Year :key="componentKey" v-bind:chosed_year = "chosedYear"
+                      v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue"
+                      v-bind:chosed_study="chosedStudy"
+                      v-bind:route_add_subject="route_add_subject_vue"
+                      v-bind:route_add_period="route_add_period_vue"
+                      v-bind:route_get_periods_by_year="route_get_periods_by_year_vue"
+                      v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"
+                      v-bind:route_get_files_by_section="route_get_files_by_section_vue"
+                      v-bind:route_add_section="route_add_section_vue"
+                >
+                </Year>
+            </div>
+            </div>
+        <!-- /#sidebar-wrapper -->
+
+
 
         <!--/*****************************************ADD YEAR**********************************************/-->
         <div class="modal fade" id="addYearModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
@@ -85,7 +93,7 @@
         name: "Study",
         props:['study_prop','years_prop','index_chosen_year','route_add_year',
         'route_get_years_by_one_study','route_get_subjects_by_year','route_add_subject','route_add_period',
-        'route_get_periods_by_year','route_get_sections_by_subject'],
+        'route_get_periods_by_year','route_get_sections_by_subject','route_get_files_by_section','route_add_section'],
         components: {
             Year
         },
@@ -103,6 +111,8 @@
             this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
             //this.current_subject_vue = this.current_subject;
             this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+            this.route_get_files_by_section_vue = this.route_get_files_by_section;
+            this.route_add_section_vue = this.route_add_section;
         },
         data(){
             return{
@@ -133,6 +143,8 @@
                 route_add_period_vue:'',
                 route_get_sections_by_subject_vue:'',
                 route_get_periods_by_year_vue:'',
+                route_get_files_by_section_vue:'',
+                route_add_section_vue:'',
             }
         },
         methods:{
@@ -192,6 +204,9 @@
                 var date = new Date(date_to_format);
                 return date = date.toLocaleDateString();
             },
+            toggleSidebar(){
+                $("#wrapper").toggleClass("toggled");
+            }
         },
         computed:{
             isDisabledSaveYear: function(){

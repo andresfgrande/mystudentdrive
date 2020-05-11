@@ -16,7 +16,10 @@
         route_add_subject="{{route('add_subject')}}"
         route_add_period="{{route('add_period')}}"
         route_get_periods_by_year="{{route('get_periods_by_year')}}"
-        route_get_sections_by_subject="{{route('get_sections_by_subject')}}">
+        route_get_sections_by_subject="{{route('get_sections_by_subject')}}"
+        route_get_files_by_section="{{route('get_files_by_section')}}"
+        route_add_section="{{route('add_section')}}"
+    >
     </study>
 
 @endsection

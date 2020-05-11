@@ -1,5 +1,5 @@
 <template>
-    <div class="container studies">
+    <div class="container content studies">
         <div class="row">
             <div class="col ">
                 <h3 style="text-align:center;">Cursos</h3>

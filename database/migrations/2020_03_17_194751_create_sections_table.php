@@ -16,15 +16,13 @@ class CreateSectionsTable extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('subject_id');
-            $table->unsignedInteger('section_id')->nullable();
             $table->string('name');
             $table->timestamps();
         });
 
         Schema::table('sections', function (Blueprint $table) {
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->foreign('section_id')->references('id')->on('sections');
-            $table->unique(['subject_id','name','section_id']);
+            $table->unique(['subject_id','name']);
         });
     }
 

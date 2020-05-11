@@ -47,3 +47,5 @@ Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('
 Route::resource('/study/{study_id}','StudyViewController', ['only' => ['index', 'create', 'store',]]);
 Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')->name('get_years_by_one_study');
 Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubject')->name('get_sections_by_subject');
+Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
+Route::post('/add_section','vuejs\StudyViewController@addSection')->name('add_section');
