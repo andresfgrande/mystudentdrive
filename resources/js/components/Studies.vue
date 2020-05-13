@@ -1,5 +1,5 @@
 <template>
-    <div class="container studies">
+    <div class="container content studies">
         <div class="row">
             <div class="col ">
                 <h3 style="text-align:center;">Cursos</h3>
@@ -18,7 +18,7 @@
                             <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>
                         </div>
                         <ul class="collapse year-list" v-bind:id="getRefId2(item.id)" >
-                            <li class="years-list-item" v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name,hey.start_date,hey.end_date)">
+                            <li class="years-list-item" v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name,hey.start_date,hey.end_date,item.id)">
                                 <p class="year-range">{{formatDateYear(hey.start_date)}} - {{formatDateYear(hey.end_date)}}</p>
                                 <p class="date-range">{{formatDateFull(hey.start_date)}} - {{formatDateFull(hey.end_date)}}</p>
                             </li>
@@ -42,7 +42,7 @@
                     <div class="subjects">
                         <div class="card-header" v-if="showSubjectsHeader">
                             <div class="study-year-title">
-                                <a href="#">  {{this.chosenStudy}}  {{formatDateYear(this.yearStartChosen)}} - {{formatDateYear(this.yearEndChosen)}}</a>
+                                <a v-bind:href="studyLink(this.chosenStudy_id)">  {{this.chosenStudy}}  {{formatDateYear(this.yearStartChosen)}} - {{formatDateYear(this.yearEndChosen)}}</a>
                             </div>
                         </div>
                         <div class="subjects-section" v-if="!showPhotoEmptySubjects">
@@ -320,6 +320,7 @@
                 route_photo_vue:'',
                 route_photo_vue_2:'',
                // showPhotoEmptySubjects: false,
+                chosenStudy_id:'',
             }
         },
 
@@ -363,11 +364,12 @@
                 });
                this.studiesArray.studies = aux;
             },
-            getSubjectsByYear(year_id, study_name, start_date,end_date){
+            getSubjectsByYear(year_id, study_name, start_date,end_date,study_id){
                 this.data.year = year_id;
                 var url = this.route_get_subjects_by_year_vue;
                 axios.get(url ,{params:this.data}).then(response => {
                     console.log(response.data.result);
+                    this.chosenStudy_id = study_id;
                     this.chosenStudy = study_name;
                     this.yearStartChosen = start_date;
                     this.yearEndChosen = end_date;
@@ -539,6 +541,9 @@
             formatDateFull(date_to_format){
                 var date = new Date(date_to_format);
                 return date = date.toLocaleDateString();
+            },
+            studyLink(id){
+                return "/study/"+id+'/?year='+this.yearIdChosen.year_id;
             }
         },
         computed:{

@@ -18,6 +18,7 @@ class CreateFilesTable extends Migration
             $table->unsignedInteger('section_id');
             $table->string('name');
             $table->string('file_path');
+            $table->string('access_code');
             $table->timestamps();
         });
 

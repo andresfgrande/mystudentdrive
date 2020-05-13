@@ -41,3 +41,15 @@ Route::post('/addsubject','vuejs\StudyController@addSubject')->name('add_subject
 Route::post('/addperiod','vuejs\StudyController@addPeriod')->name('add_period');
 Route::get('/getstudiesajax','vuejs\StudyController@getStudiesAjax')->name('get_studies_ajax');
 Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('get_periods_by_year');
+
+/**********VISTAS PRINCIPALES********/
+
+Route::resource('/study/{study_id}','StudyViewController', ['only' => ['index', 'create', 'store',]]);
+Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')->name('get_years_by_one_study');
+Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubject')->name('get_sections_by_subject');
+Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
+Route::post('/add_section','vuejs\StudyViewController@addSection')->name('add_section');
+Route::put('/edit_section','vuejs\StudyViewController@editSection')->name('edit_section');
+
+Route::post('/upload_file', 'aws\UploadFileController@uploadFile')->name('upload_file');
+Route::get('/download_file', 'aws\UploadFileController@downloadFile')->name('download_file');

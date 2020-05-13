@@ -29,6 +29,11 @@ Vue.component('test', require('./components/Test.vue').default);
 Vue.component('test2', require('./components/Test2.vue').default);
 Vue.component('studies', require('./components/Studies.vue').default);
 
+Vue.component('study', require('./components/Study.vue').default);
+Vue.component('year', require('./components/Year.vue').default);
+Vue.component('subject', require('./components/Subject.vue').default);
+Vue.component('subject-section', require('./components/SubjectSection.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
