@@ -19,6 +19,9 @@
         route_get_sections_by_subject="{{route('get_sections_by_subject')}}"
         route_get_files_by_section="{{route('get_files_by_section')}}"
         route_add_section="{{route('add_section')}}"
+        route_edit_section="{{route('edit_section')}}"
+        route_upload_file="{{route('upload_file')}}"
+        route_base_images="{{url('/images/')}}"
     >
     </study>
 

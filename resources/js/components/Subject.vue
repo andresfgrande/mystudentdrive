@@ -11,6 +11,9 @@
                 <SubjectSection :key="componentKey"
                                 v-bind:current_section="section"
                                 v-bind:route_get_files_by_section="route_get_files_by_section_vue"
+                                v-bind:route_edit_section="route_edit_section_vue"
+                                v-bind:route_upload_file="route_upload_file_vue"
+                                v-bind:route_base_images="route_base_images_vue"
                 ></SubjectSection>
             </div>
         </div>
@@ -58,7 +61,8 @@
     import SubjectSection from './SubjectSection';
     export default {
         name: "Subject",
-        props:['current_subject','route_get_sections_by_subject','route_get_files_by_section','route_add_section'],
+        props:['current_subject','route_get_sections_by_subject','route_get_files_by_section','route_add_section',
+        'route_edit_section','route_upload_file','route_base_images'],
         components: {
             SubjectSection
         },
@@ -69,6 +73,9 @@
             this.route_add_section_vue = this.route_add_section;
             this.getSectionsBySubject();
             this.test_id = this.current_subject_vue.subject_ID;
+            this.route_edit_section_vue = this.route_edit_section;
+            this.route_upload_file_vue = this.route_upload_file;
+            this.route_base_images_vue = this.route_base_images;
         },
         data(){
             return{
@@ -89,15 +96,15 @@
                 test_id:'',
 
                 modalAbierto:'',
+                route_edit_section_vue:'',
+                route_upload_file_vue:'',
+                route_base_images_vue:'',
             }
         },
         methods:{
             getRefId(id){
                 return "addSectionModal" + id;
             },
-            // getRefId2(id){
-            //     return "collapse-list" + id;
-            // },
             getSectionsBySubject(){
                this.subject_info= this.current_subject_vue;
                 var url = this.route_get_sections_by_subject_vue;

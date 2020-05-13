@@ -3228,10 +3228,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Study",
-  props: ['study_prop', 'years_prop', 'index_chosen_year', 'route_add_year', 'route_get_years_by_one_study', 'route_get_subjects_by_year', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
+  props: ['study_prop', 'years_prop', 'index_chosen_year', 'route_add_year', 'route_get_years_by_one_study', 'route_get_subjects_by_year', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section', 'route_edit_section', 'route_upload_file', 'route_base_images'],
   components: {
     Year: _Year__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3251,6 +3254,9 @@ __webpack_require__.r(__webpack_exports__);
     this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
     this.route_get_files_by_section_vue = this.route_get_files_by_section;
     this.route_add_section_vue = this.route_add_section;
+    this.route_edit_section_vue = this.route_edit_section;
+    this.route_upload_file_vue = this.route_upload_file;
+    this.route_base_images_vue = this.route_base_images;
   },
   data: function data() {
     return {
@@ -3283,7 +3289,10 @@ __webpack_require__.r(__webpack_exports__);
       route_get_sections_by_subject_vue: '',
       route_get_periods_by_year_vue: '',
       route_get_files_by_section_vue: '',
-      route_add_section_vue: ''
+      route_add_section_vue: '',
+      route_edit_section_vue: '',
+      route_upload_file_vue: '',
+      route_base_images_vue: ''
     };
   },
   methods: {
@@ -3437,10 +3446,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Subject",
-  props: ['current_subject', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
+  props: ['current_subject', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section', 'route_edit_section', 'route_upload_file', 'route_base_images'],
   components: {
     SubjectSection: _SubjectSection__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3451,6 +3463,9 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_section_vue = this.route_add_section;
     this.getSectionsBySubject();
     this.test_id = this.current_subject_vue.subject_ID;
+    this.route_edit_section_vue = this.route_edit_section;
+    this.route_upload_file_vue = this.route_upload_file;
+    this.route_base_images_vue = this.route_base_images;
   },
   data: function data() {
     return {
@@ -3469,16 +3484,16 @@ __webpack_require__.r(__webpack_exports__);
       showNameExists: false,
       route_add_section_vue: '',
       test_id: '',
-      modalAbierto: ''
+      modalAbierto: '',
+      route_edit_section_vue: '',
+      route_upload_file_vue: '',
+      route_base_images_vue: ''
     };
   },
   methods: {
     getRefId: function getRefId(id) {
       return "addSectionModal" + id;
     },
-    // getRefId2(id){
-    //     return "collapse-list" + id;
-    // },
     getSectionsBySubject: function getSectionsBySubject() {
       var _this = this;
 
@@ -3565,13 +3580,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Section",
-  props: ['current_section', 'route_get_files_by_section'],
+  props: ['current_section', 'route_get_files_by_section', 'route_edit_section', 'route_upload_file', 'route_base_images'],
   created: function created() {
     this.current_section_vue = this.current_section;
     this.route_get_files_by_section_vue = this.route_get_files_by_section;
     this.getFilesBySection();
+    this.route_edit_section_vue = this.route_edit_section;
+    this.route_upload_file_vue = this.route_upload_file;
+    this.route_base_images_vue = this.route_base_images;
+    this.gifUrl = this.route_base_images_vue + "/gif/" + "loading-gif.gif";
   },
   data: function data() {
     return {
@@ -3581,10 +3670,33 @@ __webpack_require__.r(__webpack_exports__);
       section_info: {
         section_id: ''
       },
-      sectionFiles: ''
+      sectionFiles: '',
+      editing: false,
+      tmpSectionName: null,
+      sectionToEdit: {
+        section_id: '',
+        subject_id: '',
+        name: ''
+      },
+      showNameExists: false,
+      route_edit_section_vue: '',
+      route_upload_file_vue: '',
+      fileToAdd: {
+        section_id: null
+      },
+      selectedFile: null,
+      modalAbierto: '',
+      successMsg: false,
+      failMsg: false,
+      uploadingMsg: false,
+      route_base_images_vue: '',
+      gifUrl: ''
     };
   },
   methods: {
+    getRefId: function getRefId(id) {
+      return "uploadFileModal" + id;
+    },
     getFilesBySection: function getFilesBySection() {
       var _this = this;
 
@@ -3599,6 +3711,100 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (errors) {
         console.log(errors);
       });
+    },
+    enableEditing: function enableEditing() {
+      this.tmpSectionName = this.current_section_vue.name;
+      this.editing = true;
+    },
+    disableEditing: function disableEditing() {
+      this.tempSectionName = null;
+      this.editing = false;
+    },
+    saveEditSection: function saveEditSection() {
+      var _this2 = this;
+
+      var url = this.route_edit_section_vue;
+      this.sectionToEdit.section_id = this.current_section_vue.id;
+      this.sectionToEdit.subject_id = this.current_section_vue.subject_id;
+      this.sectionToEdit.name = this.tmpSectionName;
+      axios.put(url, {
+        section: this.sectionToEdit
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'error_section_exists') {
+          _this2.showNameExists = true;
+        } else {
+          _this2.current_section_vue.name = _this2.tmpSectionName;
+
+          _this2.disableEditing();
+
+          _this2.sectionToAdd = '';
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    uploadFileModal: function uploadFileModal(id) {
+      this.successMsg = false;
+      this.failMsg = false;
+      var modalId = '#uploadFileModal' + id;
+      $(modalId).modal('show'); //$('#uploadFileModal').modal('show');
+      // this.fileToAdd;
+
+      this.modalAbierto = modalId;
+    },
+    uploadFile: function uploadFile() {
+      var _this3 = this;
+
+      var fd = new FormData();
+      fd.append('new_file', this.selectedFile, this.selectedFile.name);
+      this.fileToAdd.section_id = this.current_section_vue.id;
+      $(this.modalAbierto).modal('hide');
+      this.uploadingMsg = true;
+      var url = this.route_upload_file_vue;
+      axios.post(url, fd, {
+        params: this.fileToAdd
+      }).then(function (response) {
+        console.log(response.data);
+        $('#selected_file_s3').val(''); //$(this.modalAbierto).modal('hide');
+
+        _this3.selectedFile = null;
+
+        _this3.getFilesBySection();
+
+        _this3.uploadingMsg = false;
+
+        if (response.data.result === 'file_upload_ok') {
+          _this3.successMsg = true;
+        } else {
+          _this3.failMsg = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    onFileSelected: function onFileSelected(event) {
+      //this.upload_fail = false;
+      console.log(event);
+      this.selectedFile = event.target.files[0]; // this.getS3FileTest();
+    },
+    cleanMessage: function cleanMessage() {
+      this.showNameExists = false;
+    },
+    testDownloadFile: function testDownloadFile() {
+      // window.location = "/download_file";
+      // var url = this.route_upload_file_vue;
+      axios.get('/download_file').then(function (response) {
+        console.log(response.data.result);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    hideMsg: function hideMsg() {
+      this.successMsg = false;
+      this.failMsg = false;
+      this.uploadingMsg = false;
     }
   }
 });
@@ -3837,10 +4043,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Year",
-  props: ['chosed_year', 'route_get_subjects_by_year', 'route_get_subjects_by_year', 'chosed_study', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section'],
+  props: ['chosed_year', 'route_get_subjects_by_year', 'route_get_subjects_by_year', 'chosed_study', 'route_add_subject', 'route_add_period', 'route_get_periods_by_year', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section', 'route_edit_section', 'route_upload_file', 'route_base_images'],
   components: {
     Subject: _Subject__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3851,11 +4060,13 @@ __webpack_require__.r(__webpack_exports__);
     this.getSubjectsByYear(this.chosed_year_vue.id);
     this.route_add_subject_vue = this.route_add_subject;
     this.route_add_period_vue = this.route_add_period;
-    this.route_get_periods_by_year_vue = this.route_get_periods_by_year; //this.current_subject_vue = this.current_subject;
-
+    this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
     this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
     this.route_get_files_by_section_vue = this.route_get_files_by_section;
     this.route_add_section_vue = this.route_add_section;
+    this.route_edit_section_vue = this.route_edit_section;
+    this.route_upload_file_vue = this.route_upload_file;
+    this.route_base_images_vue = this.route_base_images;
   },
   data: function data() {
     return {
@@ -3893,7 +4104,10 @@ __webpack_require__.r(__webpack_exports__);
       },
       route_get_sections_by_subject_vue: '',
       route_get_files_by_section_vue: '',
-      route_add_section_vue: ''
+      route_add_section_vue: '',
+      route_edit_section_vue: '',
+      route_upload_file_vue: '',
+      route_base_images_vue: ''
     };
   },
   methods: {
@@ -41503,7 +41717,10 @@ var render = function() {
               route_get_sections_by_subject:
                 _vm.route_get_sections_by_subject_vue,
               route_get_files_by_section: _vm.route_get_files_by_section_vue,
-              route_add_section: _vm.route_add_section_vue
+              route_add_section: _vm.route_add_section_vue,
+              route_edit_section: _vm.route_edit_section_vue,
+              route_upload_file: _vm.route_upload_file_vue,
+              route_base_images: _vm.route_base_images_vue
             }
           })
         ],
@@ -41771,7 +41988,11 @@ var render = function() {
                 key: _vm.componentKey,
                 attrs: {
                   current_section: section,
-                  route_get_files_by_section: _vm.route_get_files_by_section_vue
+                  route_get_files_by_section:
+                    _vm.route_get_files_by_section_vue,
+                  route_edit_section: _vm.route_edit_section_vue,
+                  route_upload_file: _vm.route_upload_file_vue,
+                  route_base_images: _vm.route_base_images_vue
                 }
               })
             ],
@@ -41945,24 +42166,248 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "subject-section" }, [
-    _c("div", { staticClass: "section-title" }, [
-      _c("p", [_vm._v(_vm._s(_vm.current_section_vue.name) + " ")])
-    ]),
+    !_vm.editing
+      ? _c(
+          "div",
+          { staticClass: "section-title", on: { click: _vm.enableEditing } },
+          [_c("p", [_vm._v(_vm._s(_vm.current_section_vue.name) + " ")])]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.editing
+      ? _c("div", { staticClass: "section-title edit" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.tmpSectionName,
+                expression: "tmpSectionName"
+              }
+            ],
+            staticClass: "input",
+            domProps: { value: _vm.tmpSectionName },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.tmpSectionName = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.showNameExists
+            ? _c("small", { staticClass: "text-danger" }, [
+                _vm._v(
+                  "\n            Ya tienes una sección con este nombre.\n        "
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.disableEditing } }, [
+            _vm._v(" Cancelar ")
+          ]),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.saveEditSection } }, [
+            _vm._v(" Guardar ")
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "section-item" }, [
       _c(
         "ul",
         _vm._l(_vm.sectionFiles, function(file) {
           return _c("li", [
-            _vm._v("\n                " + _vm._s(file.name) + "\n            ")
+            _vm._v("\n               " + _vm._s(file.name) + "\n            ")
           ])
         }),
         0
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              return _vm.uploadFileModal(_vm.current_section_vue.id)
+            }
+          }
+        },
+        [_vm._v("Añadir archivo")]
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _vm.successMsg
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-succes alert-dismissible fade show",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("strong", [_vm._v("¡Archivo subido satisfactoriamente!")]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { type: "button", "aria-label": "Close" },
+                on: { click: _vm.hideMsg }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.failMsg
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-danger alert-dismissible fade show",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("strong", [
+              _vm._v("No se ha podido guardar tu archivo, vuelve a intentarlo.")
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { type: "button", "aria-label": "Close" },
+                on: { click: _vm.hideMsg }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.uploadingMsg
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-primary uploading",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("strong", [_vm._v("Subiendo archivo...")]),
+            _vm._v(" "),
+            _c("img", {
+              staticClass: "loading-gif",
+              attrs: { src: this.gifUrl, alt: "profile_photo" }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { type: "button", "aria-label": "Close" },
+                on: { click: _vm.hideMsg }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.getRefId(_vm.current_section_vue.id),
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      ref: "fileInput",
+                      attrs: {
+                        type: "file",
+                        name: "select_file",
+                        id: "selected_file_s3"
+                      },
+                      on: { change: _vm.onFileSelected }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.uploadFile }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "editNameLabel" } }, [
+        _vm._v("Nuevo archivo")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -42077,7 +42522,10 @@ var render = function() {
                 route_get_sections_by_subject:
                   _vm.route_get_sections_by_subject_vue,
                 route_get_files_by_section: _vm.route_get_files_by_section_vue,
-                route_add_section: _vm.route_add_section_vue
+                route_add_section: _vm.route_add_section_vue,
+                route_edit_section: _vm.route_edit_section_vue,
+                route_upload_file: _vm.route_upload_file_vue,
+                route_base_images: _vm.route_base_images_vue
               }
             })
           ],

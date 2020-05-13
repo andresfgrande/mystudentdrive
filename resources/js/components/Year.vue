@@ -9,6 +9,9 @@
                          v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"
                          v-bind:route_get_files_by_section="route_get_files_by_section_vue"
                          v-bind:route_add_section="route_add_section_vue"
+                         v-bind:route_edit_section="route_edit_section_vue"
+                         v-bind:route_upload_file="route_upload_file_vue"
+                         v-bind:route_base_images="route_base_images_vue"
                 ></Subject>
             </div>
 
@@ -124,7 +127,7 @@
         name: "Year",
         props:['chosed_year','route_get_subjects_by_year','route_get_subjects_by_year','chosed_study',
         'route_add_subject','route_add_period','route_get_periods_by_year','route_get_sections_by_subject',
-        'route_get_files_by_section','route_add_section'],
+        'route_get_files_by_section','route_add_section','route_edit_section','route_upload_file','route_base_images'],
         components: {
             Subject
         },
@@ -136,10 +139,12 @@
            this.route_add_subject_vue = this.route_add_subject;
            this.route_add_period_vue = this.route_add_period;
            this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
-            //this.current_subject_vue = this.current_subject;
-            this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
-            this.route_get_files_by_section_vue = this.route_get_files_by_section;
-            this.route_add_section_vue = this.route_add_section;
+           this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+           this.route_get_files_by_section_vue = this.route_get_files_by_section;
+           this.route_add_section_vue = this.route_add_section;
+           this.route_edit_section_vue = this.route_edit_section;
+           this.route_upload_file_vue = this.route_upload_file;
+           this.route_base_images_vue = this.route_base_images;
         },
         data(){
             return{
@@ -178,6 +183,9 @@
                 route_get_sections_by_subject_vue:'',
                 route_get_files_by_section_vue:'',
                 route_add_section_vue:'',
+                route_edit_section_vue:'',
+                route_upload_file_vue:'',
+                route_base_images_vue:'',
             }
         },
         methods:{

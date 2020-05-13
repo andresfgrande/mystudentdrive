@@ -33,6 +33,9 @@
                       v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"
                       v-bind:route_get_files_by_section="route_get_files_by_section_vue"
                       v-bind:route_add_section="route_add_section_vue"
+                      v-bind:route_edit_section="route_edit_section_vue"
+                      v-bind:route_upload_file="route_upload_file_vue"
+                      v-bind:route_base_images="route_base_images_vue"
                 >
                 </Year>
             </div>
@@ -93,7 +96,8 @@
         name: "Study",
         props:['study_prop','years_prop','index_chosen_year','route_add_year',
         'route_get_years_by_one_study','route_get_subjects_by_year','route_add_subject','route_add_period',
-        'route_get_periods_by_year','route_get_sections_by_subject','route_get_files_by_section','route_add_section'],
+        'route_get_periods_by_year','route_get_sections_by_subject','route_get_files_by_section','route_add_section',
+        'route_edit_section','route_upload_file','route_base_images'],
         components: {
             Year
         },
@@ -113,6 +117,9 @@
             this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
             this.route_get_files_by_section_vue = this.route_get_files_by_section;
             this.route_add_section_vue = this.route_add_section;
+            this.route_edit_section_vue = this.route_edit_section;
+            this.route_upload_file_vue = this.route_upload_file;
+            this.route_base_images_vue = this.route_base_images;
         },
         data(){
             return{
@@ -145,6 +152,9 @@
                 route_get_periods_by_year_vue:'',
                 route_get_files_by_section_vue:'',
                 route_add_section_vue:'',
+                route_edit_section_vue:'',
+                route_upload_file_vue:'',
+                route_base_images_vue:'',
             }
         },
         methods:{

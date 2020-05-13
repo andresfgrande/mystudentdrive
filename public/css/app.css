@@ -22180,12 +22180,14 @@ a.text-dark:focus {
 }
 
 .subject .subject-section {
-  margin-left: 20px;
   margin-bottom: 1.5em;
 }
 
 .subject .subject-section .section-title {
   font-size: 18px;
+  padding-left: 1em;
+  background: #eaf4fd;
+  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
 }
 
 .subject .subject-section .section-title p {
@@ -22201,7 +22203,31 @@ a.text-dark:focus {
   border-bottom: 1px solid rgba(52, 144, 220, 0.25);
   padding-top: 1.5em;
   padding-bottom: 1.5em;
-  padding-left: 1em;
+  padding-left: 2em;
+}
+
+.subject-section .alert.alert-succes.alert-dismissible.fade.show {
+  position: fixed;
+  bottom: 0;
+  left: 35%;
+}
+
+.subject-section .alert.alert-danger.alert-dismissible.fade.show {
+  position: fixed;
+  bottom: 0;
+  left: 35%;
+}
+
+.subject-section .alert.uploading {
+  position: fixed;
+  bottom: 0;
+  left: 35%;
+  width: 300px;
+}
+
+.subject-section .alert.uploading img {
+  width: 30%;
+  margin-left: 10%;
 }
 
 /**************************MOBILE*************************************/

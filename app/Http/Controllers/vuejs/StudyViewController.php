@@ -64,7 +64,6 @@ class StudyViewController extends Controller
         } catch (ValidationException $e) {
             return Response::json(array('success'=>false,'result'=>'error_dection_data_required'));
         }
-        //AÑADIR COMPROBACIONES
 
         $result =  DB::table('sections')
             ->where('subject_id', $subject_id)
@@ -72,7 +71,7 @@ class StudyViewController extends Controller
             ->get('id');
 
 
-        if( empty($result->toArray())){
+        if(empty($result->toArray())){
             try {
                 $section = new Section();
                 $section->subject_id = $subject_id;
@@ -85,5 +84,45 @@ class StudyViewController extends Controller
             return Response::json(array('success'=>false,'result'=>'error_section_exists'));
         }
         return Response::json(array('success'=>true,'result'=>'section_created_ok'));
+    }
+
+    public function editSection(Request $request){
+
+        $section_id = $request->section['section_id'];
+        $subject_id = $request->section['subject_id'];
+        $name = $request->section['name'];
+
+        $request->request->add(['subject_id' => $request->section['subject_id']]);
+        $request->request->add(['name' => $request->section['name']]);
+
+        try {
+            $this->validate($request, [
+                'subject_id' => 'required',
+                'name' => 'required',
+
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json(array('success'=>false,'result'=>'error_section_data_required'));
+        }
+
+        $result =  DB::table('sections')
+            ->where('subject_id', $subject_id)
+            ->where('name',$name)
+            ->where('id','!=',$section_id)
+            ->get('id');
+
+        if(empty($result->toArray())){
+            try {
+                $section = Section::find($section_id);
+                $section->subject_id = $subject_id;
+                $section->name = $name;
+                $section->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_edit_section'));
+            }
+        }else{
+            return Response::json(array('success'=>false,'result'=>'error_section_exists'));
+        }
+        return Response::json(array('success'=>true,'result'=>'section_edited_ok'));
     }
 }

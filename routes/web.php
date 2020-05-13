@@ -49,3 +49,7 @@ Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')
 Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubject')->name('get_sections_by_subject');
 Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
 Route::post('/add_section','vuejs\StudyViewController@addSection')->name('add_section');
+Route::put('/edit_section','vuejs\StudyViewController@editSection')->name('edit_section');
+
+Route::post('/upload_file', 'aws\UploadFileController@uploadFile')->name('upload_file');
+Route::get('/download_file', 'aws\UploadFileController@downloadFile')->name('download_file');
