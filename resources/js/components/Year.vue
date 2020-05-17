@@ -12,6 +12,8 @@
                          v-bind:route_edit_section="route_edit_section_vue"
                          v-bind:route_upload_file="route_upload_file_vue"
                          v-bind:route_base_images="route_base_images_vue"
+                         v-bind:route_delete_file="route_delete_file_vue"
+                         v-bind:route_delete_section="route_delete_section_vue"
                 ></Subject>
             </div>
 
@@ -127,7 +129,8 @@
         name: "Year",
         props:['chosed_year','route_get_subjects_by_year','route_get_subjects_by_year','chosed_study',
         'route_add_subject','route_add_period','route_get_periods_by_year','route_get_sections_by_subject',
-        'route_get_files_by_section','route_add_section','route_edit_section','route_upload_file','route_base_images'],
+        'route_get_files_by_section','route_add_section','route_edit_section','route_upload_file','route_base_images',
+            'route_delete_file','route_delete_section'],
         components: {
             Subject
         },
@@ -145,6 +148,8 @@
            this.route_edit_section_vue = this.route_edit_section;
            this.route_upload_file_vue = this.route_upload_file;
            this.route_base_images_vue = this.route_base_images;
+           this.route_delete_file_vue = this.route_delete_file;
+           this.route_delete_section_vue = this.route_delete_section;
         },
         data(){
             return{
@@ -186,6 +191,8 @@
                 route_edit_section_vue:'',
                 route_upload_file_vue:'',
                 route_base_images_vue:'',
+                route_delete_file_vue:'',
+                route_delete_section_vue:'',
             }
         },
         methods:{

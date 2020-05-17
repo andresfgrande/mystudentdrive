@@ -3,27 +3,31 @@
 
         <div class="subject-content">
             <div class="">
-                <div class="card-header"> <a>{{current_subject_vue.subject_ID}} {{current_subject_vue.subject_name}} - {{current_subject_vue.period_name}}</a>
-                    <button type="button" class="btn btn-primary" @click="addSectionModal(current_subject_vue.subject_ID)">crear una sección</button>
+                <div class="card-header"> <a>{{current_subject_vue.subject_ID}} {{subjectName}} - {{current_subject_vue.period_name}}</a>
+                    <div class="add-section-div" @click="addSectionModal(current_subject_vue.subject_ID)"></div>
                 </div>
             </div>
-            <div v-for="section in subjectSections">
-                <SubjectSection :key="componentKey"
-                                v-bind:current_section="section"
-                                v-bind:route_get_files_by_section="route_get_files_by_section_vue"
-                                v-bind:route_edit_section="route_edit_section_vue"
-                                v-bind:route_upload_file="route_upload_file_vue"
-                                v-bind:route_base_images="route_base_images_vue"
-                ></SubjectSection>
-            </div>
+
+                <div v-for="section in subjectSections">
+                    <div class="delete-section-div" @click="deleteSectionModal(current_subject_vue.subject_ID,section.id,section.name)"></div>
+                    <SubjectSection :key="componentKey"
+                                    v-bind:current_section="section"
+                                    v-bind:route_get_files_by_section="route_get_files_by_section_vue"
+                                    v-bind:route_edit_section="route_edit_section_vue"
+                                    v-bind:route_upload_file="route_upload_file_vue"
+                                    v-bind:route_base_images="route_base_images_vue"
+                                    v-bind:route_delete_file="route_delete_file_vue"
+                    ></SubjectSection>
+                </div>
+
         </div>
 
-        <!--/**************************addSectionModal*******ADD SECTION*********************************************/-->
+        <!--/************************** addSectionModal ********************************************/-->
         <div class="modal fade" v-bind:id="getRefId(current_subject_vue.subject_ID)" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"  id="editNameLabel">Nombre de la sección {{current_subject_vue}}</h5>
+                        <h5 class="modal-title"  id="editNameLabel">Nombre de la sección para {{current_subject_vue.subject_name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -51,6 +55,32 @@
         </div>
         <!--/***********************************************************************************************-->
 
+        <!--/*********************************delete section*********************************************/-->
+        <div class="modal fade" v-bind:id="getDeleteRefId(current_subject_vue.subject_ID)" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="deleteFileLabel">¿Estas seguro que deseas eliminar esta sección y todos los archivos que contiene?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h5>{{sectionToDeleteName}}</h5>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"   @click="deleteSection">Eliminar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/***********************************************************************************************-->
+
 
 
 
@@ -62,7 +92,7 @@
     export default {
         name: "Subject",
         props:['current_subject','route_get_sections_by_subject','route_get_files_by_section','route_add_section',
-        'route_edit_section','route_upload_file','route_base_images'],
+        'route_edit_section','route_upload_file','route_base_images','route_delete_file','route_delete_section'],
         components: {
             SubjectSection
         },
@@ -76,6 +106,8 @@
             this.route_edit_section_vue = this.route_edit_section;
             this.route_upload_file_vue = this.route_upload_file;
             this.route_base_images_vue = this.route_base_images;
+            this.route_delete_file_vue = this.route_delete_file;
+            this.route_delete_section_vue = this.route_delete_section;
         },
         data(){
             return{
@@ -85,7 +117,7 @@
                     subject_id:'',
                 },
                 subjectSections:[],
-                componentKey:'',
+                componentKey:0,
                 route_get_files_by_section_vue:'',
                 sectionToAdd:{
                     subject_id:'',
@@ -99,11 +131,21 @@
                 route_edit_section_vue:'',
                 route_upload_file_vue:'',
                 route_base_images_vue:'',
+                route_delete_file_vue:'',
+                sectionToDelete:{
+                    section_id:'',
+                },
+                route_delete_section_vue:'',
+                modalDeleteAbierto:'',
+                sectionToDeleteName:'',
             }
         },
         methods:{
             getRefId(id){
                 return "addSectionModal" + id;
+            },
+            getDeleteRefId(id){
+                return "deleteSectionModal" + id;
             },
             getSectionsBySubject(){
                this.subject_info= this.current_subject_vue;
@@ -148,6 +190,28 @@
                 this.showNameExists = false;
 
             },
+            deleteSection(){
+                //this.sectionToDelete.section_id = id;
+                var url = this.route_delete_section_vue;
+                axios.delete(url,{params:this.sectionToDelete}).then(response => {
+                    console.log(response.data.result)
+                    $(this.modalDeleteAbierto).modal('hide');
+                    this.componentKey += 1;
+                    this.getSectionsBySubject();
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            deleteSectionModal(subject_id, section_id,section_name){
+console.log(section_id);
+console.log(section_name);
+                var modalId = '#deleteSectionModal'+ subject_id
+                $(modalId).modal('show');
+                this.sectionToDelete.section_id = section_id;
+                this.sectionToDeleteName = section_name;
+                this.modalDeleteAbierto = modalId;
+            },
         },
         computed:{
             isDisabled: function(){
@@ -156,6 +220,10 @@
                 }else{
                     return false;
                 }
+            },
+            subjectName: function(){
+                this.current_subject_vue = this.current_subject;
+                return this.current_subject_vue.subject_name;
             },
         }
     }

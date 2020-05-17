@@ -15,6 +15,7 @@ use Aws\S3\S3Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Aws\S3\ObjectUploader;
 
@@ -161,22 +162,103 @@ class UploadFileController extends Controller
 
         //echo 'Done promises';
         return Response::json(array('success'=>true,'result'=>'file_upload_ok','result_file'=>$new_name));
-
-
-
-
-
     }
 
     public function downloadFile(Request $request)
     {
+        $file_id = $request->get('file_id');
+
         $BUCKET_NAME = 'test-bucket-mystudentdrive';
         $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
         $IAM_SECRET = '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';
 
-        $keyPath = '1prod.png';
+        $result =  DB::table('files')
+            ->where('id', $file_id)
+            ->get();
+        $targetFile = $result->toArray();
 
-        // Get file
+        if (Auth::check()) {
+
+            $user = Auth::User();
+            $hashedPassword = $user->getAuthPassword();
+
+            if(!empty($targetFile)){
+                if ($targetFile[0]->access_code == $hashedPassword) { //contraseña correcta
+
+                    try {
+                        $s3 = new S3Client(
+                            array(
+                                'credentials' => array(
+                                    'key' => $IAM_KEY,
+                                    'secret' => $IAM_SECRET
+                                ),
+                                'version' => 'latest',
+                                'region'  => 'eu-west-2'
+                            )
+                        );
+                        $s3EncryptionClient = new S3EncryptionClient($s3);
+
+                        $kms = new KmsClient(array(
+                            'region'  => 'eu-west-2',
+                            'version' => 'latest',
+                            'credentials' => array(
+                                'key' => $IAM_KEY,
+                                'secret' => $IAM_SECRET
+                            ),
+                        ));
+
+                        $kmsKeyArn = 'arn:aws:kms:eu-west-2:068140776116:key/a6c703a9-1284-4119-b383-f79dfaf063a8';
+                        // This materials provider handles generating a cipher key and
+                        // initialization vector, as well as encrypting your cipher key via AWS KMS
+                        $materialsProvider = new KmsMaterialsProvider(
+                            $kms,
+                            $kmsKeyArn
+                        );
+
+                        $cipherOptions = [
+                            'Cipher' => 'gcm',
+                            'KeySize' => 256,
+
+                        ];
+
+                        $result = $s3EncryptionClient->getObject([
+                            '@MaterialsProvider' => $materialsProvider,
+                            '@CipherOptions' => [],
+                            'Bucket' => $BUCKET_NAME,
+                            'Key' => $targetFile[0]->file_path,
+                        ]);
+
+                        // Display it in the browser
+                        header("Content-Type: {$result['ContentType']}");
+                        header('Content-Disposition: filename="' . basename($targetFile[0]->file_path) . '"');
+                        echo $result['Body'];
+
+                    } catch (Exception $e) {
+                        die("Error: " . $e->getMessage());
+                    }
+                }else{
+                    return back()->with('danger', 'No tienes el acceso para descargar este archivo.');
+                }
+            }else{
+                return back()->with('warning', 'No existe el archivo que se intenta descargar.');
+            }
+        }else{
+            return view('auth.login');
+        }
+    }
+
+    public function deleteFile(Request $request){
+
+        $file_id = $request->get('file_id');
+        $result =  DB::table('files')
+            ->where('id', $file_id)
+            ->get();
+        $targetFile = $result->toArray();
+
+        $bucketName = 'test-bucket-mystudentdrive';
+        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+        $IAM_SECRET = '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';
+
         try {
             $s3 = new S3Client(
                 array(
@@ -184,49 +266,27 @@ class UploadFileController extends Controller
                         'key' => $IAM_KEY,
                         'secret' => $IAM_SECRET
                     ),
+
                     'version' => 'latest',
                     'region'  => 'eu-west-2'
                 )
             );
-            $s3EncryptionClient = new S3EncryptionClient($s3);
 
-            $kms = new KmsClient(array(
-                'region'  => 'eu-west-2',
-                'version' => 'latest',
-                'credentials' => array(
-                    'key' => $IAM_KEY,
-                    'secret' => $IAM_SECRET
-                ),
-            ));
-
-            $kmsKeyArn = 'arn:aws:kms:eu-west-2:068140776116:key/a6c703a9-1284-4119-b383-f79dfaf063a8';
-            // This materials provider handles generating a cipher key and
-            // initialization vector, as well as encrypting your cipher key via AWS KMS
-            $materialsProvider = new KmsMaterialsProvider(
-                $kms,
-                $kmsKeyArn
-            );
-
-            $cipherOptions = [
-                'Cipher' => 'gcm',
-                'KeySize' => 256,
-                // Additional configuration options
-            ];
-
-            $result = $s3EncryptionClient->getObject([
-                '@MaterialsProvider' => $materialsProvider,
-                '@CipherOptions' => [],
-                'Bucket' => $BUCKET_NAME,
-                'Key' => '1prod.png',
+            $s3->deleteObject([
+                'Bucket' => $bucketName,
+                'Key'    => $targetFile[0]->file_path
             ]);
-
-            // Display it in the browser
-            header("Content-Type: {$result['ContentType']}");
-            header('Content-Disposition: filename="' . basename('1prod.png') . '"');
-            echo $result['Body'];
 
         } catch (Exception $e) {
             die("Error: " . $e->getMessage());
         }
+
+        try {
+            $file = File::find($file_id);
+            $file->forceDelete();
+        } catch (\Throwable $e) {
+            return Response::json(array('success'=>false,'result'=>'error_delete_file'));
+        }
+        return Response::json(array('success'=>true,'result'=>'file_deleted'));
     }
 }

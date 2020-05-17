@@ -22155,6 +22155,10 @@ a.text-dark:focus {
   margin-top: 100px;
 }
 
+.study .content.year h3 {
+  text-align: center;
+}
+
 .subject .subject-content {
   width: 50%;
 }
@@ -22163,6 +22167,7 @@ a.text-dark:focus {
 
 .subject .subject-content {
   margin-bottom: 2em;
+  width: 100%;
 }
 
 .subject .subject-content .card-header {
@@ -22175,8 +22180,37 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
-.subject .subject-content .card-header button {
+.subject .subject-content .card-header .btn.btn-primary.add-section {
   float: right;
+  border-radius: 50%;
+  padding-top: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background: transparent;
+  color: #3490dc;
+  font-size: 1.3em;
+  padding-bottom: 0;
+}
+
+.subject .subject-content .card-header .btn.btn-primary.add-section:hover {
+  background: #3490dc;
+  color: white;
+}
+
+.subject .subject-content .card-header div.add-section-div {
+  content: url("/images/anadir.png");
+  width: 4%;
+  float: right;
+  cursor: pointer;
+}
+
+.subject .subject-content div.delete-section-div {
+  content: url("/images/borrar.png");
+  width: 2.8%;
+  float: right;
+  cursor: pointer;
+  margin-right: 1.5em;
+  margin-top: 1em;
 }
 
 .subject .subject-section {
@@ -22184,6 +22218,8 @@ a.text-dark:focus {
 }
 
 .subject .subject-section .section-title {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   font-size: 18px;
   padding-left: 1em;
   background: #eaf4fd;
@@ -22204,6 +22240,32 @@ a.text-dark:focus {
   padding-top: 1.5em;
   padding-bottom: 1.5em;
   padding-left: 2em;
+}
+
+.subject .subject-section .section-item ul li div.delete-file-div {
+  content: url("/images/borrar.png");
+  width: 2.8%;
+  float: right;
+  cursor: pointer;
+  margin-right: 1.5em;
+  margin-top: 0.3em;
+}
+
+.subject .subject-section .btn.btn-danger.delete-file {
+  float: right;
+  margin-right: 1.4em;
+  border-radius: 50%;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: white;
+  color: red;
+}
+
+.subject .subject-section .btn.btn-danger.delete-file:hover {
+  background: red;
+  color: white;
 }
 
 .subject-section .alert.alert-succes.alert-dismissible.fade.show {
@@ -22228,6 +22290,35 @@ a.text-dark:focus {
 .subject-section .alert.uploading img {
   width: 30%;
   margin-left: 10%;
+}
+
+.subject-section .section-title p {
+  display: inline-block;
+}
+
+.subject-section .section-title .add-file {
+  float: right;
+  border-radius: 50%;
+  padding-top: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background: transparent;
+  color: #3490dc;
+  font-size: 1.3em;
+  padding-bottom: 0;
+}
+
+.subject-section .section-title .add-file:hover {
+  background: #3490dc;
+  color: white;
+}
+
+.subject-section .section-title div.add-file-div {
+  content: url("/images/add-file.png");
+  width: 4%;
+  float: right;
+  cursor: pointer;
+  margin-right: 1em;
 }
 
 /**************************MOBILE*************************************/
@@ -22262,28 +22353,68 @@ a.text-dark:focus {
   margin-top: 83px;
   position: fixed;
   min-height: 100vh;
-  margin-left: -100%;
+  margin-left: -75%;
   transition: margin 0.25s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
   padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  padding-top: 1.2em;
 }
 
 #sidebar-wrapper .list-group {
   width: 100%;
 }
 
+#sidebar-wrapper .list-group .add-year {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+
+#sidebar-wrapper .list-group .list-group-item {
+  cursor: pointer;
+}
+
+#sidebar-wrapper .list-group .list-group-item a {
+  display: block;
+}
+
+#sidebar-wrapper .list-group .list-group-item .year-range {
+  color: #3490dc;
+  font-weight: bold;
+}
+
+#sidebar-wrapper .list-group .list-group-item:hover {
+  background: rgba(52, 144, 220, 0.25) !important;
+}
+
+#sidebar-wrapper .list-group .list-group-item:hover a {
+  font-weight: bold;
+}
+
+#sidebar-wrapper .sidebar-heading .btn.btn-primary {
+  position: absolute !important;
+  left: 300px !important;
+}
+
 #page-content-wrapper {
   min-width: 100vw;
+}
+
+#page-content-wrapper #menu-toggle {
+  top: 75px;
+  position: absolute;
+  left: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 #wrapper.toggled #sidebar-wrapper {
   margin-left: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   #sidebar-wrapper {
     margin-left: 0;
     width: 15%;
@@ -22291,9 +22422,16 @@ a.text-dark:focus {
 
   #page-content-wrapper {
     min-width: 0;
-    width: 84%;
+    width: 42%;
     position: absolute;
     left: 16%;
+  }
+
+  #page-content-wrapper #menu-toggle {
+    top: 100px;
+    position: absolute;
+    left: 15px;
+    display: none;
   }
 
   #wrapper.toggled #sidebar-wrapper {
