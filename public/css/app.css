@@ -22199,14 +22199,23 @@ a.text-dark:focus {
 
 .subject .subject-content .card-header div.add-section-div {
   content: url("/images/anadir.png");
-  width: 4%;
+  width: 22px;
   float: right;
   cursor: pointer;
 }
 
+.subject .subject-content .card-header div.edit-subject-div {
+  content: url("/images/038-edit.png");
+  width: 22px;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 1em;
+  margin-bottom: -0.4em;
+}
+
 .subject .subject-content div.delete-section-div {
   content: url("/images/borrar.png");
-  width: 2.8%;
+  width: 22px;
   float: right;
   cursor: pointer;
   margin-right: 1.5em;
@@ -22244,7 +22253,7 @@ a.text-dark:focus {
 
 .subject .subject-section .section-item ul li div.delete-file-div {
   content: url("/images/borrar.png");
-  width: 2.8%;
+  width: 22px;
   float: right;
   cursor: pointer;
   margin-right: 1.5em;
@@ -22272,12 +22281,14 @@ a.text-dark:focus {
   position: fixed;
   bottom: 0;
   left: 35%;
+  z-index: 1;
 }
 
 .subject-section .alert.alert-danger.alert-dismissible.fade.show {
   position: fixed;
   bottom: 0;
   left: 35%;
+  z-index: 1;
 }
 
 .subject-section .alert.uploading {
@@ -22315,10 +22326,19 @@ a.text-dark:focus {
 
 .subject-section .section-title div.add-file-div {
   content: url("/images/add-file.png");
-  width: 4%;
+  width: 22px;
   float: right;
   cursor: pointer;
   margin-right: 1em;
+}
+
+/************************PAGINA AGENDA*********************/
+
+.agenda-page {
+  margin-left: 60%;
+  width: 40%;
+  top: 100px;
+  position: absolute;
 }
 
 /**************************MOBILE*************************************/
@@ -22330,6 +22350,15 @@ a.text-dark:focus {
 
   .studies .courses .year-list {
     margin-right: 0;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .agenda-page {
+    margin-left: 0;
+    width: 100%;
+    top: 0;
+    position: initial;
   }
 }
 

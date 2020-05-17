@@ -50,6 +50,7 @@ Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubjec
 Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
 Route::post('/add_section','vuejs\StudyViewController@addSection')->name('add_section');
 Route::put('/edit_section','vuejs\StudyViewController@editSection')->name('edit_section');
+Route::put('/edit_subject','vuejs\StudyViewController@editSubject')->name('edit_subject');
 
 Route::post('/upload_file', 'aws\UploadFileController@uploadFile')->name('upload_file');
 Route::get('/download_file', 'aws\UploadFileController@downloadFile')->name('download_file');

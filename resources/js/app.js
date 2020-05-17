@@ -33,6 +33,8 @@ Vue.component('study', require('./components/Study.vue').default);
 Vue.component('year', require('./components/Year.vue').default);
 Vue.component('subject', require('./components/Subject.vue').default);
 Vue.component('subject-section', require('./components/SubjectSection.vue').default);
+Vue.component('subject-page', require('./components/SubjectPage.vue').default);
+Vue.component('agenda', require('./components/Agenda.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -25,27 +25,31 @@
         route_base_images="{{url('/images/')}}"
         route_delete_file="{{route('delete_file')}}"
         route_delete_section="{{route('delete_section')}}"
+        route_edit_subject="{{route('edit_subject')}}"
     >
     </study>
 
-        <div style="margin-left:65%;top:100px;" class="container-agenda">
-        <h3 style="position:absolute;top:100px;">test texto 1</h3>
-{{--            @if(session()->has('danger'))--}}
-{{--                <div class="alert alert-danger alert-dismissible fade show" role="alert">--}}
-{{--                    {{ session()->get('danger') }}--}}
-{{--                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
-{{--                        <span aria-hidden="true">&times;</span>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--                @if(session()->has('warning'))--}}
-{{--                    <div class="alert alert-warning alert-dismissible fade show" role="alert">--}}
-{{--                        {{ session()->get('warning') }}--}}
-{{--                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
-{{--                            <span aria-hidden="true">&times;</span>--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                @endif--}}
+    <agenda></agenda>
+
+        <div style="margin-left:65%;top:100px;" class="container-avisos">
+            @if(session()->has('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session()->get('danger') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+                @if(session()->has('warning'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ session()->get('warning') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
         </div>
+
+
 
 @endsection

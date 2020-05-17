@@ -10,7 +10,7 @@
             Ya tienes una sección con este nombre.
         </small>
         <button @click="disableEditing"> Cancelar </button>
-        <button @click="saveEditSection"> Guardar </button>
+        <button @click="saveEditSection" :disabled='isDisabledEdit'> Guardar </button>
     </div>
 
     <div class="section-item">
@@ -282,6 +282,13 @@
             sectionName: function(){
                 this.current_section_vue = this.current_section;
                return this.current_section_vue.name;
+            },
+            isDisabledEdit: function(){
+                if(this.tmpSectionName === ''){
+                    return true;
+                }else{
+                    return false;
+                }
             },
         }
     }

@@ -1,10 +1,21 @@
 <template>
     <div class="subject">
-
         <div class="subject-content">
             <div class="">
-                <div class="card-header"> <a>{{current_subject_vue.subject_ID}} {{subjectName}} - {{current_subject_vue.period_name}}</a>
+                <div class="card-header">
+                        <a v-if="!editing"> {{subjectName}} - {{current_subject_vue.period_name}}</a>
+                        <div v-if="!editing" class="edit-subject-div" @click="enableEditing"></div>
                     <div class="add-section-div" @click="addSectionModal(current_subject_vue.subject_ID)"></div>
+                    <!---------------------------------------------------------->
+                    <div class="" v-if="editing">
+                        <input v-model="tmpSubjectName" class="input"/>
+                        <small v-if="showNameExistsSubject"  class="text-danger">
+                            Ya tienes una asignatura con este nombre.
+                        </small>
+                        <button @click="disableEditing"> Cancelar </button>
+                        <button @click="saveEditSubject" :disabled='isDisabledEdit'> Guardar </button>
+                    </div>
+                    <!----------------------------------------------------------->
                 </div>
             </div>
 
@@ -92,7 +103,8 @@
     export default {
         name: "Subject",
         props:['current_subject','route_get_sections_by_subject','route_get_files_by_section','route_add_section',
-        'route_edit_section','route_upload_file','route_base_images','route_delete_file','route_delete_section'],
+        'route_edit_section','route_upload_file','route_base_images','route_delete_file','route_delete_section',
+        'route_edit_subject'],
         components: {
             SubjectSection
         },
@@ -108,6 +120,7 @@
             this.route_base_images_vue = this.route_base_images;
             this.route_delete_file_vue = this.route_delete_file;
             this.route_delete_section_vue = this.route_delete_section;
+            this.route_edit_subject_vue = this.route_edit_subject;
         },
         data(){
             return{
@@ -138,6 +151,15 @@
                 route_delete_section_vue:'',
                 modalDeleteAbierto:'',
                 sectionToDeleteName:'',
+                tmpSubjectName:'',
+                editing:false,
+                subjectToEdit:{
+                    subject_id:'',
+                    name:'',
+                    period_id:'',
+                },
+                route_edit_subject_vue:'',
+                showNameExistsSubject:false,
             }
         },
         methods:{
@@ -146,6 +168,32 @@
             },
             getDeleteRefId(id){
                 return "deleteSectionModal" + id;
+            },
+            enableEditing: function(){
+                this.tmpSubjectName = this.current_subject_vue.subject_name;
+                this.editing = true;
+            },
+            disableEditing: function(){
+                this.tempSubjectName = null;
+                this.editing = false;
+            },
+            saveEditSubject(){
+                var url = this.route_edit_subject_vue;
+                this.subjectToEdit.subject_id = this.current_subject_vue.subject_ID;
+                this.subjectToEdit.period_id = this.current_subject_vue.period_id;
+                this.subjectToEdit.name= this.tmpSubjectName;
+                axios.put(url ,{subject:this.subjectToEdit}).then(response => {
+                    console.log(response.data.result);
+                     if(response.data.result === 'error_subject_exists'){
+                        this.showNameExistsSubject = true;
+                     }else{
+                         this.current_subject_vue.subject_name =  this.tmpSubjectName;
+                         this.disableEditing();
+                     }
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
             },
             getSectionsBySubject(){
                this.subject_info= this.current_subject_vue;
@@ -204,8 +252,6 @@
                     });
             },
             deleteSectionModal(subject_id, section_id,section_name){
-console.log(section_id);
-console.log(section_name);
                 var modalId = '#deleteSectionModal'+ subject_id
                 $(modalId).modal('show');
                 this.sectionToDelete.section_id = section_id;
@@ -224,6 +270,13 @@ console.log(section_name);
             subjectName: function(){
                 this.current_subject_vue = this.current_subject;
                 return this.current_subject_vue.subject_name;
+            },
+            isDisabledEdit: function(){
+                if(this.tmpSubjectName === ''){
+                    return true;
+                }else{
+                    return false;
+                }
             },
         }
     }

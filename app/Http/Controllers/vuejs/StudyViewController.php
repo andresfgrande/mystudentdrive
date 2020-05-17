@@ -7,6 +7,7 @@ use App\File;
 use App\Http\Controllers\Controller;
 use App\Section;
 use App\Study;
+use App\Subject;
 use Aws\S3\S3Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -126,6 +127,52 @@ class StudyViewController extends Controller
             return Response::json(array('success'=>false,'result'=>'error_section_exists'));
         }
         return Response::json(array('success'=>true,'result'=>'section_edited_ok'));
+    }
+
+    public function editSubject(Request $request){
+
+        $subject_id = $request->subject['subject_id'];
+        $name = $request->subject['name'];
+        $period_id = $request->subject['period_id'];
+
+        $request->request->add(['name' => $request->subject['name']]);
+
+        try {
+            $this->validate($request, [
+                'name' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+            return Response::json(array('success'=>false,'result'=>'error_subject_required'));
+        }
+
+        $result =  DB::table('subjects')
+            ->where('period_id', $period_id)
+            ->where('name',$name)
+            ->where('id','!=',$subject_id)
+            ->get('id');
+        if(empty($result->toArray())){
+            try {
+                $subject = Subject::find($subject_id);
+                $subject->name = $name;
+                $subject->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_edit_subject'));
+            }
+        }else{
+            return Response::json(array('success'=>false,'result'=>'error_subject_exists'));
+        }
+        return Response::json(array('success'=>true,'result'=>'subject_edited_ok'));
+
+    }
+    public function checkSubjectExistInPeriod($newName, $period_id){
+        $data = DB::table('subjects')
+            ->where('name', $newName)
+            ->where('period_id', $period_id)
+            ->get('id');
+        if(empty($data->toArray())){
+            return false;  // correcto, no existe.
+        }
+        return true;
     }
 
     public function deleteSection(Request $request){
