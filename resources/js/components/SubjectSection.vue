@@ -281,6 +281,7 @@
         computed:{
             sectionName: function(){
                 this.current_section_vue = this.current_section;
+                this.getFilesBySection();
                return this.current_section_vue.name;
             },
             isDisabledEdit: function(){

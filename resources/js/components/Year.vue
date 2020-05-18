@@ -2,9 +2,12 @@
 
     <div class="container content year">
         <h3>Curso {{formatDateYear(chosed_year_vue.start_date)}} - {{formatDateYear(chosed_year_vue.end_date)}}</h3>
-
+        <button type="button"  class="btn btn-primary btn-add-subject" @click="addSubjectModal">
+            Añadir asignatura
+        </button>
             <div v-for="subject in subjectsArray">
-            <!--//DELETE SUBJECT                //-->
+                <div class="delete-subject-div" @click="deleteSubjectModal(chosed_year_vue.id, subject.subject_ID, subject.subject_name)">
+                </div>
                 <Subject :key="componentKey"
                          v-bind:current_subject="subject"
                          v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"
@@ -19,9 +22,7 @@
                 ></Subject>
             </div>
 
-        <button type="button"  class="btn btn-primary" @click="addSubjectModal">
-            Añadir asignatura
-        </button>
+
         <!--/***********************************ADD SUBJECT*************************************************/-->
         <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -119,7 +120,31 @@
         </div>
         <!--/*********************************************************************************+******************-->
 
-
+        <!--/*********************************DELETE SUBJECT*********************************************/-->
+        <div class="modal fade" v-bind:id="getDeleteRefId(chosed_year_vue.id)" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="deleteFileLabel">¿Seguro que deseas eliminar esta asignatura y su contenido?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h5>{{subjectToDeleteName}}</h5>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"   @click="deleteSubject">Eliminar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/***********************************************************************************************-->
 
 
     </div>
@@ -132,7 +157,7 @@
         props:['chosed_year','route_get_subjects_by_year','route_get_subjects_by_year','chosed_study',
         'route_add_subject','route_add_period','route_get_periods_by_year','route_get_sections_by_subject',
         'route_get_files_by_section','route_add_section','route_edit_section','route_upload_file','route_base_images',
-            'route_delete_file','route_delete_section','route_edit_subject'],
+            'route_delete_file','route_delete_section','route_edit_subject','route_delete_subject'],
         components: {
             Subject
         },
@@ -153,6 +178,7 @@
            this.route_delete_file_vue = this.route_delete_file;
            this.route_delete_section_vue = this.route_delete_section;
            this.route_edit_subject_vue = this.route_edit_subject;
+           this.route_delete_subject_vue = this.route_delete_subject;
         },
         data(){
             return{
@@ -163,7 +189,7 @@
                     year:'',
                 },
                 subjectsArray:[],
-                componentKey:'',
+                componentKey:0,
                 chosed_study_vue:'',
                 route_add_subject_vue:'',
                 route_add_period_vue:'',
@@ -197,9 +223,18 @@
                 route_delete_file_vue:'',
                 route_delete_section_vue:'',
                 route_edit_subject_vue:'',
+                route_delete_subject_vue:'',
+                subjectToDelete:{
+                    subject_id:'',
+                },
+                subjectToDeleteName:'',
+                modalDeleteAbierto:'',
             }
         },
         methods:{
+            getDeleteRefId(id){
+                return "deleteSubjectModal" + id;
+            },
             formatDateYear(date_to_format){
                 var date = new Date(date_to_format);
                 return date = date.getFullYear();
@@ -301,6 +336,26 @@
                     console.log(errors);
                     });
             },
+            deleteSubject(){
+                var url = this.route_delete_subject_vue;
+                axios.delete(url,{params:this.subjectToDelete}).then(response => {
+                    console.log(response.data.result)
+                    $(this.modalDeleteAbierto).modal('hide');
+                    this.componentKey += 1;
+                    this.getSubjectsByYear(this.chosed_year_vue.id)
+
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            deleteSubjectModal(year_id, subject_id ,subject_name){
+                var modalId = '#deleteSubjectModal'+ year_id
+                $(modalId).modal('show');
+                this.subjectToDelete.subject_id = subject_id;
+                this.subjectToDeleteName = subject_name;
+                this.modalDeleteAbierto = modalId;
+            },
         },
         computed:{
             isDisabledSaveSubject: function(){
@@ -317,6 +372,11 @@
                     return false;
                 }
             },
+            actualizar: function(){
+                this.chosed_year_vue = this.chosed_year;
+                this.getSubjectsByYear(this.chosed_year_vue.id);
+                return this.subjectsArray;
+            }
         }
     }
 </script>

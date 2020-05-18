@@ -22159,6 +22159,20 @@ a.text-dark:focus {
   text-align: center;
 }
 
+.study .content.year div.delete-subject-div {
+  content: url("/images/borrar.png");
+  width: 22px;
+  float: right;
+  cursor: pointer;
+  margin-right: 1.3em;
+  margin-top: 1.1em;
+  margin-left: 1.2em;
+}
+
+.study .content.year .btn-add-subject {
+  margin-bottom: 1em;
+}
+
 .subject .subject-content {
   width: 50%;
 }
@@ -22206,7 +22220,7 @@ a.text-dark:focus {
 
 .subject .subject-content .card-header div.edit-subject-div {
   content: url("/images/038-edit.png");
-  width: 22px;
+  width: 20px;
   display: inline-block;
   cursor: pointer;
   margin-left: 1em;
@@ -22218,7 +22232,7 @@ a.text-dark:focus {
   width: 22px;
   float: right;
   cursor: pointer;
-  margin-right: 1.5em;
+  margin-right: 1.3em;
   margin-top: 1em;
 }
 
@@ -22232,6 +22246,7 @@ a.text-dark:focus {
   font-size: 18px;
   padding-left: 1em;
   background: #eaf4fd;
+  cursor: pointer;
   border-bottom: 1px solid rgba(52, 144, 220, 0.25);
 }
 
@@ -22252,11 +22267,11 @@ a.text-dark:focus {
 }
 
 .subject .subject-section .section-item ul li div.delete-file-div {
-  content: url("/images/borrar.png");
-  width: 22px;
+  content: url("/images/interfaz_delete.png");
+  width: 9px;
   float: right;
   cursor: pointer;
-  margin-right: 1.5em;
+  margin-right: 1.3em;
   margin-top: 0.3em;
 }
 
@@ -22330,6 +22345,7 @@ a.text-dark:focus {
   float: right;
   cursor: pointer;
   margin-right: 1em;
+  margin-top: 0.3em;
 }
 
 /************************PAGINA AGENDA*********************/
@@ -22379,6 +22395,7 @@ a.text-dark:focus {
 /********TEST**************/
 
 #sidebar-wrapper {
+  z-index: 1;
   margin-top: 83px;
   position: fixed;
   min-height: 100vh;
@@ -22432,6 +22449,7 @@ a.text-dark:focus {
 }
 
 #page-content-wrapper #menu-toggle {
+  z-index: 2;
   top: 75px;
   position: absolute;
   left: 10px;

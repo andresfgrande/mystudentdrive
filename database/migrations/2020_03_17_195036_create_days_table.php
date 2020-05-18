@@ -27,7 +27,7 @@ class CreateDaysTable extends Migration
         });
 
         Schema::table('days', function (Blueprint $table) {
-            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
             $table->unique(['mon','tue','wed','thu','fri','sat','sun','class_id']);
         });
     }

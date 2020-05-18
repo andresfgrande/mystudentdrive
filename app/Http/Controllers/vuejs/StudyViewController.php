@@ -227,13 +227,99 @@ class StudyViewController extends Controller
 
         }
     }
-    public function deleteSubject(){
-        //TODO
+    public function deleteSubject(Request $request){
+        $subject_id = $request->get('subject_id');
+
+        $sectionsInSubject = $this->getSectionsToDeleteBySubject($subject_id);
+
+        if(empty($sectionsInSubject)){
+            try {
+                $subject = Subject::find($subject_id);
+                $subject->forceDelete();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+            return Response::json(array('success'=>true,'result'=>'subject_deleted'));
+        }else{
+            foreach($sectionsInSubject as $section){
+                $this->deleteSectionV2($section->id);
+            }
+            try {
+                $subject = Subject::find($subject_id);
+                $subject->forceDelete();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+        }
+        return Response::json(array('success'=>true,'result'=>'subject_deleted'));
     }
     public function deleteYear(){
         //TODO
     }
     public function deleteStudy(){
         //TODO
+    }
+
+    public function getFilesToDeleteBySection($section_id){
+        $result =  DB::table('files')
+            ->where('section_id', $section_id)
+            ->get();
+        return $filesInSection = $result->toArray();
+    }
+
+    public function getSectionsToDeleteBySubject($subject_id){
+        $var_sections = DB::table('sections')
+            ->where('subject_id', $subject_id)
+            ->get();
+        return $sections = $var_sections->toArray();
+    }
+
+    public function deleteSectionV2($section_id){
+        $result =  DB::table('files')
+            ->where('section_id', $section_id)
+            ->get();
+        $filesInSection = $result->toArray();
+
+        if(empty($filesInSection)){
+            try {
+                $section = Section::find($section_id);
+                $section->forceDelete();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+
+        }else{
+            try {
+                $section = Section::find($section_id);
+                $section->forceDelete();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+            /*****************************************************/
+            $bucketName = 'test-bucket-mystudentdrive';
+            $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+            $IAM_SECRET = '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';
+
+            foreach($filesInSection as $file){
+                try {
+                    $s3 = new S3Client(
+                        array(
+                            'credentials' => array(
+                                'key' => $IAM_KEY,
+                                'secret' => $IAM_SECRET
+                            ),
+                            'version' => 'latest',
+                            'region'  => 'eu-west-2'
+                        )
+                    );
+                    $s3->deleteObject([
+                        'Bucket' => $bucketName,
+                        'Key'    => $file->file_path
+                    ]);
+                } catch (Exception $e) {
+                    die("Error: " . $e->getMessage());
+                }
+            }
+        }
     }
 }

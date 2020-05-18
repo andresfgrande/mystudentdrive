@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div style="margin-top: 100px;" class="container">
         <h1>SUBJECT PAGE</h1>
     </div>
 </template>

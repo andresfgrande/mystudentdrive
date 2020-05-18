@@ -25,7 +25,7 @@ class CreateTasksTable extends Migration
         });
         Schema::table('tasks', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unique(['user_id','subject_id']);
         });
     }

@@ -26,6 +26,7 @@
         route_delete_file="{{route('delete_file')}}"
         route_delete_section="{{route('delete_section')}}"
         route_edit_subject="{{route('edit_subject')}}"
+        route_delete_subject="{{route('delete_subject')}}"
     >
     </study>
 

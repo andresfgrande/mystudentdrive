@@ -121,6 +121,7 @@
             this.route_delete_file_vue = this.route_delete_file;
             this.route_delete_section_vue = this.route_delete_section;
             this.route_edit_subject_vue = this.route_edit_subject;
+            this.componentKey += 1;
         },
         data(){
             return{
@@ -246,6 +247,7 @@
                     $(this.modalDeleteAbierto).modal('hide');
                     this.componentKey += 1;
                     this.getSectionsBySubject();
+                    this.componentKey += 1;
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -269,6 +271,8 @@
             },
             subjectName: function(){
                 this.current_subject_vue = this.current_subject;
+                this.componentKey += 1;
+                this.getSectionsBySubject();
                 return this.current_subject_vue.subject_name;
             },
             isDisabledEdit: function(){
