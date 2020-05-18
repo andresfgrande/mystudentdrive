@@ -1,7 +1,8 @@
 <template>
 <div class="subject-section">
-    <div class="section-title" @click="enableEditing" v-if="!editing">
-       <p>{{current_section_vue.name}} </p>
+    <div class="section-title"  v-if="!editing">
+       <p @click="enableEditing">{{sectionName}} </p>
+        <div class ="add-file-div" @click="uploadFileModal(current_section.id)"></div>
     </div>
     <div class="section-title edit" v-if="editing">
         <input v-model="tmpSectionName" class="input"/>
@@ -9,27 +10,26 @@
             Ya tienes una sección con este nombre.
         </small>
         <button @click="disableEditing"> Cancelar </button>
-        <button @click="saveEditSection"> Guardar </button>
+        <button @click="saveEditSection" :disabled='isDisabledEdit'> Guardar </button>
     </div>
 
     <div class="section-item">
         <ul>
             <li v-for="file in sectionFiles">
-               {{file.name}}
+                <a href="#" @click="testDownloadFile(file.id)"> {{file.name}}</a>
+                <div class ="delete-file-div" @click="deleteFileModal(current_section_vue.id,file.id,file.name)"></div>
             </li>
         </ul>
-<!--        <button type="button" @click="uploadFile">test llamada upload file</button>-->
-        <button type="button" class="btn btn-primary" @click="uploadFileModal(current_section_vue.id)">Añadir archivo</button>
-<!--        <button type="button" class="btn btn-primary" @click="testDownloadFile()">test download file</button>-->
+
     </div>
-<!--    v-if="successMsg"-->
+
     <div class="alert alert-succes alert-dismissible fade show" v-if="successMsg" role="alert">
         <strong>¡Archivo subido satisfactoriamente!</strong>
         <button type="button" class="close" @click="hideMsg" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-<!--    v-if="failMsg"-->
+
     <div class="alert alert-danger alert-dismissible fade show" v-if="failMsg" role="alert">
         <strong>No se ha podido guardar tu archivo, vuelve a intentarlo.</strong>
         <button type="button" class="close"  @click="hideMsg" aria-label="Close">
@@ -44,26 +44,18 @@
         </button>
     </div>
 
-    <!--/*****************id="uploadFileModal"****************UPLOAD FILE MODAL*********************************************/-->
+    <!--/*****************id="uploadFileModal"****************************************************/-->
     <div class="modal fade"  v-bind:id="getRefId(current_section_vue.id)" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"  id="editNameLabel">Nuevo archivo</h5>
+                    <h5 class="modal-title"  id="editNameLabel">Nuevo archivo de {{current_section_vue.name}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form>
                     <div class="modal-body">
-<!--                        <div class="form-group">-->
-<!--                            <label for="name">Nombre del estudio</label>-->
-<!--                            <input class="form-control" v-model="studyToAdd" v-on:keyup="cleanMessage" id="name" type="text" name="name"-->
-<!--                                   placeholder="" required>-->
-<!--                            <small v-if="showNameExists"  class="text-danger">-->
-<!--                                Ya tienes unos estudios con este nombre.-->
-<!--                            </small>-->
-<!--                        </div>-->
                         <div class="form-group">
                             <input type="file" name="select_file" id="selected_file_s3" ref="fileInput" @change="onFileSelected"/>
                         </div>
@@ -72,6 +64,33 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn btn-primary"  @click="uploadFile">Guardar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!--/*********************************************************************************************-->
+    <!--/*********************************delete file*********************************************/-->
+    <div class="modal fade" v-bind:id="getDeleteRefId(current_section_vue.id)" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"  id="deleteFileLabel">¿Estas seguro que deseas eliminar este archivo?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p style="font-weight:bold;">{{fileToDeleteName}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary"   @click="deleteFile">Eliminar</button>
                     </div>
 
                 </form>
@@ -88,7 +107,7 @@
     export default {
         name: "Section",
         props:['current_section','route_get_files_by_section','route_edit_section','route_upload_file',
-        'route_base_images'],
+        'route_base_images','route_delete_file'],
         created(){
             this.current_section_vue = this.current_section;
             this.route_get_files_by_section_vue = this.route_get_files_by_section;
@@ -97,6 +116,7 @@
             this.route_upload_file_vue = this.route_upload_file;
             this.route_base_images_vue = this.route_base_images;
             this.gifUrl = this.route_base_images_vue + "/gif/" + "loading-gif.gif";
+            this.route_delete_file_vue = this.route_delete_file;
         },
         data(){
             return{
@@ -127,14 +147,21 @@
                 uploadingMsg: false,
                 route_base_images_vue:'',
                 gifUrl:'',
+                route_delete_file_vue:'',
+                fileToDelete:{
+                    file_id:'',
+                },
+                modalDeleteAbierto:'',
+                fileToDeleteName:'',
             }
         },
         methods:{
             getRefId(id){
                 return "uploadFileModal" + id;
             },
-
-
+            getDeleteRefId(id){
+                return "deleteFileModal" + id;
+            },
             getFilesBySection(){
                 this.section_info.section_id= this.current_section_vue.id;
                 var url = this.route_get_files_by_section_vue;
@@ -216,23 +243,54 @@
             cleanMessage(){
                 this.showNameExists = false;
             },
-            testDownloadFile(){
-                // window.location = "/download_file";
+            testDownloadFile(id){
+                window.location = "/download_file"+"?file_id="+id;
                 // var url = this.route_upload_file_vue;
-                axios.get('/download_file').then(response => {
-                    console.log(response.data.result);
-                })
-                    .catch(errors => {
-                        console.log(errors);
-                    });
+                // axios.get('/download_file').then(response => {
+                //     console.log(response.data.result);
+                // })
+                //     .catch(errors => {
+                //         console.log(errors);
+                //     });
             },
             hideMsg(){
                 this.successMsg = false;
                 this.failMsg = false;
                 this.uploadingMsg = false;
-            }
+            },
+            deleteFile(){
+                var url = this.route_delete_file_vue;
+                axios.delete(url,{params:this.fileToDelete}).then(response => {
+                    console.log(response.data.result)
+                    $(this.modalDeleteAbierto).modal('hide');
+                    this.getFilesBySection();
 
-
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            deleteFileModal(section_id, file_id,file_name){
+                var modalId = '#deleteFileModal'+ section_id
+                $(modalId).modal('show');
+                this.fileToDelete.file_id = file_id;
+                this.fileToDeleteName = file_name;
+                this.modalDeleteAbierto = modalId;
+            },
+        },
+        computed:{
+            sectionName: function(){
+                this.current_section_vue = this.current_section;
+                this.getFilesBySection();
+               return this.current_section_vue.name;
+            },
+            isDisabledEdit: function(){
+                if(this.tmpSectionName === ''){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>

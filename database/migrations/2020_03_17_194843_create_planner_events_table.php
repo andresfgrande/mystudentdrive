@@ -27,7 +27,7 @@ class CreatePlannerEventsTable extends Migration
 
         Schema::table('planner_events', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unique(['name','user_id','subject_id']);
         });
     }
