@@ -6,6 +6,7 @@
 {{--        <h2 class="page-title">Nombre del grado estudio</h2>--}}
 {{--    </div>--}}
 
+
     <study
         v-bind:study_prop="{{json_encode($study)}}"
         v-bind:years_prop="{{json_encode($years)}}"
@@ -22,7 +23,34 @@
         route_edit_section="{{route('edit_section')}}"
         route_upload_file="{{route('upload_file')}}"
         route_base_images="{{url('/images/')}}"
+        route_delete_file="{{route('delete_file')}}"
+        route_delete_section="{{route('delete_section')}}"
+        route_edit_subject="{{route('edit_subject')}}"
+        route_delete_subject="{{route('delete_subject')}}"
     >
     </study>
+
+    <agenda></agenda>
+
+        <div style="margin-left:65%;top:100px;" class="container-avisos">
+            @if(session()->has('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session()->get('danger') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+                @if(session()->has('warning'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ session()->get('warning') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+        </div>
+
+
 
 @endsection

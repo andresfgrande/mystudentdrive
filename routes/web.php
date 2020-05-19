@@ -44,12 +44,23 @@ Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('
 
 /**********VISTAS PRINCIPALES********/
 
+/*****STUDY******/
 Route::resource('/study/{study_id}','StudyViewController', ['only' => ['index', 'create', 'store',]]);
 Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')->name('get_years_by_one_study');
 Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubject')->name('get_sections_by_subject');
 Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
 Route::post('/add_section','vuejs\StudyViewController@addSection')->name('add_section');
 Route::put('/edit_section','vuejs\StudyViewController@editSection')->name('edit_section');
+Route::put('/edit_subject','vuejs\StudyViewController@editSubject')->name('edit_subject');
 
 Route::post('/upload_file', 'aws\UploadFileController@uploadFile')->name('upload_file');
 Route::get('/download_file', 'aws\UploadFileController@downloadFile')->name('download_file');
+Route::delete('/delete_file', 'aws\UploadFileController@deleteFile')->name('delete_file');
+
+Route::delete('/delete_section', 'vuejs\StudyViewController@deleteSection')->name('delete_section');
+Route::delete('/delete_subject', 'vuejs\StudyViewController@deleteSubject')->name('delete_subject');
+Route::delete('/delete_year', 'vuejs\StudyViewController@deleteYear')->name('delete_year');
+Route::delete('/delete_study', 'vuejs\StudyViewController@deleteStudy')->name('delete_study');
+
+/*****SUBJECT******/
+Route::resource('/study/{study_id}/subject/{subject_id}','SubjectController', ['only' => ['index', 'create', 'store',]]);
