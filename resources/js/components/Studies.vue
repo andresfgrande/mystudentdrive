@@ -9,7 +9,7 @@
                 <div class="courses" >
 
                     <div v-for="(item, index) in estudios_vue">
-                        <div class="card-header" data-toggle="collapse" role="button" v-bind:href="getRefId(item.id)"
+                        <div class="card-header" data-toggle="" role="button" v-bind:href="getRefId(item.id)"
                              v-on:load="test(item.id)" aria-controls="collapseExample" aria-expanded="false">
                             <a class="study-name-title" data-toggle="collapse" v-bind:href="getRefId(item.id)" v-on:load="test(item.id)"  aria-expanded="false"
                                role="button"  aria-controls="collapseExample">
@@ -17,7 +17,7 @@
                             </a>
                             <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>
                         </div>
-                        <ul class="collapse year-list" v-bind:id="getRefId2(item.id)" >
+                        <ul class=" year-list" v-bind:id="getRefId2(item.id)" >
                             <li class="years-list-item" v-for="hey in auxArray[index]" v-if="hey !== 'vacio'" @click="getSubjectsByYear(hey.id, item.name,hey.start_date,hey.end_date,item.id)">
                                 <p class="year-range">{{formatDateYear(hey.start_date)}} - {{formatDateYear(hey.end_date)}}</p>
                                 <p class="date-range">{{formatDateFull(hey.start_date)}} - {{formatDateFull(hey.end_date)}}</p>
@@ -42,7 +42,7 @@
                     <div class="subjects">
                         <div class="card-header" v-if="showSubjectsHeader">
                             <div class="study-year-title">
-                                <a v-bind:href="studyLink(this.chosenStudy_id)">  {{this.chosenStudy}}  {{formatDateYear(this.yearStartChosen)}} - {{formatDateYear(this.yearEndChosen)}}</a>
+                                <a v-bind:href="studyLink()">  {{this.chosenStudy}}  {{formatDateYear(this.yearStartChosen)}} - {{formatDateYear(this.yearEndChosen)}}</a>
                             </div>
                         </div>
                         <div class="subjects-section" v-if="!showPhotoEmptySubjects">
@@ -432,7 +432,7 @@
                 var url = this.route_add_subject_vue;
                 axios.post(url ,{params:this.subjectToAdd}).then(response => {
                     console.log(response.data.result);
-                    this.getSubjectsByYear( this.data.year,this.chosenStudy,this.yearStartChosen, this.yearEndChosen);
+                    this.getSubjectsByYear( this.data.year,this.chosenStudy,this.yearStartChosen, this.yearEndChosen,this.chosenStudy_id);
                     if(response.data.result === 'subject_created_ok'){
                         $('#addSubjectModal').modal('hide');
                     }
@@ -542,8 +542,8 @@
                 var date = new Date(date_to_format);
                 return date = date.toLocaleDateString();
             },
-            studyLink(id){
-                return "/study/"+id+'/?year='+this.yearIdChosen.year_id;
+            studyLink(){
+                return "/study/"+this.chosenStudy_id+'/?year='+this.yearIdChosen.year_id;
             }
         },
         computed:{

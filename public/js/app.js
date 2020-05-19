@@ -2988,7 +2988,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log(response.data.result);
 
-        _this5.getSubjectsByYear(_this5.data.year, _this5.chosenStudy, _this5.yearStartChosen, _this5.yearEndChosen);
+        _this5.getSubjectsByYear(_this5.data.year, _this5.chosenStudy, _this5.yearStartChosen, _this5.yearEndChosen, _this5.chosenStudy_id);
 
         if (response.data.result === 'subject_created_ok') {
           $('#addSubjectModal').modal('hide');
@@ -3112,8 +3112,8 @@ __webpack_require__.r(__webpack_exports__);
       var date = new Date(date_to_format);
       return date = date.toLocaleDateString();
     },
-    studyLink: function studyLink(id) {
-      return "/study/" + id + '/?year=' + this.yearIdChosen.year_id;
+    studyLink: function studyLink() {
+      return "/study/" + this.chosenStudy_id + '/?year=' + this.yearIdChosen.year_id;
     }
   },
   computed: {
@@ -40922,7 +40922,7 @@ var render = function() {
                   {
                     staticClass: "card-header",
                     attrs: {
-                      "data-toggle": "collapse",
+                      "data-toggle": "",
                       role: "button",
                       href: _vm.getRefId(item.id),
                       "aria-controls": "collapseExample",
@@ -40979,7 +40979,7 @@ var render = function() {
                 _c(
                   "ul",
                   {
-                    staticClass: "collapse year-list",
+                    staticClass: " year-list",
                     attrs: { id: _vm.getRefId2(item.id) }
                   },
                   _vm._l(_vm.auxArray[index], function(hey) {
@@ -41072,20 +41072,16 @@ var render = function() {
             _vm.showSubjectsHeader
               ? _c("div", { staticClass: "card-header" }, [
                   _c("div", { staticClass: "study-year-title" }, [
-                    _c(
-                      "a",
-                      { attrs: { href: _vm.studyLink(this.chosenStudy_id) } },
-                      [
-                        _vm._v(
+                    _c("a", { attrs: { href: _vm.studyLink() } }, [
+                      _vm._v(
+                        "  " +
+                          _vm._s(this.chosenStudy) +
                           "  " +
-                            _vm._s(this.chosenStudy) +
-                            "  " +
-                            _vm._s(_vm.formatDateYear(this.yearStartChosen)) +
-                            " - " +
-                            _vm._s(_vm.formatDateYear(this.yearEndChosen))
-                        )
-                      ]
-                    )
+                          _vm._s(_vm.formatDateYear(this.yearStartChosen)) +
+                          " - " +
+                          _vm._s(_vm.formatDateYear(this.yearEndChosen))
+                      )
+                    ])
                   ])
                 ])
               : _vm._e(),
