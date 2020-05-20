@@ -21774,21 +21774,21 @@ a.text-dark:focus {
 }
 
 .container.content.dashboard {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .container.content.login {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .container.content.register {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 /***********Página mi cuenta******************/
 
 .container.content.photo {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .image-profile-container {
@@ -21861,7 +21861,7 @@ a.text-dark:focus {
 /*******Pagina estudios********/
 
 .content.content.studies {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .studies .empty-text {
@@ -22152,7 +22152,7 @@ a.text-dark:focus {
 }
 
 .study .content.year {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .study .content.year h3 {
