@@ -21774,21 +21774,21 @@ a.text-dark:focus {
 }
 
 .container.content.dashboard {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .container.content.login {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .container.content.register {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 /***********Página mi cuenta******************/
 
 .container.content.photo {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .image-profile-container {
@@ -21861,7 +21861,7 @@ a.text-dark:focus {
 /*******Pagina estudios********/
 
 .content.content.studies {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .studies .empty-text {
@@ -22152,7 +22152,7 @@ a.text-dark:focus {
 }
 
 .study .content.year {
-  margin-top: 100px;
+  margin-top: 115px;
 }
 
 .study .content.year h3 {
@@ -22292,6 +22292,17 @@ a.text-dark:focus {
   color: white;
 }
 
+/**********SUBJECT PAGE*******/
+
+.subject.subject-page {
+  margin-top: 115px;
+}
+
+.subject.subject-page .title-subject {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
 .subject-section .alert.alert-succes.alert-dismissible.fade.show {
   position: fixed;
   bottom: 0;
@@ -22407,6 +22418,10 @@ a.text-dark:focus {
   padding: 0.875rem 1.25rem;
   font-size: 1.5rem;
   padding-top: 1.2em;
+}
+
+#sidebar-wrapper .sidebar-heading.study-link {
+  cursor: pointer;
 }
 
 #sidebar-wrapper .list-group {

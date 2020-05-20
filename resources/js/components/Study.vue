@@ -1,13 +1,12 @@
 <template>
     <div class="container content study">
 
-
         <!-- Sidebar -->
         <div class="d-flex" id="wrapper">
 
             <div class="bg-light border-right" id="sidebar-wrapper">
-                <div class="sidebar-heading">{{study_prop_vue.name}}
-
+                <div class="sidebar-heading study-link" @click="studyLink">
+                    {{study_prop_vue.name}}
                 </div>
                 <div class="list-group list-group-flush">
                     <ul class="list-unstyled components years">
@@ -20,7 +19,6 @@
                     </ul>
                 </div>
             </div>
-
 
                     <div id="page-content-wrapper">
                         <button class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">. . .</button>
@@ -174,6 +172,9 @@
             }
         },
         methods:{
+            studyLink(){
+                window.location = '/study/' + this.study_prop_vue.id;
+            },
             formatDateYear(date_to_format){
                 var date = new Date(date_to_format);
                 return date = date.getFullYear();
