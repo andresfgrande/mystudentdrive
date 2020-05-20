@@ -22292,6 +22292,17 @@ a.text-dark:focus {
   color: white;
 }
 
+/**********SUBJECT PAGE*******/
+
+.subject.subject-page {
+  margin-top: 115px;
+}
+
+.subject.subject-page .title-subject {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
 .subject-section .alert.alert-succes.alert-dismissible.fade.show {
   position: fixed;
   bottom: 0;
@@ -22407,6 +22418,10 @@ a.text-dark:focus {
   padding: 0.875rem 1.25rem;
   font-size: 1.5rem;
   padding-top: 1.2em;
+}
+
+#sidebar-wrapper .sidebar-heading.study-link {
+  cursor: pointer;
 }
 
 #sidebar-wrapper .list-group {
