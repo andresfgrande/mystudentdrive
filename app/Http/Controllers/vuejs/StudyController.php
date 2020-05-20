@@ -54,6 +54,8 @@ class StudyController extends Controller
 
         $result = DB::table('subjects')
             ->join('periods','subjects.period_id','=','periods.id')
+            ->join('academic_years','periods.academic_year_id','=','academic_years.id')
+            ->join('studies','academic_years.study_id','=','studies.id')
             ->whereIn('periods.id', $auxArray)
             ->orderBy('periods.start_date', 'desc')
             ->get(array(
@@ -62,6 +64,7 @@ class StudyController extends Controller
                 'subjects.id AS subject_ID',
                 'subjects.name AS subject_name',
                 'subjects.color AS subject_color',
+                'studies.id AS study_id',
             ));
 
         return Response::json(array('success'=>true,'result'=>$result->toArray()));

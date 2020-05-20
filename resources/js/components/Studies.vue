@@ -9,10 +9,10 @@
                 <div class="courses" >
 
                     <div v-for="(item, index) in estudios_vue">
-                        <div class="card-header" data-toggle="" role="button" v-bind:href="getRefId(item.id)"
-                             v-on:load="test(item.id)" aria-controls="collapseExample" aria-expanded="false">
-                            <a class="study-name-title" data-toggle="collapse" v-bind:href="getRefId(item.id)" v-on:load="test(item.id)"  aria-expanded="false"
-                               role="button"  aria-controls="collapseExample">
+                        <div class="card-header" data-toggle="" role="button"
+                             aria-controls="collapseExample" aria-expanded="false">
+                            <a class="study-name-title"  v-bind:href="studyLinkSublime(item.id)"
+                                 >
                                 {{ item.name }}
                             </a>
                             <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>
@@ -47,9 +47,9 @@
                         </div>
                         <div class="subjects-section" v-if="!showPhotoEmptySubjects">
                             <ul class="subjects-list">
-                                <li class="subjects-list-item" v-bind:style="{ borderLeftWidth: 23+'px',borderLeftStyle: 'solid', borderLeftColor: subject.subject_color}"
+                                <li class="subjects-list-item" @click="subjectLink(subject.subject_ID)" v-bind:style="{ borderLeftWidth: 23+'px',borderLeftStyle: 'solid', borderLeftColor: subject.subject_color}"
                                     v-for="subject in subjectsArray">
-                                    <p class="item name">{{subject.subject_name}}</p>
+                                    <p class="item name" >{{subject.subject_name}}</p>
                                     <p class="item period"> {{subject.period_name}}</p>
                                 </li>
                             </ul>
@@ -309,9 +309,6 @@
                 },
                 periodsArray:'',
                 show_exists: false,
-                // testStyle: {
-                //    backgroundColor: 'red',
-                // },
                 showPeriodDatesExist:false,
                 showPeriodGreater:false,
                 showPeriodNameExist:false,
@@ -325,9 +322,9 @@
         },
 
         methods:{
-            getRefId(id){
-                return "#collapse-list" + id;
-            },
+            // getRefId(id){
+            //     return "#collapse-list" + id;
+            // },
             getRefId2(id){
                 return "collapse-list" + id;
             },
@@ -353,9 +350,6 @@
                     .catch(errors => {
                         console.log(errors);
                    });
-            },
-            test(num){
-                //console.log('hellooooo'+ num);
             },
             getStudiesArray(){
                 var aux = [];
@@ -544,6 +538,14 @@
             },
             studyLink(){
                 return "/study/"+this.chosenStudy_id+'/?year='+this.yearIdChosen.year_id;
+            },
+            studyLinkSublime(id){
+                console.log('olsgsdgfsfg');
+                return "/study/" + id;
+            },
+            subjectLink(subject_ID){
+                //return "/study/"+this.chosenStudy_id+'/subject/'+subject_ID;
+                window.location ="/study/"+this.chosenStudy_id+'/subject/'+subject_ID;
             }
         },
         computed:{

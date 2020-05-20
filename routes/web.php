@@ -43,9 +43,11 @@ Route::get('/getstudiesajax','vuejs\StudyController@getStudiesAjax')->name('get_
 Route::get('/getperiodsbyyear','vuejs\StudyController@getPeriodsByYear')->name('get_periods_by_year');
 
 /**********VISTAS PRINCIPALES********/
+/*****SUBJECT******/
 
 /*****STUDY******/
 Route::resource('/study/{study_id}','StudyViewController', ['only' => ['index', 'create', 'store',]]);
+
 Route::get('/years_by_one_study','vuejs\StudyViewController@getYearsByOneStudy')->name('get_years_by_one_study');
 Route::get('/sections_by_subject','vuejs\StudyViewController@getSectionsBySubject')->name('get_sections_by_subject');
 Route::get('/files_by_section','vuejs\StudyViewController@getFilesBySection')->name('get_files_by_section');
@@ -63,4 +65,6 @@ Route::delete('/delete_year', 'vuejs\StudyViewController@deleteYear')->name('del
 Route::delete('/delete_study', 'vuejs\StudyViewController@deleteStudy')->name('delete_study');
 
 /*****SUBJECT******/
-Route::resource('/study/{study_id}/subject/{subject_id}','SubjectController', ['only' => ['index', 'create', 'store',]]);
+
+Route::get('/study/{study_id}/subject/{subject_identity}','SubjectController@index')->name('index_subject');
+

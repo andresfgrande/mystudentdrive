@@ -2840,9 +2840,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       periodsArray: '',
       show_exists: false,
-      // testStyle: {
-      //    backgroundColor: 'red',
-      // },
       showPeriodDatesExist: false,
       showPeriodGreater: false,
       showPeriodNameExist: false,
@@ -2855,9 +2852,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getRefId: function getRefId(id) {
-      return "#collapse-list" + id;
-    },
+    // getRefId(id){
+    //     return "#collapse-list" + id;
+    // },
     getRefId2: function getRefId2(id) {
       return "collapse-list" + id;
     },
@@ -2887,8 +2884,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (errors) {
         console.log(errors);
       });
-    },
-    test: function test(num) {//console.log('hellooooo'+ num);
     },
     getStudiesArray: function getStudiesArray() {
       var aux = [];
@@ -3114,6 +3109,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     studyLink: function studyLink() {
       return "/study/" + this.chosenStudy_id + '/?year=' + this.yearIdChosen.year_id;
+    },
+    studyLinkSublime: function studyLinkSublime(id) {
+      console.log('olsgsdgfsfg');
+      return "/study/" + id;
+    },
+    subjectLink: function subjectLink(subject_ID) {
+      //return "/study/"+this.chosenStudy_id+'/subject/'+subject_ID;
+      window.location = "/study/" + this.chosenStudy_id + '/subject/' + subject_ID;
     }
   },
   computed: {
@@ -3174,8 +3177,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Year__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Year */ "./resources/js/components/Year.vue");
-//
-//
 //
 //
 //
@@ -3346,6 +3347,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    studyLink: function studyLink() {
+      window.location = '/study/' + this.study_prop_vue.id;
+    },
     formatDateYear: function formatDateYear(date_to_format) {
       var date = new Date(date_to_format);
       return date = date.getFullYear();
@@ -3602,6 +3606,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    subjectLink: function subjectLink(study, subject) {
+      return '/study/' + study + '/subject/' + subject;
+    },
     getRefId: function getRefId(id) {
       return "addSectionModal" + id;
     },
@@ -3748,14 +3755,349 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SubjectSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubjectSection */ "./resources/js/components/SubjectSection.vue");
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "SubjectPage"
+  name: "SubjectPage",
+  props: ['current_subject', 'route_get_sections_by_subject', 'route_get_files_by_section', 'route_add_section', 'route_edit_section', 'route_upload_file', 'route_base_images', 'route_delete_file', 'route_delete_section', 'route_edit_subject', 'study_prop', 'years_prop'],
+  components: {
+    SubjectSection: _SubjectSection__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  created: function created() {
+    this.current_subject_vue = this.current_subject;
+    this.route_get_sections_by_subject_vue = this.route_get_sections_by_subject;
+    this.route_get_files_by_section_vue = this.route_get_files_by_section;
+    this.route_add_section_vue = this.route_add_section;
+    this.getSectionsBySubject();
+    this.test_id = this.current_subject_vue.subject_ID;
+    this.route_edit_section_vue = this.route_edit_section;
+    this.route_upload_file_vue = this.route_upload_file;
+    this.route_base_images_vue = this.route_base_images;
+    this.route_delete_file_vue = this.route_delete_file;
+    this.route_delete_section_vue = this.route_delete_section;
+    this.route_edit_subject_vue = this.route_edit_subject;
+    this.componentKey += 1;
+    this.study_prop_vue = this.study_prop;
+    this.years_prop_vue = this.years_prop;
+  },
+  data: function data() {
+    return {
+      current_subject_vue: {},
+      route_get_sections_by_subject_vue: '',
+      subject_info: {
+        subject_id: ''
+      },
+      subjectSections: [],
+      componentKey: 0,
+      route_get_files_by_section_vue: '',
+      sectionToAdd: {
+        subject_id: '',
+        name: ''
+      },
+      showNameExists: false,
+      route_add_section_vue: '',
+      test_id: '',
+      modalAbierto: '',
+      route_edit_section_vue: '',
+      route_upload_file_vue: '',
+      route_base_images_vue: '',
+      route_delete_file_vue: '',
+      sectionToDelete: {
+        section_id: ''
+      },
+      route_delete_section_vue: '',
+      modalDeleteAbierto: '',
+      sectionToDeleteName: '',
+      tmpSubjectName: '',
+      editing: false,
+      subjectToEdit: {
+        subject_id: '',
+        name: '',
+        period_id: ''
+      },
+      route_edit_subject_vue: '',
+      showNameExistsSubject: false,
+      route_edit_subject_from_subject_vue: ''
+    };
+  },
+  methods: {
+    choseYear: function choseYear(year) {
+      window.location = '/study/' + this.study_prop_vue.id + '?year=' + year.id;
+    },
+    studyLink: function studyLink() {
+      window.location = '/study/' + this.study_prop_vue.id;
+    },
+    formatDateYear: function formatDateYear(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.getFullYear();
+    },
+    formatDateFull: function formatDateFull(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.toLocaleDateString();
+    },
+    toggleSidebar: function toggleSidebar() {
+      $("#wrapper").toggleClass("toggled");
+    },
+    getRefId: function getRefId(id) {
+      return "addSectionModal" + id;
+    },
+    getDeleteRefId: function getDeleteRefId(id) {
+      return "deleteSectionModal" + id;
+    },
+    enableEditing: function enableEditing() {
+      this.tmpSubjectName = this.current_subject_vue.subject_name;
+      this.editing = true;
+    },
+    disableEditing: function disableEditing() {
+      this.tempSubjectName = null;
+      this.editing = false;
+    },
+    saveEditSubject: function saveEditSubject() {
+      var _this = this;
+
+      var url = this.route_edit_subject_vue;
+      this.subjectToEdit.subject_id = this.current_subject_vue.subject_ID;
+      this.subjectToEdit.period_id = this.current_subject_vue.period_id;
+      this.subjectToEdit.name = this.tmpSubjectName;
+      axios.put(url, {
+        subject: this.subjectToEdit
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'error_subject_exists') {
+          _this.showNameExistsSubject = true;
+        } else {
+          _this.current_subject_vue.subject_name = _this.tmpSubjectName;
+
+          _this.disableEditing();
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getSectionsBySubject: function getSectionsBySubject() {
+      var _this2 = this;
+
+      this.subject_info = this.current_subject_vue;
+      var url = this.route_get_sections_by_subject_vue;
+      axios.get(url, {
+        params: this.subject_info
+      }).then(function (response) {
+        console.log(response.data.result);
+        _this2.subjectSections = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addSectionModal: function addSectionModal(id) {
+      var aux = '#addSectionModal' + id;
+      $(aux).modal('show');
+      this.sectionToAdd.subject_id = '';
+      this.sectionToAdd.name = '';
+      this.modalAbierto = aux;
+    },
+    addSection: function addSection() {
+      var _this3 = this;
+
+      var url = this.route_add_section_vue;
+      this.sectionToAdd.subject_id = this.current_subject_vue.subject_ID;
+      axios.post(url, {
+        section: this.sectionToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this3.getSectionsBySubject();
+
+        if (response.data.result === 'error_section_exists') {
+          _this3.showNameExists = true;
+        } else {
+          $(_this3.modalAbierto).modal('hide');
+          _this3.studyToAdd = '';
+          _this3.showPhotoEmpty = false;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    cleanMessage: function cleanMessage() {
+      this.showNameExists = false;
+    },
+    deleteSection: function deleteSection() {
+      var _this4 = this;
+
+      //this.sectionToDelete.section_id = id;
+      var url = this.route_delete_section_vue;
+      axios["delete"](url, {
+        params: this.sectionToDelete
+      }).then(function (response) {
+        console.log(response.data.result);
+        $(_this4.modalDeleteAbierto).modal('hide');
+        _this4.componentKey += 1;
+
+        _this4.getSectionsBySubject();
+
+        _this4.componentKey += 1;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    deleteSectionModal: function deleteSectionModal(subject_id, section_id, section_name) {
+      var modalId = '#deleteSectionModal' + subject_id;
+      $(modalId).modal('show');
+      this.sectionToDelete.section_id = section_id;
+      this.sectionToDeleteName = section_name;
+      this.modalDeleteAbierto = modalId;
+    }
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      if (this.sectionToAdd.name === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    subjectName: function subjectName() {
+      this.current_subject_vue = this.current_subject;
+      this.componentKey += 1;
+      this.getSectionsBySubject();
+      return this.current_subject_vue.subject_name;
+    },
+    isDisabledEdit: function isDisabledEdit() {
+      if (this.tmpSubjectName === '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -40924,14 +41266,8 @@ var render = function() {
                     attrs: {
                       "data-toggle": "",
                       role: "button",
-                      href: _vm.getRefId(item.id),
                       "aria-controls": "collapseExample",
                       "aria-expanded": "false"
-                    },
-                    on: {
-                      load: function($event) {
-                        return _vm.test(item.id)
-                      }
                     }
                   },
                   [
@@ -40939,18 +41275,7 @@ var render = function() {
                       "a",
                       {
                         staticClass: "study-name-title",
-                        attrs: {
-                          "data-toggle": "collapse",
-                          href: _vm.getRefId(item.id),
-                          "aria-expanded": "false",
-                          role: "button",
-                          "aria-controls": "collapseExample"
-                        },
-                        on: {
-                          load: function($event) {
-                            return _vm.test(item.id)
-                          }
-                        }
+                        attrs: { href: _vm.studyLinkSublime(item.id) }
                       },
                       [
                         _vm._v(
@@ -41100,6 +41425,11 @@ var render = function() {
                             borderLeftWidth: 23 + "px",
                             borderLeftStyle: "solid",
                             borderLeftColor: subject.subject_color
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.subjectLink(subject.subject_ID)
+                            }
                           }
                         },
                         [
@@ -41993,9 +42323,20 @@ var render = function() {
           attrs: { id: "sidebar-wrapper" }
         },
         [
-          _c("div", { staticClass: "sidebar-heading" }, [
-            _vm._v(_vm._s(_vm.study_prop_vue.name) + "\n\n                ")
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "sidebar-heading study-link",
+              on: { click: _vm.studyLink }
+            },
+            [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.study_prop_vue.name) +
+                  "\n                "
+              )
+            ]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "list-group list-group-flush" }, [
             _c(
@@ -42327,14 +42668,25 @@ var render = function() {
         _c("div", {}, [
           _c("div", { staticClass: "card-header" }, [
             !_vm.editing
-              ? _c("a", [
-                  _vm._v(
-                    " " +
-                      _vm._s(_vm.subjectName) +
-                      " - " +
-                      _vm._s(_vm.current_subject_vue.period_name)
-                  )
-                ])
+              ? _c(
+                  "a",
+                  {
+                    attrs: {
+                      href: _vm.subjectLink(
+                        _vm.current_subject_vue.study_id,
+                        _vm.current_subject_vue.subject_ID
+                      )
+                    }
+                  },
+                  [
+                    _vm._v(
+                      " " +
+                        _vm._s(_vm.subjectName) +
+                        " - " +
+                        _vm._s(_vm.current_subject_vue.period_name)
+                    )
+                  ]
+                )
               : _vm._e(),
             _vm._v(" "),
             !_vm.editing
@@ -42687,7 +43039,406 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container content study" }, [
+    _c("div", { staticClass: "d-flex", attrs: { id: "wrapper" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "bg-light border-right",
+          attrs: { id: "sidebar-wrapper" }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "sidebar-heading study-link",
+              on: { click: _vm.studyLink }
+            },
+            [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.study_prop_vue.name) +
+                  "\n                "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "list-group list-group-flush" }, [
+            _c(
+              "ul",
+              { staticClass: "list-unstyled components years" },
+              _vm._l(_vm.years_prop_vue, function(year) {
+                return _c(
+                  "li",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action bg-light",
+                    on: {
+                      click: function($event) {
+                        return _vm.choseYear(year)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "year-range",
+                        attrs: { "aria-expanded": "false" }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.formatDateYear(year.start_date)) +
+                            " - " +
+                            _vm._s(_vm.formatDateYear(year.end_date))
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("a", { staticClass: "date-range" }, [
+                      _vm._v(
+                        _vm._s(_vm.formatDateFull(year.start_date)) +
+                          " - " +
+                          _vm._s(_vm.formatDateFull(year.end_date))
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "page-content-wrapper" } }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { id: "menu-toggle" },
+          on: { click: _vm.toggleSidebar }
+        },
+        [_vm._v(". . .")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "subject subject-page" }, [
+        _c(
+          "div",
+          { staticClass: "subject-content subject-page-content" },
+          [
+            _c("h3", { staticClass: "title-subject" }, [
+              _vm._v(
+                _vm._s(_vm.subjectName) +
+                  " - " +
+                  _vm._s(_vm.current_subject_vue.period_name) +
+                  " " +
+                  _vm._s(
+                    _vm.formatDateYear(_vm.current_subject_vue.start_year)
+                  ) +
+                  " - " +
+                  _vm._s(_vm.formatDateYear(_vm.current_subject_vue.end_year))
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", {}, [
+              _c("div", { staticClass: "card-header" }, [
+                !_vm.editing
+                  ? _c("a", [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.subjectName) +
+                          " - " +
+                          _vm._s(_vm.current_subject_vue.period_name)
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.editing
+                  ? _c("div", {
+                      staticClass: "edit-subject-div",
+                      on: { click: _vm.enableEditing }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "add-section-div",
+                  on: {
+                    click: function($event) {
+                      return _vm.addSectionModal(
+                        _vm.current_subject_vue.subject_ID
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.editing
+                  ? _c("div", {}, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tmpSubjectName,
+                            expression: "tmpSubjectName"
+                          }
+                        ],
+                        staticClass: "input",
+                        domProps: { value: _vm.tmpSubjectName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.tmpSubjectName = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.showNameExistsSubject
+                        ? _c("small", { staticClass: "text-danger" }, [
+                            _vm._v(
+                              "\n                                    Ya tienes una asignatura con este nombre.\n                                "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("button", { on: { click: _vm.disableEditing } }, [
+                        _vm._v(" Cancelar ")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: { disabled: _vm.isDisabledEdit },
+                          on: { click: _vm.saveEditSubject }
+                        },
+                        [_vm._v(" Guardar ")]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.subjectSections, function(section) {
+              return _c(
+                "div",
+                [
+                  _c("div", {
+                    staticClass: "delete-section-div",
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteSectionModal(
+                          _vm.current_subject_vue.subject_ID,
+                          section.id,
+                          section.name
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("SubjectSection", {
+                    key: _vm.componentKey,
+                    attrs: {
+                      current_section: section,
+                      route_get_files_by_section:
+                        _vm.route_get_files_by_section_vue,
+                      route_edit_section: _vm.route_edit_section_vue,
+                      route_upload_file: _vm.route_upload_file_vue,
+                      route_base_images: _vm.route_base_images_vue,
+                      route_delete_file: _vm.route_delete_file_vue
+                    }
+                  })
+                ],
+                1
+              )
+            })
+          ],
+          2
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.getRefId(_vm.current_subject_vue.subject_ID),
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "editNameLabel" }
+                  },
+                  [
+                    _vm._v(
+                      "Nombre de la sección para " +
+                        _vm._s(_vm.current_subject_vue.subject_name)
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0)
+              ]),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Nombre de la sección")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sectionToAdd.name,
+                          expression: "sectionToAdd.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name",
+                        type: "text",
+                        name: "name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.sectionToAdd.name },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.sectionToAdd,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExists
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                    Ya tienes una sección con este nombre.\n                                "
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.isDisabled },
+                      on: {
+                        click: function($event) {
+                          return _vm.addSection(
+                            _vm.current_subject_vue.subject_name
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.getDeleteRefId(_vm.current_subject_vue.subject_ID),
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("h5", [_vm._v(_vm._s(_vm.sectionToDeleteName))])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteSection }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -42695,10 +43446,46 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      { staticClass: "container", staticStyle: { "margin-top": "100px" } },
-      [_c("h1", [_vm._v("SUBJECT PAGE")])]
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "deleteFileLabel" } },
+        [
+          _vm._v(
+            "¿Estas seguro que deseas eliminar esta sección y todos los archivos que contiene?"
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true

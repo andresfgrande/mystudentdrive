@@ -3,7 +3,7 @@
         <div class="subject-content">
             <div class="">
                 <div class="card-header">
-                        <a v-if="!editing"> {{subjectName}} - {{current_subject_vue.period_name}}</a>
+                        <a v-if="!editing" v-bind:href="subjectLink(current_subject_vue.study_id, current_subject_vue.subject_ID)"> {{subjectName}} - {{current_subject_vue.period_name}}</a>
                         <div v-if="!editing" class="edit-subject-div" @click="enableEditing"></div>
                     <div class="add-section-div" @click="addSectionModal(current_subject_vue.subject_ID)"></div>
                     <!---------------------------------------------------------->
@@ -164,6 +164,9 @@
             }
         },
         methods:{
+            subjectLink(study,subject){
+                return '/study/' + study + '/subject/' + subject;
+            },
             getRefId(id){
                 return "addSectionModal" + id;
             },
