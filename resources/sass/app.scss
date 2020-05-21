@@ -591,6 +591,40 @@
     top: 100px;
     position: absolute;
 }
+
+/**************PLANNER PAGE****************/
+.container.content.planner{
+    margin-top: 115px;
+    .planner-title{
+        text-align: center;
+        margin-bottom:1.5em;
+    }
+    .add-event{
+        float: right;
+    }
+    .custom-card-event{
+        margin-bottom: 1.5em;
+        .event-date{
+            margin-left:1em;
+            font-weight: bold;
+            color:#3490dc;
+        }
+        .card-body{
+            .event-name{
+                font-weight:bold;
+                display: inline-block;
+            }
+            .event-time{
+                font-weight:bold;
+            }
+            .event-subject-name{
+                display: inline-block;
+                float: right;
+            }
+        }
+    }
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {

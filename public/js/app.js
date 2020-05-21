@@ -2372,6 +2372,405 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Planner.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Planner.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Planner",
+  props: ['planner_events', 'route_add_event', 'route_get_events', 'route_get_subjects_by_user', 'route_edit_event', 'route_delete_event', 'route_update_old_events'],
+  created: function created() {
+    this.planner_events_vue = this.planner_events;
+    this.route_add_event_vue = this.route_add_event;
+    this.route_get_events_vue = this.route_get_events;
+    this.route_get_subjects_by_user_vue = this.route_get_subjects_by_user;
+    this.route_edit_event_vue = this.route_edit_event;
+    this.route_delete_event_vue = this.route_delete_event;
+    this.route_update_old_events_vue = this.route_update_old_events;
+    this.getSubjects(); //this.getEvents();
+
+    this.updateOldEvents();
+  },
+  data: function data() {
+    return {
+      planner_events_vue: '',
+      route_add_event_vue: '',
+      eventToAdd: {
+        subject_id: '',
+        name: '',
+        description: '',
+        classroom: '',
+        time: '',
+        date: ''
+      },
+      eventToEdit: {
+        event_id: '',
+        subject_id: '',
+        name: '',
+        description: '',
+        classroom: '',
+        time: '',
+        date: ''
+      },
+      showNameExists: '',
+      showNameExistsEdit: '',
+      route_get_events_vue: '',
+      route_get_subjects_by_user_vue: '',
+      subjectsArray: [],
+      route_edit_event_vue: '',
+      eventToDelete: {
+        event_id: ''
+      },
+      eventToDeleteName: '',
+      showDeleteFail: false,
+      checked: {
+        show_old: false
+      },
+      route_update_old_events_vue: ''
+    };
+  },
+  methods: {
+    cleanMessage: function cleanMessage() {
+      this.showNameExists = false;
+      this.showNameExistsEdit = false;
+    },
+    formatDateFull: function formatDateFull(date_to_format) {
+      var date = new Date(date_to_format);
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      return date = date.toLocaleDateString("es-ES", options);
+    },
+    getEvents: function getEvents() {
+      var _this = this;
+
+      //console.log(this.checked)
+      var url = this.route_get_events_vue;
+      axios.get(url, {
+        params: this.checked
+      }).then(function (response) {
+        console.log(response.data.result);
+        _this.planner_events_vue = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addEvent: function addEvent() {
+      var _this2 = this;
+
+      var url = this.route_add_event_vue;
+      axios.post(url, {
+        event_planner: this.eventToAdd
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'error_event_exists') {
+          _this2.showNameExists = true;
+        }
+
+        if (response.data.result === 'event_created') {
+          $('#addEventModal').modal('hide');
+
+          _this2.getEvents();
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    editEvent: function editEvent() {
+      var _this3 = this;
+
+      var url = this.route_edit_event_vue;
+      axios.put(url, {
+        event_planner: this.eventToEdit
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'event_edited') {
+          $('#editEventModal').modal('hide');
+
+          _this3.getEvents();
+        }
+
+        if (response.data.result === 'error_event_exists') {
+          _this3.showNameExistsEdit = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    deleteEvent: function deleteEvent() {
+      var _this4 = this;
+
+      var url = this.route_delete_event_vue;
+      axios["delete"](url, {
+        params: this.eventToDelete
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'event_deleted') {
+          $('#deleteEventModal').modal('hide');
+
+          _this4.getEvents();
+        }
+
+        if (response.data.result === 'error_delete_event') {
+          _this4.showDeleteFail = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addEventModal: function addEventModal() {
+      $('#addEventModal').modal('show');
+      this.eventToAdd.name = '';
+      this.eventToAdd.description = '';
+      this.eventToAdd.date = '';
+      this.eventToAdd.classroom = '';
+      this.eventToAdd.subject_id = '';
+      this.eventToAdd.time = '';
+    },
+    editEventModal: function editEventModal(event) {
+      $('#editEventModal').modal('show');
+      this.eventToEdit.event_id = event.id;
+      this.eventToEdit.name = event.name;
+      this.eventToEdit.description = event.description;
+      this.eventToEdit.date = event.date;
+      this.eventToEdit.classroom = event.classroom;
+      this.eventToEdit.subject_id = event.subject_id;
+      this.eventToEdit.time = event.time;
+    },
+    deleteEventModal: function deleteEventModal(id, name) {
+      this.eventToDelete.event_id = id;
+      this.eventToDeleteName = name;
+      this.showDeleteFail = false;
+      $('#deleteEventModal').modal('show');
+    },
+    getSubjects: function getSubjects() {
+      var _this5 = this;
+
+      var url = this.route_get_subjects_by_user_vue;
+      axios.get(url).then(function (response) {
+        console.log(response.data.result);
+        _this5.subjectsArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    updateOldEvents: function updateOldEvents() {
+      var url = this.route_update_old_events_vue;
+      axios.put(url).then(function (response) {
+        console.log(response.data.result);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    }
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDisabledEdit: function isDisabledEdit() {
+      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfilePhoto.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ProfilePhoto.vue?vue&type=script&lang=js& ***!
@@ -2532,7 +2931,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -41076,6 +41474,901 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container content planner" }, [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col" },
+        [
+          _c("h3", { staticClass: "planner-title" }, [_vm._v("Agenda")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.checked.show_old,
+                expression: "checked.show_old"
+              }
+            ],
+            attrs: { type: "checkbox", id: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.checked.show_old)
+                ? _vm._i(_vm.checked.show_old, null) > -1
+                : _vm.checked.show_old
+            },
+            on: {
+              change: [
+                function($event) {
+                  var $$a = _vm.checked.show_old,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(_vm.checked, "show_old", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.checked,
+                          "show_old",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.checked, "show_old", $$c)
+                  }
+                },
+                _vm.getEvents
+              ]
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "checkbox" } }, [
+            _vm._v("Mostrar eventos anteriores a la fecha actual.")
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary add-event",
+              attrs: { type: "button" },
+              on: { click: _vm.addEventModal }
+            },
+            [_vm._v("Añadir un evento")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.planner_events_vue, function(event) {
+            return _c("div", { staticClass: "custom-card-event" }, [
+              _c("h5", { staticClass: "card-title event-date" }, [
+                _vm._v(_vm._s(_vm.formatDateFull(event.date)))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card w-75" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title event-name" }, [
+                    _vm._v(_vm._s(event.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("h5", { staticClass: "card-title event-subject-name" }, [
+                    _vm._v(_vm._s(event.subject_name))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v(_vm._s(event.description))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text event-time" }, [
+                    _vm._v(
+                      " Hora: " +
+                        _vm._s(event.time) +
+                        " - Aula " +
+                        _vm._s(event.classroom)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.editEventModal(event)
+                        }
+                      }
+                    },
+                    [_vm._v("edita event")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteEventModal(event.id, event.name)
+                        }
+                      }
+                    },
+                    [_vm._v("borra event")]
+                  )
+                ])
+              ])
+            ])
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm._m(0)
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addEventModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToAdd.name,
+                          expression: "eventToAdd.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name",
+                        type: "text",
+                        name: "name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToAdd.name },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToAdd, "name", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExists
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                Ya tienes un evento con este nombre en la asignatura escogida.\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "description" } }, [
+                      _vm._v("Descripción")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToAdd.description,
+                          expression: "eventToAdd.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "description",
+                        type: "text",
+                        name: "description",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToAdd.description },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.eventToAdd,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.eventToAdd.subject_id,
+                            expression: "eventToAdd.subject_id"
+                          }
+                        ],
+                        attrs: { id: "subject" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.eventToAdd,
+                              "subject_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v("evento general")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.subjectsArray, function(subject) {
+                          return _c(
+                            "option",
+                            { domProps: { value: subject.subject_id } },
+                            [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(subject.subject_name) +
+                                  " - " +
+                                  _vm._s(subject.period_name) +
+                                  " - " +
+                                  _vm._s(subject.study_name) +
+                                  "\n                                "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "classroom" } }, [
+                      _vm._v("classroom")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToAdd.classroom,
+                          expression: "eventToAdd.classroom"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "classroom",
+                        type: "text",
+                        name: "classroom",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToAdd.classroom },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.eventToAdd,
+                            "classroom",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "time" } }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToAdd.time,
+                          expression: "eventToAdd.time"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "time",
+                        type: "time",
+                        name: "time",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToAdd.time },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToAdd, "time", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "date" } }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToAdd.date,
+                          expression: "eventToAdd.date"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "date",
+                        type: "date",
+                        name: "date",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToAdd.date },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToAdd, "date", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.isDisabled },
+                      on: { click: _vm.addEvent }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "editEventModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name-edit" } }, [
+                      _vm._v("Nombre")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToEdit.name,
+                          expression: "eventToEdit.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name-edit",
+                        type: "text",
+                        name: "name",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToEdit.name },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToEdit, "name", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExistsEdit
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                Ya tienes un evento con este nombre en la asignatura escogida.\n                            "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "description-edit" } }, [
+                      _vm._v("Descripción")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToEdit.description,
+                          expression: "eventToEdit.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "description-edit",
+                        type: "text",
+                        name: "description",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToEdit.description },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.eventToEdit,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.eventToEdit.subject_id,
+                            expression: "eventToEdit.subject_id"
+                          }
+                        ],
+                        attrs: { id: "subject-edit" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.eventToEdit,
+                              "subject_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v("evento general")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.subjectsArray, function(subject) {
+                          return _c(
+                            "option",
+                            { domProps: { value: subject.subject_id } },
+                            [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(subject.subject_name) +
+                                  " - " +
+                                  _vm._s(subject.period_name) +
+                                  " - " +
+                                  _vm._s(subject.study_name) +
+                                  "\n                                "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "classroom-edit" } }, [
+                      _vm._v("classroom")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToEdit.classroom,
+                          expression: "eventToEdit.classroom"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "classroom-edit",
+                        type: "text",
+                        name: "classroom",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToEdit.classroom },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.eventToEdit,
+                            "classroom",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "time-edit" } }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToEdit.time,
+                          expression: "eventToEdit.time"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "time-edit",
+                        type: "time",
+                        name: "time",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToEdit.time },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToEdit, "time", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "date-edit" } }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.eventToEdit.date,
+                          expression: "eventToEdit.date"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "date-edit",
+                        type: "date",
+                        name: "date",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.eventToEdit.date },
+                      on: {
+                        keyup: _vm.cleanMessage,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.eventToEdit, "date", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.isDisabledEdit },
+                      on: { click: _vm.editEvent }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "deleteEventModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("h5", [_vm._v(_vm._s(_vm.eventToDeleteName))])
+                  ]),
+                  _vm._v(" "),
+                  _vm.showDeleteFail
+                    ? _c("small", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n                           No se ha podido borrar este evento, vuelve a intentarlo.\n                        "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteEvent }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [_c("h3", [_vm._v("Calendario")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "editNameLabel" } }, [
+        _vm._v("Nuevo evento")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel2" } },
+        [_vm._v("Edición del evento")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel3" } },
+        [_vm._v("¿Seguro que quieres borrar este evento?")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfilePhoto.vue?vue&type=template&id=982ca518&scoped=true&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ProfilePhoto.vue?vue&type=template&id=982ca518&scoped=true& ***!
@@ -56831,6 +58124,7 @@ Vue.component('subject', __webpack_require__(/*! ./components/Subject.vue */ "./
 Vue.component('subject-section', __webpack_require__(/*! ./components/SubjectSection.vue */ "./resources/js/components/SubjectSection.vue")["default"]);
 Vue.component('subject-page', __webpack_require__(/*! ./components/SubjectPage.vue */ "./resources/js/components/SubjectPage.vue")["default"]);
 Vue.component('agenda', __webpack_require__(/*! ./components/Agenda.vue */ "./resources/js/components/Agenda.vue")["default"]);
+Vue.component('planner', __webpack_require__(/*! ./components/Planner.vue */ "./resources/js/components/Planner.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -57159,6 +58453,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Planner.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Planner.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Planner.vue?vue&type=template&id=48ebd237&scoped=true& */ "./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true&");
+/* harmony import */ var _Planner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Planner.vue?vue&type=script&lang=js& */ "./resources/js/components/Planner.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Planner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "48ebd237",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Planner.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Planner.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Planner.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Planner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Planner.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Planner.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Planner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Planner.vue?vue&type=template&id=48ebd237&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Planner.vue?vue&type=template&id=48ebd237&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Planner_vue_vue_type_template_id_48ebd237_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

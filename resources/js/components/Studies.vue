@@ -11,8 +11,7 @@
                     <div v-for="(item, index) in estudios_vue">
                         <div class="card-header" data-toggle="" role="button"
                              aria-controls="collapseExample" aria-expanded="false">
-                            <a class="study-name-title"  v-bind:href="studyLinkSublime(item.id)"
-                                 >
+                            <a class="study-name-title"  v-bind:href="studyLinkSublime(item.id)">
                                 {{ item.name }}
                             </a>
                             <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>

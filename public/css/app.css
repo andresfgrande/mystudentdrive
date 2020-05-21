@@ -22368,6 +22368,45 @@ a.text-dark:focus {
   position: absolute;
 }
 
+/**************PLANNER PAGE****************/
+
+.container.content.planner {
+  margin-top: 115px;
+}
+
+.container.content.planner .planner-title {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.container.content.planner .add-event {
+  float: right;
+}
+
+.container.content.planner .custom-card-event {
+  margin-bottom: 1.5em;
+}
+
+.container.content.planner .custom-card-event .event-date {
+  margin-left: 1em;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.planner .custom-card-event .card-body .event-name {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body .event-time {
+  font-weight: bold;
+}
+
+.container.content.planner .custom-card-event .card-body .event-subject-name {
+  display: inline-block;
+  float: right;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {

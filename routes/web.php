@@ -65,6 +65,13 @@ Route::delete('/delete_year', 'vuejs\StudyViewController@deleteYear')->name('del
 Route::delete('/delete_study', 'vuejs\StudyViewController@deleteStudy')->name('delete_study');
 
 /*****SUBJECT******/
-
 Route::get('/study/{study_id}/subject/{subject_identity}','SubjectController@index')->name('index_subject');
 
+/*****AGENDA*****/
+Route::get('/planner','PlannerController@index')->name('index_planner');
+Route::post('/add_event_planner','vuejs\PlannerController@addEvent')->name('add_event');
+Route::get('/get_events','vuejs\PlannerController@getEvents')->name('get_events');
+Route::get('/get_subjects_by_user','vuejs\PlannerController@getSubjectsByUser')->name('get_subjects_by_user');
+Route::put('/edit_event_planner','vuejs\PlannerController@editEvent')->name('edit_event');
+Route::delete('/delete_event_planner','vuejs\PlannerController@deleteEvent')->name('delete_event');
+Route::put('/update_old_events','vuejs\PlannerController@updateOldEvents')->name('update_old_events');
