@@ -8,7 +8,7 @@
                 <h3 class="planner-title">Agenda de {{checkElementName}}</h3>
                 <div class="checkbox-show-old">
                     <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
-                    <label for="checkbox-planner-tag">Mostrar eventos anteriores a la fecha actual.</label>
+                    <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>
                 </div>
 
                 <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>
@@ -267,10 +267,10 @@
         },
         methods:{
             addClass(){
-                if(this.subject_prop_vue === null){
-                    this.useTheme = false;
-                }else{
+                if(this.subject_prop_vue != null){
                     this.useTheme = true;
+                }else{
+                    this.useTheme = false;
                 }
 
             },
@@ -452,10 +452,11 @@
                 }
             },
             checkElementName(){
-               if(this.subject_prop_vue === null){
-                   return this.study_prop_vue.name;
-               }else{
+               if(this.subject_prop_vue != null ){
                    return this.subject_prop_vue.subject_name;
+               }
+               if(this.study_prop_vue != null ){
+                  return this.study_prop_vue.name;
                }
             },
         }

@@ -5,7 +5,7 @@
                 <h3 class="planner-title">Agenda</h3>
                 <div class="checkbox-show-old">
                     <input type="checkbox" id="checkbox" @change="getEvents" v-model="checked.show_old">
-                    <label for="checkbox">Mostrar eventos anteriores a la fecha actual.</label>
+                    <label for="checkbox">Mostrar eventos anteriores.</label>
                 </div>
 
                 <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>

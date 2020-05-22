@@ -1,9 +1,4 @@
 <template>
-<!--    <div style="margin-top: 100px;" class="container">-->
-<!--        <h1>SUBJECT PAGE</h1>-->
-<!--        {{current_subject}}-->
-<!--    </div>-->
-
     <div class="container content study">
 
         <!-- Sidebar -->
@@ -25,10 +20,10 @@
         </div>
 
         <div id="page-content-wrapper-subject-page">
-            <button class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">. . .</button>
+            <button class="btn btn-primary" id="menu-toggle-subject-page" @click="toggleSidebar">. . .</button>
             <div class="subject subject-page">
                 <div class="subject-content subject-page-content">
-                    <h3 class="title-subject">{{subjectName}} - {{current_subject_vue.period_name}} {{formatDateYear(current_subject_vue.start_year)}} - {{formatDateYear(current_subject_vue.end_year)}}</h3>
+                    <h3 class="title-subject">{{subjectName}} - {{current_subject_vue.period_name}} - {{formatDateYear(current_subject_vue.start_year)}} / {{formatDateYear(current_subject_vue.end_year)}}</h3>
                     <div class="">
                         <div class="card-header">
                             <a v-if="!editing"> {{subjectName}} - {{current_subject_vue.period_name}}</a>

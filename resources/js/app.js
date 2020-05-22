@@ -37,6 +37,7 @@ Vue.component('subject-page', require('./components/SubjectPage.vue').default);
 Vue.component('agenda', require('./components/Agenda.vue').default);
 Vue.component('planner', require('./components/Planner.vue').default);
 Vue.component('planner-tag', require('./components/PlannerTag.vue').default);
+Vue.component('planner-tag-dashboard', require('./components/PlannerTagDashboard.vue').default);
 
 Vue.component('jw-pagination', JwPagination);
 

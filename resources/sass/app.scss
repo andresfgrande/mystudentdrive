@@ -20,7 +20,7 @@
 .navbar{
     position: fixed;
     width: 100%;
-    z-index: 9999;
+    z-index: 1040;
     top: 0px;
 }
 
@@ -152,6 +152,7 @@
             .study-name-title {
                 font-size: 16px;
                 text-decoration: none;
+                font-weight: bold;
                 &:hover{
                     font-weight: bold;
                 }
@@ -414,11 +415,11 @@
         margin-bottom: 2em;
         width: 100%;
         .card-header{
-            //padding-bottom: 1.3em;
             a{
                 font-size: 18px;
                 color: #3490dc;
                 cursor:pointer;
+                font-weight: bold;
             }
             margin-bottom: 1em;
 
@@ -595,6 +596,11 @@
     width: 30%;
     position: absolute;
 }
+.agenda-page.dashboard{
+    margin-left: 0;
+    width: 100%;
+    //position: absolute;
+}
 
 /**************PLANNER PAGE****************/
 .container.content.planner{
@@ -626,7 +632,7 @@
             margin-left:0;
             font-weight: bold;
             color:#3490dc;
-            display: inline-block;
+            //display: inline-block;
         }
         .card-body{
             padding-bottom:0;
@@ -661,6 +667,9 @@
 
         }
     }
+}
+.container.content.planner.dashboard{
+    margin-top:0;
 }
 
 /**************************MOBILE*************************************/
@@ -772,7 +781,21 @@
     #menu-toggle{
         z-index: 2;
         top: 75px;
-        position: absolute;
+        //position: absolute;
+        position: fixed;
+        left: 10px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+#page-content-wrapper-subject-page {
+    min-width: 100vw;
+    #menu-toggle-subject-page{
+        z-index: 2;
+        top: 75px;
+        //position: absolute;
+        position: fixed;
         left: 10px;
         padding-top: 0;
         padding-bottom: 0;
@@ -804,7 +827,7 @@
         left: 16%;
     }
     #page-content-wrapper-subject-page{
-        #menu-toggle{
+        #menu-toggle-subject-page{
             top: 100px;
             position: absolute;
             left: 15px;

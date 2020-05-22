@@ -1,23 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container content dashboard">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="container content dashboard">
+        <div class="row">
+            <div class="col-sm">
+                One of four columns
 
-                    You are logged in!
-                </div>
+            </div>
+            <div class="col-sm">
+                <planner-tag-dashboard
+                    v-bind:study_prop="{{json_encode($study)}}"
+                    route_add_event="{{route('add_event')}}"
+                    route_get_events="{{route('get_events')}}"
+                    route_get_subjects_by_user="{{route('get_subjects_by_user')}}"
+                    route_edit_event="{{route('edit_event')}}"
+                    route_delete_event="{{route('delete_event')}}"
+                    route_update_old_events="{{route('update_old_events')}}"
+                    route_get_events_by_study="{{route('get_events_by_study')}}"
+                    v-bind:page_type="{{json_encode($page_type)}}"
+                    route_get_events_by_subject="{{route('get_events_by_subject')}}"
+                    v-bind:subject_prop="{{json_encode($subject)}}"
+                >
+                </planner-tag-dashboard>
+            </div>
+            <div class="col-sm">
+                One of four columns
+
+            </div>
+            <div class="col-sm">
+                One of four columns
+
             </div>
         </div>
     </div>
-
-</div>
 @endsection
