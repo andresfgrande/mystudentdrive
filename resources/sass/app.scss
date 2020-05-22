@@ -588,7 +588,7 @@
 .agenda-page{
     margin-left: 60%;
     width: 40%;
-    top: 100px;
+    //top: 115px;
     position: absolute;
 }
 
@@ -599,28 +599,62 @@
         text-align: center;
         margin-bottom:1.5em;
     }
+    .checkbox-show-old{
+        margin-bottom: 1em;
+        display:inline-block;
+        #checkbox{
+            width: 15px;
+            height: 15px;
+            display:inline-block;
+        }
+        #checkbox-planner-tag{
+            width: 15px;
+            height: 15px;
+            display:inline-block;
+        }
+    }
     .add-event{
         float: right;
     }
     .custom-card-event{
         margin-bottom: 1.5em;
         .event-date{
-            margin-left:1em;
+            margin-left:0;
             font-weight: bold;
             color:#3490dc;
+            display: inline-block;
         }
         .card-body{
+            padding-bottom:0;
             .event-name{
                 font-weight:bold;
-                display: inline-block;
+                //display: inline-block;
             }
             .event-time{
                 font-weight:bold;
+                display: inline-block;
             }
             .event-subject-name{
                 display: inline-block;
                 float: right;
             }
+            .actions-planner-events{
+                display: inline-block;
+                float: right;
+                div.edit-event-div{
+                    content:url("/images/038-edit.png");
+                    width: 22px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+                div.delete-event-div{
+                    content:url("/images/borrar.png");
+                    width: 22px;
+                    cursor:pointer;
+                    display:inline-block;
+                }
+            }
+
         }
     }
 }
@@ -655,6 +689,14 @@
     }
     .row{
         display: block;
+    }
+
+    .container.content.planner{
+        .custom-card-event{
+            .card{
+                width: 100% !important;
+            }
+        }
     }
 
 }

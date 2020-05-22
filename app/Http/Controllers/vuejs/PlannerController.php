@@ -255,7 +255,193 @@ class PlannerController extends Controller
     }
 
     public function updateOldEvents(Request $request){
-        dd($request);
-        //TODO cambiar eestado de los eventos anteriores a la fecha actual.
+
+        $user = Auth::User();
+        $user_id = $user->getAuthIdentifier();
+
+        $result =  DB::table('planner_events')
+            ->where('user_id', $user_id)
+            ->where('old_event','=',0)
+            ->get();
+        $result = $result->toArray();
+
+        $currentDate = date('Y-m-d');
+        foreach($result as $event){
+            if($event->date < $currentDate){
+                $event = Planner::find($event->id);
+                $event->old_event = true;
+                $event->save();
+            }
+        }
+
+    }
+
+    public function getEventsByStudy(Request $request){
+        $show_old = $request->get('show_old');
+        $study_id= $request->get('study_id');
+
+        $user = Auth::User();
+        if($show_old == 'true'){
+            $planner_events = $this->queryGetAllEventsByStudy($user, $study_id);
+        }else{
+            $planner_events = $this->queryGetCurrentEventsByStudy($user,$study_id);
+        }
+        return Response::json(array('success'=>true,'result'=>$planner_events));
+    }
+
+    public function queryGetAllEventsByStudy($user, $study_id){
+        $result =  DB::table('planner_events')
+            ->join('subjects','planner_events.subject_id','=','subjects.id')
+            ->join('periods','subjects.period_id','=','periods.id')
+            ->join('academic_years','periods.academic_year_id','=','academic_years.id')
+            ->join('studies','academic_years.study_id','=','studies.id')
+            ->where('studies.id', $study_id)
+            ->where('planner_events.user_id', $user->getAuthIdentifier())
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+                'subjects.period_id AS subject_period_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+            ));
+        $planner_events1 = $result->toArray();
+        $result2 =  DB::table('planner_events')
+            ->where('user_id', $user->getAuthIdentifier())
+            ->Where('subject_id','=',null)
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+            ));
+        $planner_events2 = $result2->toArray();
+        $planner_events = array_merge($planner_events1,$planner_events2);
+
+        return $planner_events;
+    }
+
+    public function queryGetCurrentEventsByStudy($user, $study_id){
+        $result =  DB::table('planner_events')
+            ->join('subjects','planner_events.subject_id','=','subjects.id')
+            ->join('periods','subjects.period_id','=','periods.id')
+            ->join('academic_years','periods.academic_year_id','=','academic_years.id')
+            ->join('studies','academic_years.study_id','=','studies.id')
+            ->where('studies.id', $study_id)
+            ->where('planner_events.user_id', $user->getAuthIdentifier())
+            ->where('old_event','=' ,false)//check old
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+                'subjects.period_id AS subject_period_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+            ));
+        $planner_events1 = $result->toArray();
+        $result2 =  DB::table('planner_events')
+            ->where('user_id', $user->getAuthIdentifier())
+            ->Where('subject_id','=',null)
+            ->where('old_event','=' ,false)//check old
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+            ));
+        $planner_events2 = $result2->toArray();
+        $planner_events = array_merge($planner_events1,$planner_events2);
+
+        return $planner_events;
+    }
+
+    public function getEventsBySubject(Request $request){
+        $show_old = $request->get('show_old');
+        $subject_id= $request->get('subject_id');
+
+        $user = Auth::User();
+        if($show_old == 'true'){
+            $planner_events = $this->queryGetAllEventsBySubject($user, $subject_id);
+        }else{
+            $planner_events = $this->queryGetCurrentEventsBySubject($user,$subject_id);
+        }
+        return Response::json(array('success'=>true,'result'=>$planner_events));
+    }
+
+    public function queryGetAllEventsBySubject($user, $subject_id){
+        $result =  DB::table('planner_events')
+            ->join('subjects','planner_events.subject_id','=','subjects.id')
+            ->where('planner_events.subject_id', $subject_id)
+            ->where('planner_events.user_id', $user->getAuthIdentifier())
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+                'subjects.period_id AS subject_period_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+            ));
+        $planner_events = $result->toArray();
+
+        return $planner_events;
+    }
+
+    public function queryGetCurrentEventsBySubject($user, $subject_id){
+        $result =  DB::table('planner_events')
+            ->join('subjects','planner_events.subject_id','=','subjects.id')
+            ->where('planner_events.subject_id', $subject_id)
+            ->where('planner_events.user_id', $user->getAuthIdentifier())
+            ->where('old_event','=' ,false)//check old
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+                'subjects.period_id AS subject_period_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+            ));
+        $planner_events = $result->toArray();
+
+        return $planner_events;
     }
 }

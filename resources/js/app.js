@@ -8,7 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
+import JwPagination from 'jw-vue-pagination';
 
 /**
  * The following block of code may be used to automatically register your
@@ -36,6 +36,9 @@ Vue.component('subject-section', require('./components/SubjectSection.vue').defa
 Vue.component('subject-page', require('./components/SubjectPage.vue').default);
 Vue.component('agenda', require('./components/Agenda.vue').default);
 Vue.component('planner', require('./components/Planner.vue').default);
+Vue.component('planner-tag', require('./components/PlannerTag.vue').default);
+
+Vue.component('jw-pagination', JwPagination);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

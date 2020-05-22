@@ -49,7 +49,8 @@ class SubjectController extends Controller
             $years = $aux2;
             /*******************/
 
-            return view('user.subject',compact('subject','study','years'));
+            $page_type = 'subject';
+            return view('user.subject',compact('subject','study','years','page_type'));
         }
         return view('auth.login');
 

@@ -1,16 +1,19 @@
 <template>
+    <div class="container agenda-page">
     <div class="container content planner">
         <div class="row">
             <div class="col">
-                <h3 class="planner-title">Agenda</h3>
+
+<!--                <h3 class="planner-title">Agenda de {{study_prop_vue.name}}</h3>-->
+                <h3 class="planner-title">Agenda de {{checkElementName}}</h3>
                 <div class="checkbox-show-old">
-                    <input type="checkbox" id="checkbox" @change="getEvents" v-model="checked.show_old">
-                    <label for="checkbox">Mostrar eventos anteriores a la fecha actual.</label>
+                    <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
+                    <label for="checkbox-planner-tag">Mostrar eventos anteriores a la fecha actual.</label>
                 </div>
 
                 <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>
                 <div class="custom-card-event" v-for="event in pageOfItems" :key="event.id">
-                    <div class="card w-75">
+                    <div class="card w-100">
                         <div class="card-body" v-bind:style="{ borderRightWidth: 23+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
                             <h5 class="card-title event-date">{{formatDateFull(event.date)}}</h5>
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
@@ -24,13 +27,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer pb-0 pt-3 w-75">
+                <div class="card-footer pb-0 pt-3 w-100">
                     <jw-pagination :items="planner_events_vue" :pageSize="3" @changePage="onChangePage"></jw-pagination>
                 </div>
-            </div>
-            <div class="col">
-                <h3>Calendario</h3>
-
             </div>
         </div>
 
@@ -168,7 +167,7 @@
                                 <h5>{{eventToDeleteName}}</h5>
                             </div>
                             <small v-if="showDeleteFail"  class="text-danger">
-                               No se ha podido borrar este evento, vuelve a intentarlo.
+                                No se ha podido borrar este evento, vuelve a intentarlo.
                             </small>
                         </div>
                         <div class="modal-footer">
@@ -182,24 +181,33 @@
         </div>
         <!--/***********************************************************************************************-->
     </div>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Planner",
+        name: "PlannerTag",
         props:['planner_events','route_add_event','route_get_events','route_get_subjects_by_user',
-        'route_edit_event','route_delete_event','route_update_old_events'],
+            'route_edit_event','route_delete_event','route_update_old_events','study_prop','route_get_events_by_study',
+            'page_type','route_get_events_by_subject','subject_prop'],
         created(){
-            this.planner_events_vue = this.planner_events;
+            //this.planner_events_vue = this.planner_events;
             this.route_add_event_vue = this.route_add_event;
             this.route_get_events_vue = this.route_get_events;
             this.route_get_subjects_by_user_vue = this.route_get_subjects_by_user;
             this.route_edit_event_vue = this.route_edit_event;
             this.route_delete_event_vue = this.route_delete_event;
             this.route_update_old_events_vue = this.route_update_old_events;
+            this.route_get_events_by_study_vue = this.route_get_events_by_study;
+            this.study_prop_vue = this.study_prop;
+            this.subject_prop_vue = this.subject_prop;
+            this.page_type_vue = this.page_type;
+            this.route_get_events_by_subject_vue = this.route_get_events_by_subject;
             this.getSubjects();
             //this.getEvents();
             this.updateOldEvents();
+            // this.getEventsByStudy();
+            this.getEventsListByPageType();
             this.exampleItems =  this.planner_events_vue;
         },
         data(){
@@ -240,11 +248,32 @@
                 route_update_old_events_vue:'',
                 /*********/
                 exampleItems:'',
-                pageOfItems: []
+                pageOfItems: [],
                 /*********/
+                route_get_events_by_study_vue:'',
+                infoEvents:{
+                    study_id:'',
+                    show_old:false,
+                    subject_id:'',
+                },
+                study_prop_vue:'',
+                page_type_vue:'',
+                route_get_events_by_subject_vue:'',
+                subject_prop_vue:'',
             }
         },
         methods:{
+            getEventsListByPageType(){
+                if(this.page_type_vue === 'study'){
+                    this.getEventsByStudy();
+                }
+                if(this.page_type_vue === 'dashboard'){
+                    this.getEvents();
+                }
+                if(this.page_type_vue === 'subject'){
+                    this.getEventsBySubject();
+                }
+            },
             onChangePage(pageOfItems) {
                 // update page of items
                 this.pageOfItems = pageOfItems;
@@ -261,10 +290,31 @@
             getEvents(){
                 //console.log(this.checked)
                 var url = this.route_get_events_vue;
-                axios.get(url,{params:this.checked}).then(response => {
+                axios.get(url,{params:this.infoEvents}).then(response => {
                     console.log(response.data.result);
                     this.planner_events_vue = response.data.result;
-
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            getEventsByStudy(){
+                this.infoEvents.study_id = this.study_prop_vue.id;
+                var url = this.route_get_events_by_study_vue;
+                axios.get(url,{params:this.infoEvents}).then(response => {
+                    console.log(response.data.result);
+                    this.planner_events_vue = response.data.result;
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            getEventsBySubject(){
+                this.infoEvents.subject_id = this.subject_prop_vue.subject_ID;
+                var url = this.route_get_events_by_subject_vue;
+                axios.get(url,{params:this.infoEvents}).then(response => {
+                    console.log(response.data.result);
+                    this.planner_events_vue = response.data.result;
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -280,7 +330,8 @@
                     if(response.data.result === 'event_created'){
                         $('#addEventModal').modal('hide');
                         this.updateOldEvents();
-                        this.getEvents();
+                        // this.getEventsByStudy();
+                        this.getEventsListByPageType();
                     }
                 })
                     .catch(errors => {
@@ -294,7 +345,8 @@
                     if(response.data.result === 'event_edited'){
                         $('#editEventModal').modal('hide');
                         this.updateOldEvents();
-                        this.getEvents();
+                        // this.getEventsByStudy();
+                        this.getEventsListByPageType();
                     }
                     if(response.data.result === 'error_event_exists'){
                         this.showNameExistsEdit = true;
@@ -312,7 +364,8 @@
                     if(response.data.result === 'event_deleted'){
                         $('#deleteEventModal').modal('hide');
                         this.updateOldEvents();
-                        this.getEvents();
+                        // this.getEventsByStudy();
+                        this.getEventsListByPageType();
                     }
                     if(response.data.result === 'error_delete_event'){
                         this.showDeleteFail = true;
@@ -387,6 +440,13 @@
                     return false;
                 }
             },
+            checkElementName(){
+               if(this.subject_prop_vue === null){
+                   return this.study_prop_vue.name;
+               }else{
+                   return this.subject_prop_vue.subject_name;
+               }
+            }
         }
     }
 </script>

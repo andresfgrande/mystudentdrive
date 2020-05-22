@@ -75,3 +75,5 @@ Route::get('/get_subjects_by_user','vuejs\PlannerController@getSubjectsByUser')-
 Route::put('/edit_event_planner','vuejs\PlannerController@editEvent')->name('edit_event');
 Route::delete('/delete_event_planner','vuejs\PlannerController@deleteEvent')->name('delete_event');
 Route::put('/update_old_events','vuejs\PlannerController@updateOldEvents')->name('update_old_events');
+Route::get('/get_events_by_study','vuejs\PlannerController@getEventsByStudy')->name('get_events_by_study');
+Route::get('/get_events_by_subject','vuejs\PlannerController@getEventsBySubject')->name('get_events_by_subject');
