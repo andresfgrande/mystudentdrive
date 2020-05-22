@@ -22364,7 +22364,12 @@ a.text-dark:focus {
 .agenda-page {
   margin-left: 60%;
   width: 40%;
-  top: 100px;
+  position: absolute;
+}
+
+.agenda-page.subject-page {
+  margin-left: 46%;
+  width: 30%;
   position: absolute;
 }
 
@@ -22379,6 +22384,23 @@ a.text-dark:focus {
   margin-bottom: 1.5em;
 }
 
+.container.content.planner .checkbox-show-old {
+  margin-bottom: 1em;
+  display: inline-block;
+}
+
+.container.content.planner .checkbox-show-old #checkbox {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.container.content.planner .checkbox-show-old #checkbox-planner-tag {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
 .container.content.planner .add-event {
   float: right;
 }
@@ -22388,23 +22410,47 @@ a.text-dark:focus {
 }
 
 .container.content.planner .custom-card-event .event-date {
-  margin-left: 1em;
+  margin-left: 0;
   font-weight: bold;
   color: #3490dc;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body {
+  padding-bottom: 0;
 }
 
 .container.content.planner .custom-card-event .card-body .event-name {
   font-weight: bold;
-  display: inline-block;
 }
 
 .container.content.planner .custom-card-event .card-body .event-time {
   font-weight: bold;
+  display: inline-block;
 }
 
 .container.content.planner .custom-card-event .card-body .event-subject-name {
   display: inline-block;
   float: right;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events {
+  display: inline-block;
+  float: right;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events div.edit-event-div {
+  content: url("/images/038-edit.png");
+  width: 22px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events div.delete-event-div {
+  content: url("/images/borrar.png");
+  width: 22px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 /**************************MOBILE*************************************/
@@ -22426,6 +22472,13 @@ a.text-dark:focus {
     top: 0;
     position: initial;
   }
+
+  .agenda-page.subject-page {
+    margin-left: 0;
+    width: 100%;
+    top: 0;
+    position: initial;
+  }
 }
 
 @media only screen and (max-width: 992px) {
@@ -22439,6 +22492,10 @@ a.text-dark:focus {
 
   .row {
     display: block;
+  }
+
+  .container.content.planner .custom-card-event .card {
+    width: 100% !important;
   }
 }
 
@@ -22529,6 +22586,20 @@ a.text-dark:focus {
   }
 
   #page-content-wrapper #menu-toggle {
+    top: 100px;
+    position: absolute;
+    left: 15px;
+    display: none;
+  }
+
+  #page-content-wrapper-subject-page {
+    min-width: 0;
+    width: 30%;
+    position: absolute;
+    left: 16%;
+  }
+
+  #page-content-wrapper-subject-page #menu-toggle {
     top: 100px;
     position: absolute;
     left: 15px;

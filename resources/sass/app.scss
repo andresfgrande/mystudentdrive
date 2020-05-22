@@ -588,7 +588,11 @@
 .agenda-page{
     margin-left: 60%;
     width: 40%;
-    //top: 115px;
+    position: absolute;
+}
+.agenda-page.subject-page{ //ADDED
+    margin-left: 46%;
+    width: 30%;
     position: absolute;
 }
 
@@ -673,6 +677,12 @@
 @media only screen and (max-width: 1024px) {
 
     .agenda-page{
+        margin-left: 0;
+        width: 100%;
+        top: 0;
+        position: initial;
+    }
+    .agenda-page.subject-page{ //ADDED
         margin-left: 0;
         width: 100%;
         top: 0;
@@ -790,6 +800,18 @@
         min-width: 0;
         //width: 84%;
         width:42%;
+        position: absolute;
+        left: 16%;
+    }
+    #page-content-wrapper-subject-page{
+        #menu-toggle{
+            top: 100px;
+            position: absolute;
+            left: 15px;
+            display: none;
+        }
+        min-width: 0;
+        width:30%;
         position: absolute;
         left: 16%;
     }

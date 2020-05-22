@@ -3015,6 +3015,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.getEventsListByPageType();
     this.exampleItems = this.planner_events_vue;
+    this.addClass();
   },
   data: function data() {
     return {
@@ -3067,10 +3068,19 @@ __webpack_require__.r(__webpack_exports__);
       study_prop_vue: '',
       page_type_vue: '',
       route_get_events_by_subject_vue: '',
-      subject_prop_vue: ''
+      subject_prop_vue: '',
+      useTheme: false,
+      subject_page: 'subject-page'
     };
   },
   methods: {
+    addClass: function addClass() {
+      if (this.subject_prop_vue === null) {
+        this.useTheme = false;
+      } else {
+        this.useTheme = true;
+      }
+    },
     getEventsListByPageType: function getEventsListByPageType() {
       if (this.page_type_vue === 'study') {
         this.getEventsByStudy();
@@ -4675,7 +4685,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SubjectSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubjectSection */ "./resources/js/components/SubjectSection.vue");
-//
 //
 //
 //
@@ -42943,860 +42952,871 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container agenda-page" }, [
-    _c("div", { staticClass: "container content planner" }, [
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col" },
-          [
-            _c("h3", { staticClass: "planner-title" }, [
-              _vm._v("Agenda de " + _vm._s(_vm.checkElementName))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "checkbox-show-old" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.infoEvents.show_old,
-                    expression: "infoEvents.show_old"
-                  }
-                ],
-                attrs: { type: "checkbox", id: "checkbox-planner-tag" },
-                domProps: {
-                  checked: Array.isArray(_vm.infoEvents.show_old)
-                    ? _vm._i(_vm.infoEvents.show_old, null) > -1
-                    : _vm.infoEvents.show_old
-                },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$a = _vm.infoEvents.show_old,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 &&
-                            _vm.$set(
-                              _vm.infoEvents,
-                              "show_old",
-                              $$a.concat([$$v])
-                            )
+  return _c(
+    "div",
+    {
+      staticClass: "container agenda-page",
+      class: _vm.useTheme && _vm.subject_page,
+      attrs: { id: "test-add-class" }
+    },
+    [
+      _c("div", { staticClass: "container content planner" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col" },
+            [
+              _c("h3", { staticClass: "planner-title" }, [
+                _vm._v("Agenda de " + _vm._s(_vm.checkElementName))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "checkbox-show-old" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.infoEvents.show_old,
+                      expression: "infoEvents.show_old"
+                    }
+                  ],
+                  attrs: { type: "checkbox", id: "checkbox-planner-tag" },
+                  domProps: {
+                    checked: Array.isArray(_vm.infoEvents.show_old)
+                      ? _vm._i(_vm.infoEvents.show_old, null) > -1
+                      : _vm.infoEvents.show_old
+                  },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$a = _vm.infoEvents.show_old,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.infoEvents,
+                                "show_old",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.infoEvents,
+                                "show_old",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
                         } else {
-                          $$i > -1 &&
-                            _vm.$set(
-                              _vm.infoEvents,
-                              "show_old",
-                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                            )
+                          _vm.$set(_vm.infoEvents, "show_old", $$c)
                         }
-                      } else {
-                        _vm.$set(_vm.infoEvents, "show_old", $$c)
-                      }
-                    },
-                    _vm.getEventsListByPageType
+                      },
+                      _vm.getEventsListByPageType
+                    ]
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "checkbox-planner-tag" } }, [
+                  _vm._v("Mostrar eventos anteriores a la fecha actual.")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary add-event",
+                  attrs: { type: "button" },
+                  on: { click: _vm.addEventModal }
+                },
+                [_vm._v("Añadir un evento")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.pageOfItems, function(event) {
+                return _c(
+                  "div",
+                  { key: event.id, staticClass: "custom-card-event" },
+                  [
+                    _c("div", { staticClass: "card w-100" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderRightWidth: 23 + "px",
+                            borderRightStyle: "solid",
+                            borderRightColor: event.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title event-date" }, [
+                            _vm._v(_vm._s(_vm.formatDateFull(event.date)))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "h5",
+                            { staticClass: "card-title event-subject-name" },
+                            [_vm._v(_vm._s(event.subject_name))]
+                          ),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title event-name" }, [
+                            _vm._v(_vm._s(event.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v(_vm._s(event.description))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text event-time" }, [
+                            _vm._v(
+                              " Hora: " +
+                                _vm._s(event.time) +
+                                " - Aula: " +
+                                _vm._s(event.classroom)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "actions-planner-events" }, [
+                            _c("div", {
+                              staticClass: "edit-event-div",
+                              on: {
+                                click: function($event) {
+                                  return _vm.editEventModal(event)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", {
+                              staticClass: "delete-event-div",
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteEventModal(
+                                    event.id,
+                                    event.name
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      )
+                    ])
                   ]
-                }
+                )
               }),
               _vm._v(" "),
-              _c("label", { attrs: { for: "checkbox-planner-tag" } }, [
-                _vm._v("Mostrar eventos anteriores a la fecha actual.")
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary add-event",
-                attrs: { type: "button" },
-                on: { click: _vm.addEventModal }
-              },
-              [_vm._v("Añadir un evento")]
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.pageOfItems, function(event) {
-              return _c(
+              _c(
                 "div",
-                { key: event.id, staticClass: "custom-card-event" },
+                { staticClass: "card-footer pb-0 pt-3 w-100" },
                 [
-                  _c("div", { staticClass: "card w-100" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card-body",
-                        style: {
-                          borderRightWidth: 23 + "px",
-                          borderRightStyle: "solid",
-                          borderRightColor: event.subject_color
-                        }
-                      },
-                      [
-                        _c("h5", { staticClass: "card-title event-date" }, [
-                          _vm._v(_vm._s(_vm.formatDateFull(event.date)))
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "h5",
-                          { staticClass: "card-title event-subject-name" },
-                          [_vm._v(_vm._s(event.subject_name))]
-                        ),
-                        _vm._v(" "),
-                        _c("h5", { staticClass: "card-title event-name" }, [
-                          _vm._v(_vm._s(event.name))
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v(_vm._s(event.description))
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "card-text event-time" }, [
-                          _vm._v(
-                            " Hora: " +
-                              _vm._s(event.time) +
-                              " - Aula: " +
-                              _vm._s(event.classroom)
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "actions-planner-events" }, [
-                          _c("div", {
-                            staticClass: "edit-event-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editEventModal(event)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", {
-                            staticClass: "delete-event-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteEventModal(
-                                  event.id,
-                                  event.name
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]
-                    )
-                  ])
-                ]
+                  _c("jw-pagination", {
+                    attrs: { items: _vm.planner_events_vue, pageSize: 3 },
+                    on: { changePage: _vm.onChangePage }
+                  })
+                ],
+                1
               )
-            }),
-            _vm._v(" "),
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "addEventModal",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "addNewLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
             _c(
               "div",
-              { staticClass: "card-footer pb-0 pt-3 w-100" },
+              {
+                staticClass: "modal-dialog modal-dialog-centered",
+                attrs: { role: "document" }
+              },
               [
-                _c("jw-pagination", {
-                  attrs: { items: _vm.planner_events_vue, pageSize: 3 },
-                  on: { changePage: _vm.onChangePage }
-                })
-              ],
-              1
-            )
-          ],
-          2
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "modal fade",
-          attrs: {
-            id: "addEventModal",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "addNewLabel",
-            "aria-hidden": "true"
-          }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "modal-dialog modal-dialog-centered",
-              attrs: { role: "document" }
-            },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("form", [
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "name" } }, [
-                        _vm._v("Nombre")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToAdd.name,
-                            expression: "eventToAdd.name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "name",
-                          type: "text",
-                          name: "name",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToAdd.name },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToAdd,
-                              "name",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.showNameExists
-                        ? _c("small", { staticClass: "text-danger" }, [
-                            _vm._v(
-                              "\n                                    Ya tienes un evento con este nombre en la asignatura escogida.\n                                "
-                            )
-                          ])
-                        : _vm._e()
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "description" } }, [
-                        _vm._v("Descripción")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToAdd.description,
-                            expression: "eventToAdd.description"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "description",
-                          type: "text",
-                          name: "description",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToAdd.description },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToAdd,
-                              "description",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "select",
-                        {
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "name" } }, [
+                          _vm._v("Nombre")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
                           directives: [
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.eventToAdd.subject_id,
-                              expression: "eventToAdd.subject_id"
+                              value: _vm.eventToAdd.name,
+                              expression: "eventToAdd.name"
                             }
                           ],
-                          attrs: { id: "subject" },
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "name",
+                            type: "text",
+                            name: "name",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToAdd.name },
                           on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
                               _vm.$set(
                                 _vm.eventToAdd,
-                                "subject_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
+                                "name",
+                                $event.target.value
                               )
                             }
                           }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("evento general")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.subjectsArray, function(subject) {
-                            return _c(
-                              "option",
-                              { domProps: { value: subject.subject_id } },
-                              [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(subject.subject_name) +
-                                    " - " +
-                                    _vm._s(subject.period_name) +
-                                    " - " +
-                                    _vm._s(subject.study_name) +
-                                    "\n                                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "classroom" } }, [
-                        _vm._v("classroom")
+                        }),
+                        _vm._v(" "),
+                        _vm.showNameExists
+                          ? _c("small", { staticClass: "text-danger" }, [
+                              _vm._v(
+                                "\n                                    Ya tienes un evento con este nombre en la asignatura escogida.\n                                "
+                              )
+                            ])
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToAdd.classroom,
-                            expression: "eventToAdd.classroom"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "classroom",
-                          type: "text",
-                          name: "classroom",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToAdd.classroom },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "description" } }, [
+                          _vm._v("Descripción")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToAdd.description,
+                              expression: "eventToAdd.description"
                             }
-                            _vm.$set(
-                              _vm.eventToAdd,
-                              "classroom",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "description",
+                            type: "text",
+                            name: "description",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToAdd.description },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToAdd,
+                                "description",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      })
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.eventToAdd.subject_id,
+                                expression: "eventToAdd.subject_id"
+                              }
+                            ],
+                            attrs: { id: "subject" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.eventToAdd,
+                                  "subject_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("evento general")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.subjectsArray, function(subject) {
+                              return _c(
+                                "option",
+                                { domProps: { value: subject.subject_id } },
+                                [
+                                  _vm._v(
+                                    "\n                                        " +
+                                      _vm._s(subject.subject_name) +
+                                      " - " +
+                                      _vm._s(subject.period_name) +
+                                      " - " +
+                                      _vm._s(subject.study_name) +
+                                      "\n                                    "
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "classroom" } }, [
+                          _vm._v("classroom")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToAdd.classroom,
+                              expression: "eventToAdd.classroom"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "classroom",
+                            type: "text",
+                            name: "classroom",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToAdd.classroom },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToAdd,
+                                "classroom",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "time" } }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToAdd.time,
+                              expression: "eventToAdd.time"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "time",
+                            type: "time",
+                            name: "time",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToAdd.time },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToAdd,
+                                "time",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "date" } }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToAdd.date,
+                              expression: "eventToAdd.date"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "date",
+                            type: "date",
+                            name: "date",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToAdd.date },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToAdd,
+                                "date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "time" } }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToAdd.time,
-                            expression: "eventToAdd.time"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "time",
-                          type: "time",
-                          name: "time",
-                          placeholder: "",
-                          required: ""
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        domProps: { value: _vm.eventToAdd.time },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToAdd,
-                              "time",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "date" } }),
+                        [_vm._v("Cancelar")]
+                      ),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToAdd.date,
-                            expression: "eventToAdd.date"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "date",
-                          type: "date",
-                          name: "date",
-                          placeholder: "",
-                          required: ""
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button", disabled: _vm.isDisabled },
+                          on: { click: _vm.addEvent }
                         },
-                        domProps: { value: _vm.eventToAdd.date },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToAdd,
-                              "date",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
+                        [_vm._v("Guardar")]
+                      )
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Cancelar")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button", disabled: _vm.isDisabled },
-                        on: { click: _vm.addEvent }
-                      },
-                      [_vm._v("Guardar")]
-                    )
                   ])
                 ])
-              ])
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "modal fade",
-          attrs: {
-            id: "editEventModal",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "addNewLabel",
-            "aria-hidden": "true"
-          }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "modal-dialog modal-dialog-centered",
-              attrs: { role: "document" }
-            },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c("form", [
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "name-edit" } }, [
-                        _vm._v("Nombre")
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "editEventModal",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "addNewLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-dialog-centered",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "name-edit" } }, [
+                          _vm._v("Nombre")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToEdit.name,
+                              expression: "eventToEdit.name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "name-edit",
+                            type: "text",
+                            name: "name",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToEdit.name },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToEdit,
+                                "name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.showNameExistsEdit
+                          ? _c("small", { staticClass: "text-danger" }, [
+                              _vm._v(
+                                "\n                                    Ya tienes un evento con este nombre en la asignatura escogida.\n                                "
+                              )
+                            ])
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToEdit.name,
-                            expression: "eventToEdit.name"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "name-edit",
-                          type: "text",
-                          name: "name",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToEdit.name },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "description-edit" } }, [
+                          _vm._v("Descripción")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToEdit.description,
+                              expression: "eventToEdit.description"
                             }
-                            _vm.$set(
-                              _vm.eventToEdit,
-                              "name",
-                              $event.target.value
-                            )
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "description-edit",
+                            type: "text",
+                            name: "description",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToEdit.description },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToEdit,
+                                "description",
+                                $event.target.value
+                              )
+                            }
                           }
-                        }
-                      }),
+                        })
+                      ]),
                       _vm._v(" "),
-                      _vm.showNameExistsEdit
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.eventToEdit.subject_id,
+                                expression: "eventToEdit.subject_id"
+                              }
+                            ],
+                            attrs: { id: "subject-edit" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.eventToEdit,
+                                  "subject_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("evento general")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.subjectsArray, function(subject) {
+                              return _c(
+                                "option",
+                                { domProps: { value: subject.subject_id } },
+                                [
+                                  _vm._v(
+                                    "\n                                        " +
+                                      _vm._s(subject.subject_name) +
+                                      " - " +
+                                      _vm._s(subject.period_name) +
+                                      " - " +
+                                      _vm._s(subject.study_name) +
+                                      "\n                                    "
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "classroom-edit" } }, [
+                          _vm._v("classroom")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToEdit.classroom,
+                              expression: "eventToEdit.classroom"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "classroom-edit",
+                            type: "text",
+                            name: "classroom",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToEdit.classroom },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToEdit,
+                                "classroom",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "time-edit" } }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToEdit.time,
+                              expression: "eventToEdit.time"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "time-edit",
+                            type: "time",
+                            name: "time",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToEdit.time },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToEdit,
+                                "time",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "date-edit" } }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.eventToEdit.date,
+                              expression: "eventToEdit.date"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            id: "date-edit",
+                            type: "date",
+                            name: "date",
+                            placeholder: "",
+                            required: ""
+                          },
+                          domProps: { value: _vm.eventToEdit.date },
+                          on: {
+                            keyup: _vm.cleanMessage,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.eventToEdit,
+                                "date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Cancelar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "button",
+                            disabled: _vm.isDisabledEdit
+                          },
+                          on: { click: _vm.editEvent }
+                        },
+                        [_vm._v("Guardar")]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "deleteEventModal",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "addNewLabel",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-dialog-centered",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("h5", [_vm._v(_vm._s(_vm.eventToDeleteName))])
+                      ]),
+                      _vm._v(" "),
+                      _vm.showDeleteFail
                         ? _c("small", { staticClass: "text-danger" }, [
                             _vm._v(
-                              "\n                                    Ya tienes un evento con este nombre en la asignatura escogida.\n                                "
+                              "\n                                No se ha podido borrar este evento, vuelve a intentarlo.\n                            "
                             )
                           ])
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "description-edit" } }, [
-                        _vm._v("Descripción")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToEdit.description,
-                            expression: "eventToEdit.description"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "description-edit",
-                          type: "text",
-                          name: "description",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToEdit.description },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToEdit,
-                              "description",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
+                    _c("div", { staticClass: "modal-footer" }, [
                       _c(
-                        "select",
+                        "button",
                         {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.eventToEdit.subject_id,
-                              expression: "eventToEdit.subject_id"
-                            }
-                          ],
-                          attrs: { id: "subject-edit" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.eventToEdit,
-                                "subject_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("evento general")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.subjectsArray, function(subject) {
-                            return _c(
-                              "option",
-                              { domProps: { value: subject.subject_id } },
-                              [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(subject.subject_name) +
-                                    " - " +
-                                    _vm._s(subject.period_name) +
-                                    " - " +
-                                    _vm._s(subject.study_name) +
-                                    "\n                                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
+                        [_vm._v("Cancelar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button" },
+                          on: { click: _vm.deleteEvent }
+                        },
+                        [_vm._v("Eliminar")]
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "classroom-edit" } }, [
-                        _vm._v("classroom")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToEdit.classroom,
-                            expression: "eventToEdit.classroom"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "classroom-edit",
-                          type: "text",
-                          name: "classroom",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToEdit.classroom },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToEdit,
-                              "classroom",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "time-edit" } }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToEdit.time,
-                            expression: "eventToEdit.time"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "time-edit",
-                          type: "time",
-                          name: "time",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToEdit.time },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToEdit,
-                              "time",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "date-edit" } }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.eventToEdit.date,
-                            expression: "eventToEdit.date"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          id: "date-edit",
-                          type: "date",
-                          name: "date",
-                          placeholder: "",
-                          required: ""
-                        },
-                        domProps: { value: _vm.eventToEdit.date },
-                        on: {
-                          keyup: _vm.cleanMessage,
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.eventToEdit,
-                              "date",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Cancelar")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button", disabled: _vm.isDisabledEdit },
-                        on: { click: _vm.editEvent }
-                      },
-                      [_vm._v("Guardar")]
-                    )
                   ])
                 ])
-              ])
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "modal fade",
-          attrs: {
-            id: "deleteEventModal",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "addNewLabel",
-            "aria-hidden": "true"
-          }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "modal-dialog modal-dialog-centered",
-              attrs: { role: "document" }
-            },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _vm._m(2),
-                _vm._v(" "),
-                _c("form", [
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("h5", [_vm._v(_vm._s(_vm.eventToDeleteName))])
-                    ]),
-                    _vm._v(" "),
-                    _vm.showDeleteFail
-                      ? _c("small", { staticClass: "text-danger" }, [
-                          _vm._v(
-                            "\n                                No se ha podido borrar este evento, vuelve a intentarlo.\n                            "
-                          )
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("Cancelar")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button" },
-                        on: { click: _vm.deleteEvent }
-                      },
-                      [_vm._v("Eliminar")]
-                    )
-                  ])
-                ])
-              ])
-            ]
-          )
-        ]
-      )
-    ])
-  ])
+              ]
+            )
+          ]
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -45915,7 +45935,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { attrs: { id: "page-content-wrapper" } }, [
+    _c("div", { attrs: { id: "page-content-wrapper-subject-page" } }, [
       _c(
         "button",
         {

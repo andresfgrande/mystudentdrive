@@ -19,13 +19,12 @@
                             <a class="date-range">{{formatDateFull(year.start_date)}} - {{formatDateFull(year.end_date)}}</a>
                         </li>
 <!--                        <button class="btn btn-secondary add-year"  type="button" @click="addYearModal(study_prop_vue.id)">Añadir curso</button>-->
-
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div id="page-content-wrapper">
+        <div id="page-content-wrapper-subject-page">
             <button class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">. . .</button>
             <div class="subject subject-page">
                 <div class="subject-content subject-page-content">

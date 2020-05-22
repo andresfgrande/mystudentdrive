@@ -1,5 +1,5 @@
 <template>
-    <div class="container agenda-page">
+    <div id="test-add-class" class="container agenda-page" :class="useTheme && subject_page">
     <div class="container content planner">
         <div class="row">
             <div class="col">
@@ -209,6 +209,7 @@
             // this.getEventsByStudy();
             this.getEventsListByPageType();
             this.exampleItems =  this.planner_events_vue;
+            this.addClass();
         },
         data(){
             return{
@@ -260,9 +261,19 @@
                 page_type_vue:'',
                 route_get_events_by_subject_vue:'',
                 subject_prop_vue:'',
+                useTheme: false,
+                subject_page:'subject-page'
             }
         },
         methods:{
+            addClass(){
+                if(this.subject_prop_vue === null){
+                    this.useTheme = false;
+                }else{
+                    this.useTheme = true;
+                }
+
+            },
             getEventsListByPageType(){
                 if(this.page_type_vue === 'study'){
                     this.getEventsByStudy();
@@ -446,7 +457,7 @@
                }else{
                    return this.subject_prop_vue.subject_name;
                }
-            }
+            },
         }
     }
 </script>
