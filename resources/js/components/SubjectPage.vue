@@ -1,9 +1,4 @@
 <template>
-<!--    <div style="margin-top: 100px;" class="container">-->
-<!--        <h1>SUBJECT PAGE</h1>-->
-<!--        {{current_subject}}-->
-<!--    </div>-->
-
     <div class="container content study">
 
         <!-- Sidebar -->
@@ -19,17 +14,16 @@
                             <a class="date-range">{{formatDateFull(year.start_date)}} - {{formatDateFull(year.end_date)}}</a>
                         </li>
 <!--                        <button class="btn btn-secondary add-year"  type="button" @click="addYearModal(study_prop_vue.id)">Añadir curso</button>-->
-
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div id="page-content-wrapper">
-            <button class="btn btn-primary" id="menu-toggle" @click="toggleSidebar">. . .</button>
+        <div id="page-content-wrapper-subject-page">
+            <button class="btn btn-primary" id="menu-toggle-subject-page" @click="toggleSidebar">. . .</button>
             <div class="subject subject-page">
                 <div class="subject-content subject-page-content">
-                    <h3 class="title-subject">{{subjectName}} - {{current_subject_vue.period_name}} {{formatDateYear(current_subject_vue.start_year)}} - {{formatDateYear(current_subject_vue.end_year)}}</h3>
+                    <h3 class="title-subject">{{subjectName}} - {{current_subject_vue.period_name}} - {{formatDateYear(current_subject_vue.start_year)}} / {{formatDateYear(current_subject_vue.end_year)}}</h3>
                     <div class="">
                         <div class="card-header">
                             <a v-if="!editing"> {{subjectName}} - {{current_subject_vue.period_name}}</a>

@@ -6,25 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class PlannerController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
+    public function index(){
         if (Auth::check()) {
             $user = Auth::User();
 
@@ -66,12 +50,10 @@ class DashboardController extends Controller
                 ));
             $planner_events2 = $result2->toArray();
             $planner_events = array_merge($planner_events1,$planner_events2);
-            $page_type = 'dashboard';
-            $study = null;
-            $subject = null;
+
             //TODO ordenación de burbuja array
-            return view('dashboard',compact('planner_events','study','subject','page_type'));
+            return view('user.planner',compact('planner_events'));
         }
-        //return view('dashboard');
+        return view('auth.login');
     }
 }

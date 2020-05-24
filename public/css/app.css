@@ -21764,7 +21764,7 @@ a.text-dark:focus {
 .navbar {
   position: fixed;
   width: 100%;
-  z-index: 9999;
+  z-index: 1040;
   top: 0px;
 }
 
@@ -21914,6 +21914,7 @@ a.text-dark:focus {
 .studies .courses .card-header .study-name-title {
   font-size: 16px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .studies .courses .card-header .study-name-title:hover {
@@ -22192,6 +22193,7 @@ a.text-dark:focus {
   font-size: 18px;
   color: #3490dc;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .subject .subject-content .card-header .btn.btn-primary.add-section {
@@ -22364,8 +22366,101 @@ a.text-dark:focus {
 .agenda-page {
   margin-left: 60%;
   width: 40%;
-  top: 100px;
   position: absolute;
+}
+
+.agenda-page.subject-page {
+  margin-left: 46%;
+  width: 30%;
+  position: absolute;
+}
+
+.agenda-page.dashboard {
+  margin-left: 0;
+  width: 100%;
+}
+
+/**************PLANNER PAGE****************/
+
+.container.content.planner {
+  margin-top: 115px;
+}
+
+.container.content.planner .planner-title {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.container.content.planner .checkbox-show-old {
+  margin-bottom: 1em;
+  display: inline-block;
+}
+
+.container.content.planner .checkbox-show-old #checkbox {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.container.content.planner .checkbox-show-old #checkbox-planner-tag {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.container.content.planner .add-event {
+  float: right;
+}
+
+.container.content.planner .custom-card-event {
+  margin-bottom: 1.5em;
+}
+
+.container.content.planner .custom-card-event .event-date {
+  margin-left: 0;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.planner .custom-card-event .card-body {
+  padding-bottom: 0;
+}
+
+.container.content.planner .custom-card-event .card-body .event-name {
+  font-weight: bold;
+}
+
+.container.content.planner .custom-card-event .card-body .event-time {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body .event-subject-name {
+  display: inline-block;
+  float: right;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events {
+  display: inline-block;
+  float: right;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events div.edit-event-div {
+  content: url("/images/038-edit.png");
+  width: 22px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body .actions-planner-events div.delete-event-div {
+  content: url("/images/borrar.png");
+  width: 22px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.planner.dashboard {
+  margin-top: 0;
 }
 
 /**************************MOBILE*************************************/
@@ -22387,6 +22482,13 @@ a.text-dark:focus {
     top: 0;
     position: initial;
   }
+
+  .agenda-page.subject-page {
+    margin-left: 0;
+    width: 100%;
+    top: 0;
+    position: initial;
+  }
 }
 
 @media only screen and (max-width: 992px) {
@@ -22400,6 +22502,10 @@ a.text-dark:focus {
 
   .row {
     display: block;
+  }
+
+  .container.content.planner .custom-card-event .card {
+    width: 100% !important;
   }
 }
 
@@ -22466,7 +22572,20 @@ a.text-dark:focus {
 #page-content-wrapper #menu-toggle {
   z-index: 2;
   top: 75px;
-  position: absolute;
+  position: fixed;
+  left: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#page-content-wrapper-subject-page {
+  min-width: 100vw;
+}
+
+#page-content-wrapper-subject-page #menu-toggle-subject-page {
+  z-index: 2;
+  top: 75px;
+  position: fixed;
   left: 10px;
   padding-top: 0;
   padding-bottom: 0;
@@ -22490,6 +22609,20 @@ a.text-dark:focus {
   }
 
   #page-content-wrapper #menu-toggle {
+    top: 100px;
+    position: absolute;
+    left: 15px;
+    display: none;
+  }
+
+  #page-content-wrapper-subject-page {
+    min-width: 0;
+    width: 30%;
+    position: absolute;
+    left: 16%;
+  }
+
+  #page-content-wrapper-subject-page #menu-toggle-subject-page {
     top: 100px;
     position: absolute;
     left: 15px;
