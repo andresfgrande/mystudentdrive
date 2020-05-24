@@ -18,10 +18,11 @@ class CreatePlannerEventsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('subject_id')->nullable();
             $table->string('name');
-            $table->string('description');
-            $table->string('classroom');
+            $table->string('description')->nullable();
+            $table->string('classroom')->nullable();
             $table->time('time');
             $table->date('date');
+            $table->boolean('old_event');
             $table->timestamps();
         });
 

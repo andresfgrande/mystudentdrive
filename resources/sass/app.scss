@@ -20,7 +20,7 @@
 .navbar{
     position: fixed;
     width: 100%;
-    z-index: 9999;
+    z-index: 1040;
     top: 0px;
 }
 
@@ -152,6 +152,7 @@
             .study-name-title {
                 font-size: 16px;
                 text-decoration: none;
+                font-weight: bold;
                 &:hover{
                     font-weight: bold;
                 }
@@ -414,11 +415,11 @@
         margin-bottom: 2em;
         width: 100%;
         .card-header{
-            //padding-bottom: 1.3em;
             a{
                 font-size: 18px;
                 color: #3490dc;
                 cursor:pointer;
+                font-weight: bold;
             }
             margin-bottom: 1em;
 
@@ -588,9 +589,89 @@
 .agenda-page{
     margin-left: 60%;
     width: 40%;
-    top: 100px;
     position: absolute;
 }
+.agenda-page.subject-page{ //ADDED
+    margin-left: 46%;
+    width: 30%;
+    position: absolute;
+}
+.agenda-page.dashboard{
+    margin-left: 0;
+    width: 100%;
+    //position: absolute;
+}
+
+/**************PLANNER PAGE****************/
+.container.content.planner{
+    margin-top: 115px;
+    .planner-title{
+        text-align: center;
+        margin-bottom:1.5em;
+    }
+    .checkbox-show-old{
+        margin-bottom: 1em;
+        display:inline-block;
+        #checkbox{
+            width: 15px;
+            height: 15px;
+            display:inline-block;
+        }
+        #checkbox-planner-tag{
+            width: 15px;
+            height: 15px;
+            display:inline-block;
+        }
+    }
+    .add-event{
+        float: right;
+    }
+    .custom-card-event{
+        margin-bottom: 1.5em;
+        .event-date{
+            margin-left:0;
+            font-weight: bold;
+            color:#3490dc;
+            //display: inline-block;
+        }
+        .card-body{
+            padding-bottom:0;
+            .event-name{
+                font-weight:bold;
+                //display: inline-block;
+            }
+            .event-time{
+                font-weight:bold;
+                display: inline-block;
+            }
+            .event-subject-name{
+                display: inline-block;
+                float: right;
+            }
+            .actions-planner-events{
+                display: inline-block;
+                float: right;
+                div.edit-event-div{
+                    content:url("/images/038-edit.png");
+                    width: 22px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+                div.delete-event-div{
+                    content:url("/images/borrar.png");
+                    width: 22px;
+                    cursor:pointer;
+                    display:inline-block;
+                }
+            }
+
+        }
+    }
+}
+.container.content.planner.dashboard{
+    margin-top:0;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
@@ -610,6 +691,12 @@
         top: 0;
         position: initial;
     }
+    .agenda-page.subject-page{ //ADDED
+        margin-left: 0;
+        width: 100%;
+        top: 0;
+        position: initial;
+    }
 }
 
 @media only screen and (max-width: 992px) {
@@ -621,6 +708,14 @@
     }
     .row{
         display: block;
+    }
+
+    .container.content.planner{
+        .custom-card-event{
+            .card{
+                width: 100% !important;
+            }
+        }
     }
 
 }
@@ -686,7 +781,21 @@
     #menu-toggle{
         z-index: 2;
         top: 75px;
-        position: absolute;
+        //position: absolute;
+        position: fixed;
+        left: 10px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+#page-content-wrapper-subject-page {
+    min-width: 100vw;
+    #menu-toggle-subject-page{
+        z-index: 2;
+        top: 75px;
+        //position: absolute;
+        position: fixed;
         left: 10px;
         padding-top: 0;
         padding-bottom: 0;
@@ -714,6 +823,18 @@
         min-width: 0;
         //width: 84%;
         width:42%;
+        position: absolute;
+        left: 16%;
+    }
+    #page-content-wrapper-subject-page{
+        #menu-toggle-subject-page{
+            top: 100px;
+            position: absolute;
+            left: 15px;
+            display: none;
+        }
+        min-width: 0;
+        width:30%;
         position: absolute;
         left: 16%;
     }

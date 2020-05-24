@@ -37,8 +37,9 @@ class StudyViewController extends Controller
             if($indexChosenYear == null){
                 $indexChosenYear = 0;
             }
-
-            return view('user.study',compact('study','years','indexChosenYear'));
+            $page_type = 'study';
+            $subject = null;
+            return view('user.study',compact('study','years','indexChosenYear','page_type','subject'));
         }
         return view('auth.login');
     }
