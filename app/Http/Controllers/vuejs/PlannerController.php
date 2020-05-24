@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vuejs;
 use App\Http\Controllers\Controller;
 use App\Planner;
 use App\Subject;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -441,6 +442,60 @@ class PlannerController extends Controller
                 'subjects.color AS subject_color',
             ));
         $planner_events = $result->toArray();
+
+        return $planner_events;
+    }
+
+    public function getEventsByDate(Request $request){
+
+        $date = $request->get('info_date');
+
+        $date =  new DateTime($date);
+        $date->modify('+1 day');
+
+        $user = Auth::User();
+        $planner_events = $this->queryGetAllEventsByDate($user, $date);
+        return Response::json(array('success'=>true,'result'=>$planner_events));
+    }
+    public function queryGetAllEventsByDate($user,$date){
+        $result =  DB::table('planner_events')
+            ->join('subjects','planner_events.subject_id','=','subjects.id')
+            ->where('user_id', $user->getAuthIdentifier())
+            ->where('date',$date)
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+                'subjects.period_id AS subject_period_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+            ));
+        $planner_events1 = $result->toArray();
+        $result2 =  DB::table('planner_events')
+            ->where('user_id', $user->getAuthIdentifier())
+            ->Where('subject_id','=',null)
+            ->where('date',$date)
+            ->orderBy('date','ASC')
+            ->get(array(
+                'planner_events.id AS id',
+                'planner_events.user_id AS user_id',
+                'planner_events.subject_id AS subject_id',
+                'planner_events.name AS name',
+                'planner_events.description AS description',
+                'planner_events.classroom AS classroom',
+                'planner_events.time AS time',
+                'planner_events.date AS date',
+                'planner_events.old_event AS old_event',
+            ));
+        $planner_events2 = $result2->toArray();
+        $planner_events = array_merge($planner_events1,$planner_events2);
 
         return $planner_events;
     }

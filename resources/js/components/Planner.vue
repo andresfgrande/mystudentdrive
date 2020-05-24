@@ -2,6 +2,21 @@
     <div class="container content planner">
         <div class="row">
             <div class="col">
+                <h3>Calendario</h3>
+<!--                <datepicker v-model="calendarDate" :inline="true" :language="es" :monday-first="true"-->
+<!--                             @selected="getEventsByDate" ></datepicker>-->
+                <date-picker
+                    :first-day-of-week="2"
+                    v-model="calendarDate"
+                    mode="single"
+                    is-inline
+
+                                />
+
+{{test}}
+
+            </div>
+            <div class="col">
                 <h3 class="planner-title">Agenda</h3>
                 <div class="checkbox-show-old">
                     <input type="checkbox" id="checkbox" @change="getEvents" v-model="checked.show_old">
@@ -27,10 +42,6 @@
                 <div class="card-footer pb-0 pt-3 w-75">
                     <jw-pagination :items="planner_events_vue" :pageSize="3" @changePage="onChangePage"></jw-pagination>
                 </div>
-            </div>
-            <div class="col">
-                <h3>Calendario</h3>
-
             </div>
         </div>
 
@@ -188,7 +199,7 @@
     export default {
         name: "Planner",
         props:['planner_events','route_add_event','route_get_events','route_get_subjects_by_user',
-        'route_edit_event','route_delete_event','route_update_old_events'],
+        'route_edit_event','route_delete_event','route_update_old_events','route_get_events_by_date'],
         created(){
             this.planner_events_vue = this.planner_events;
             this.route_add_event_vue = this.route_add_event;
@@ -197,6 +208,7 @@
             this.route_edit_event_vue = this.route_edit_event;
             this.route_delete_event_vue = this.route_delete_event;
             this.route_update_old_events_vue = this.route_update_old_events;
+            this.route_get_events_by_date_vue = this.route_get_events_by_date;
             this.getSubjects();
             //this.getEvents();
             this.updateOldEvents();
@@ -204,6 +216,9 @@
         },
         data(){
             return{
+                calendarDate: '',
+                route_get_events_by_date_vue:'',
+                /***************/
                 planner_events_vue:'',
                 route_add_event_vue:'',
                 eventToAdd:{
@@ -240,11 +255,33 @@
                 route_update_old_events_vue:'',
                 /*********/
                 exampleItems:'',
-                pageOfItems: []
+                pageOfItems: [],
                 /*********/
+                dateToSearch:{
+                    info_date:'',
+                }
             }
         },
         methods:{
+            getEventsByDate(){
+                if (this.calendarDate) {
+                   const dateString = this.calendarDate.toISOString().substring(0, 10);
+                    console.log(this.calendarDate);
+                    console.log(dateString);
+                    this.dateToSearch.info_date = dateString;
+                    var url = this.route_get_events_by_date_vue;
+                    axios.get(url,{params:this.dateToSearch}).then(response => {
+                        console.log(response.data.result);
+                        this.planner_events_vue = response.data.result;
+                    })
+                        .catch(errors => {
+                            console.log(errors);
+                        });
+                } else {
+                    console.log('null date');
+               }
+
+            },
             onChangePage(pageOfItems) {
                 // update page of items
                 this.pageOfItems = pageOfItems;
@@ -386,6 +423,12 @@
                 }else{
                     return false;
                 }
+            },
+            test(){
+                if(this.calendarDate != null){
+                    this.getEventsByDate();
+                }
+                return '';
             },
         }
     }
