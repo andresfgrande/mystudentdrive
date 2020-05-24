@@ -21764,7 +21764,7 @@ a.text-dark:focus {
 .navbar {
   position: fixed;
   width: 100%;
-  z-index: 9999;
+  z-index: 1040;
   top: 0px;
 }
 
@@ -21914,6 +21914,7 @@ a.text-dark:focus {
 .studies .courses .card-header .study-name-title {
   font-size: 16px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .studies .courses .card-header .study-name-title:hover {
@@ -22192,6 +22193,7 @@ a.text-dark:focus {
   font-size: 18px;
   color: #3490dc;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .subject .subject-content .card-header .btn.btn-primary.add-section {
@@ -22373,6 +22375,11 @@ a.text-dark:focus {
   position: absolute;
 }
 
+.agenda-page.dashboard {
+  margin-left: 0;
+  width: 100%;
+}
+
 /**************PLANNER PAGE****************/
 
 .container.content.planner {
@@ -22413,7 +22420,6 @@ a.text-dark:focus {
   margin-left: 0;
   font-weight: bold;
   color: #3490dc;
-  display: inline-block;
 }
 
 .container.content.planner .custom-card-event .card-body {
@@ -22451,6 +22457,10 @@ a.text-dark:focus {
   width: 22px;
   cursor: pointer;
   display: inline-block;
+}
+
+.container.content.planner.dashboard {
+  margin-top: 0;
 }
 
 /**************************MOBILE*************************************/
@@ -22562,7 +22572,20 @@ a.text-dark:focus {
 #page-content-wrapper #menu-toggle {
   z-index: 2;
   top: 75px;
-  position: absolute;
+  position: fixed;
+  left: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#page-content-wrapper-subject-page {
+  min-width: 100vw;
+}
+
+#page-content-wrapper-subject-page #menu-toggle-subject-page {
+  z-index: 2;
+  top: 75px;
+  position: fixed;
   left: 10px;
   padding-top: 0;
   padding-bottom: 0;
@@ -22599,7 +22622,7 @@ a.text-dark:focus {
     left: 16%;
   }
 
-  #page-content-wrapper-subject-page #menu-toggle {
+  #page-content-wrapper-subject-page #menu-toggle-subject-page {
     top: 100px;
     position: absolute;
     left: 15px;
