@@ -9,6 +9,11 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import JwPagination from 'jw-vue-pagination';
+// import Datepicker from 'vuejs-datepicker';
+// import VCalendar from 'v-calendar';
+import Calendar from 'v-calendar/lib/components/calendar.umd';
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -40,6 +45,9 @@ Vue.component('planner-tag', require('./components/PlannerTag.vue').default);
 Vue.component('planner-tag-dashboard', require('./components/PlannerTagDashboard.vue').default);
 
 Vue.component('jw-pagination', JwPagination);
+// Vue.component('datepicker', Datepicker);
+Vue.component('calendar', Calendar);
+Vue.component('date-picker', DatePicker);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
