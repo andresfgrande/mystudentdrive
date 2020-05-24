@@ -10,6 +10,7 @@
     route_edit_event="{{route('edit_event')}}"
     route_delete_event="{{route('delete_event')}}"
     route_update_old_events="{{route('update_old_events')}}"
+    route_get_events_by_date="{{route('get_events_by_date')}}"
 ></planner>
 
 @endsection
