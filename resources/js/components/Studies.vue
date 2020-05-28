@@ -53,7 +53,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <p class="empty-text-subjects" v-if="showPhotoEmptySubjects">Aqui verás las asignaturas de tus cursos...</p>
+                        <p class="empty-text-subjects" v-if="showPhotoEmptySubjects">Elige un curso para ver tus asignaturas...</p>
                         <img class="empty-img-subjects" v-if="showPhotoEmptySubjects" :src="this.route_photo_vue_2"  alt="profile_photo"/>
                     </div>
                     <br>

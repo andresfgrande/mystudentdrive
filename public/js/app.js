@@ -91177,7 +91177,7 @@ var render = function() {
             _vm._v(" "),
             _vm.showPhotoEmptySubjects
               ? _c("p", { staticClass: "empty-text-subjects" }, [
-                  _vm._v("Aqui verás las asignaturas de tus cursos...")
+                  _vm._v("Elige un curso para ver tus asignaturas...")
                 ])
               : _vm._e(),
             _vm._v(" "),
