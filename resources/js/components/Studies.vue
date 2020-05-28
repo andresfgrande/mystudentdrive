@@ -24,7 +24,7 @@
                         </ul>
                     </div>
                     <br>
-                    <p class="empty-text" v-if="showPhotoEmpty">Comienza añadiendo un nuevo curso...</p>
+                    <p class="empty-text" v-if="showPhotoEmpty">Comienza añadiendo tus estudios y cursos...</p>
                     <img class="empty-img" v-if="showPhotoEmpty" :src="this.route_photo_vue"  alt="profile_photo"/>
                 </div>
 

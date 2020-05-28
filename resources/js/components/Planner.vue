@@ -39,7 +39,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer pb-0 pt-3 w-75">
+                <div class="empty-event-photo" v-if="showImgEmptyAgenda">
+                    <img  class="empty-img-events" :src="this.routeImgEvents"  alt="empty_studies_events"/>
+                    <h5>Apunta tus examenes, entregas, presentaciones...</h5>
+                </div>
+                <div class="card-footer pb-0 pt-3 w-100">
                     <jw-pagination :items="planner_events_vue" :pageSize="3" @changePage="onChangePage"></jw-pagination>
                 </div>
             </div>
@@ -199,7 +203,7 @@
     export default {
         name: "Planner",
         props:['planner_events','route_add_event','route_get_events','route_get_subjects_by_user',
-        'route_edit_event','route_delete_event','route_update_old_events','route_get_events_by_date'],
+        'route_edit_event','route_delete_event','route_update_old_events','route_get_events_by_date','route_base_images'],
         created(){
             this.planner_events_vue = this.planner_events;
             this.route_add_event_vue = this.route_add_event;
@@ -209,6 +213,8 @@
             this.route_delete_event_vue = this.route_delete_event;
             this.route_update_old_events_vue = this.route_update_old_events;
             this.route_get_events_by_date_vue = this.route_get_events_by_date;
+            this.route_base_images_vue = this.route_base_images;
+            this.routeImgEvents = this.route_base_images_vue +"/content/clip-bio-technologies_v3.png";
             this.getSubjects();
             //this.getEvents();
             this.updateOldEvents();
@@ -259,7 +265,9 @@
                 /*********/
                 dateToSearch:{
                     info_date:'',
-                }
+                },
+                routeImgEvents:'',
+                route_base_images_vue:'',
             }
         },
         methods:{
@@ -429,6 +437,13 @@
                     this.getEventsByDate();
                 }
                 return '';
+            },
+            showImgEmptyAgenda(){
+                if(this.planner_events_vue.length == 0){
+                    return true;
+                }else{
+                    return false;
+                }
             },
         }
     }

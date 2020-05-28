@@ -69,9 +69,39 @@ class DashboardController extends Controller
             $page_type = 'dashboard';
             $study = null;
             $subject = null;
+            $hey = 0;
             //TODO ordenación de burbuja array
-            return view('dashboard',compact('planner_events','study','subject','page_type'));
+
+            /*************/
+            $recentYearAux = $this->getRecentyear($user->getAuthIdentifier());
+
+            if(empty($recentYearAux)){
+                $recentYear = null;
+            }else{
+                $recentYear = $recentYearAux[0];
+            }
+            /*************/
+            return view('dashboard',compact('planner_events','study','subject','page_type','hey','recentYear'));
         }
         //return view('dashboard');
+    }
+
+    public function getRecentyear($user_id){
+        $result =  DB::table('academic_years')
+            ->join('studies','academic_years.study_id','=','studies.id')
+            ->join('users','studies.user_id','=','users.id')
+            ->orderBy('academic_years.start_date','DESC')
+            ->where('users.id','=',$user_id)
+            ->take(1)
+            ->get(array(
+                'academic_years.id AS id',
+                'academic_years.study_id AS study_id',
+                'academic_years.start_date AS start_date',
+                'academic_years.end_date AS end_date',
+                'studies.id AS study_id',
+                'studies.name AS study_name',
+            ));
+        $aux = $result->toArray();
+        return $aux;
     }
 }
