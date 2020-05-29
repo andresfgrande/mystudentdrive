@@ -26,26 +26,6 @@
                 ></estudios-tag-dashboard>
 
 
-
-{{--                <Year :key="componentKey" v-bind:chosed_year = "chosedYear"--}}
-{{--                      v-bind:route_get_subjects_by_year = "route_get_subjects_by_year_vue"--}}
-{{--                      v-bind:chosed_study="chosedStudy"--}}
-{{--                      v-bind:route_add_subject="route_add_subject_vue"--}}
-{{--                      v-bind:route_add_period="route_add_period_vue"--}}
-{{--                      v-bind:route_get_periods_by_year="route_get_periods_by_year_vue"--}}
-{{--                      v-bind:route_get_sections_by_subject="route_get_sections_by_subject_vue"--}}
-{{--                      v-bind:route_get_files_by_section="route_get_files_by_section_vue"--}}
-{{--                      v-bind:route_add_section="route_add_section_vue"--}}
-{{--                      v-bind:route_edit_section="route_edit_section_vue"--}}
-{{--                      v-bind:route_upload_file="route_upload_file_vue"--}}
-{{--                      v-bind:route_base_images="route_base_images_vue"--}}
-{{--                      v-bind:route_delete_file="route_delete_file_vue"--}}
-{{--                      v-bind:route_delete_section="route_delete_section_vue"--}}
-{{--                      v-bind:route_edit_subject="route_edit_subject_vue"--}}
-{{--                      v-bind:route_delete_subject="route_delete_subject_vue"--}}
-{{--                >--}}
-{{--                </Year>--}}
-
             </div>
             <div class="col-sm">
                 <planner-tag-dashboard
@@ -63,14 +43,19 @@
                     route_base_images="{{url('/images/')}}"
                 >
                 </planner-tag-dashboard>
-            </div>
-            <div class="col-sm">
-                One of four columns
 
             </div>
             <div class="col-sm">
-                One of four columns
+                One of three columns
 
+
+            </div>
+            <div class="col-sm">
+                <todo-list-tag
+                    route_add_task="{{route('add_task')}}"
+                    route_get_subjects_by_user="{{route('get_subjects_by_user')}}"
+                    route_get_tasks_by_user="{{route('get_tasks_by_user')}}"
+                ></todo-list-tag>
             </div>
         </div>
     </div>

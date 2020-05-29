@@ -22465,6 +22465,11 @@ a.text-dark:focus {
   margin-left: 25%;
 }
 
+.container.content.planner .empty-event-photo .empty-img-events-dashboard {
+  width: 100%;
+  margin-top: 5em;
+}
+
 .container.content.planner .empty-event-photo h5 {
   text-align: center;
   margin-top: 1em;
@@ -22555,6 +22560,14 @@ a.text-dark:focus {
   margin-top: 1em;
   font-weight: bold;
   color: #3490dc;
+}
+
+.container.content.todo-list.dashboard {
+  margin-top: 0;
+}
+
+.container.content.todo-list.dashboard .select-subjects-tasks {
+  width: 75%;
 }
 
 /**************************MOBILE*************************************/

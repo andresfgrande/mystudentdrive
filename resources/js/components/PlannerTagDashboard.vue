@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="empty-event-photo" v-if="showImgEmptyAgenda">
-                        <img  class="empty-img-events" :src="this.routeImgEvents"  alt="empty_studies_events"/>
+                        <img  class="empty-img-events-dashboard" :src="this.routeImgEvents"  alt="empty_studies_events"/>
 
                         <h5>Apunta tus examenes, entregas, presentaciones...</h5>
                     </div>

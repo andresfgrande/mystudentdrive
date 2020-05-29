@@ -674,6 +674,10 @@
             margin-top: 5em;
             margin-left: 25%;
         }
+        .empty-img-events-dashboard{
+            width: 100%;
+            margin-top: 5em;
+        }
         h5{
             text-align: center;
             margin-top: 1em;
@@ -759,6 +763,12 @@
         }
     }
 
+}
+.container.content.todo-list.dashboard{
+    margin-top:0;
+    .select-subjects-tasks{
+        width: 75%;
+    }
 }
 
 /**************************MOBILE*************************************/
