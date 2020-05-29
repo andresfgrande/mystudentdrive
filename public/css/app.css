@@ -22459,8 +22459,102 @@ a.text-dark:focus {
   display: inline-block;
 }
 
+.container.content.planner .empty-event-photo .empty-img-events {
+  width: 50%;
+  margin-top: 5em;
+  margin-left: 25%;
+}
+
+.container.content.planner .empty-event-photo h5 {
+  text-align: center;
+  margin-top: 1em;
+  font-weight: bold;
+  color: #3490dc;
+  margin-bottom: 2em;
+}
+
 .container.content.planner.dashboard {
   margin-top: 0;
+}
+
+.container.content.planner.dashboard .empty-event-photo .empty-img-events {
+  width: 100%;
+  margin-top: 5em;
+}
+
+.container.content.planner.dashboard .empty-event-photo h5 {
+  text-align: center;
+  margin-top: 1em;
+  font-weight: bold;
+  color: #3490dc;
+  margin-bottom: 2em;
+}
+
+.container.content.year.dashboard {
+  margin-top: 0;
+}
+
+.container.content.year.dashboard .title-study-name {
+  text-align: center;
+}
+
+.container.content.year.dashboard .title-year-dates {
+  text-align: center;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.year.dashboard .btn.btn-primary.btn-add-subject {
+  margin-bottom: 1em;
+}
+
+.container.content.year.dashboard .dashboard-year {
+  height: auto;
+  max-height: 650px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.container.content.year.dashboard .section-empty-studies h3 {
+  text-align: center;
+}
+
+.container.content.year.dashboard .section-empty-studies .empty-img-studies {
+  width: 90%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.container.content.year.dashboard .section-empty-studies h5 {
+  text-align: center;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.year.dashboard .section-empty-studies .btn-gestion-estudios {
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.container.content.year.dashboard .btn-add-subject {
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.container.content.year.dashboard .empty-subject-photo .empty-img-subjects {
+  width: 100%;
+  margin-top: 4em;
+}
+
+.container.content.year.dashboard .empty-subject-photo h5 {
+  text-align: center;
+  margin-top: 1em;
+  font-weight: bold;
+  color: #3490dc;
 }
 
 /**************************MOBILE*************************************/

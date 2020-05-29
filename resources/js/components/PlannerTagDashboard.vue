@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
 <!--                    <h3 class="planner-title">Agenda de {{checkElementName}}</h3>-->
-                    <h3 class="planner-title">Próximos Eventos</h3>
+                    <h3 class="planner-title">Mi agenda</h3>
                     <div class="checkbox-show-old">
                         <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
                         <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>
@@ -25,6 +25,11 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="empty-event-photo" v-if="showImgEmptyAgenda">
+                        <img  class="empty-img-events" :src="this.routeImgEvents"  alt="empty_studies_events"/>
+
+                        <h5>Apunta tus examenes, entregas, presentaciones...</h5>
                     </div>
                     <div class="card-footer pb-0 pt-3 w-100">
                         <jw-pagination :items="planner_events_vue" :pageSize="3" @changePage="onChangePage"></jw-pagination>
@@ -188,7 +193,7 @@
         name: "PlannerTag",
         props:['planner_events','route_add_event','route_get_events','route_get_subjects_by_user',
             'route_edit_event','route_delete_event','route_update_old_events','study_prop','route_get_events_by_study',
-            'page_type','route_get_events_by_subject','subject_prop'],
+            'page_type','route_get_events_by_subject','subject_prop','route_base_images'],
         created(){
             //this.planner_events_vue = this.planner_events;
             this.route_add_event_vue = this.route_add_event;
@@ -202,6 +207,7 @@
             this.subject_prop_vue = this.subject_prop;
             this.page_type_vue = this.page_type;
             this.route_get_events_by_subject_vue = this.route_get_events_by_subject;
+            this.route_base_images_vue = this.route_base_images;
             this.getSubjects();
             //this.getEvents();
             this.updateOldEvents();
@@ -209,6 +215,7 @@
             this.getEventsListByPageType();
             this.exampleItems =  this.planner_events_vue;
             this.addClass();
+            this.routeImgEvents = this.route_base_images_vue +"/content/clip-bio-technologies_v3.png";
         },
         data(){
             return{
@@ -261,7 +268,7 @@
                 route_get_events_by_subject_vue:'',
                 subject_prop_vue:'',
                 useTheme: false,
-                subject_page:'subject-page'
+                subject_page:'subject-page',
             }
         },
         methods:{
@@ -460,6 +467,13 @@
             //     return 'test';
             //
             // },
+            showImgEmptyAgenda(){
+                if(this.planner_events_vue.length == 0){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>
