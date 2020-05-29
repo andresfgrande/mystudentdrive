@@ -44,6 +44,7 @@
     v-bind:page_type="{{json_encode($page_type)}}"
     route_get_events_by_subject="{{route('get_events_by_subject')}}"
     v-bind:subject_prop="{{json_encode($subject)}}"
+    route_base_images="{{url('/images/')}}"
 >
 </planner-tag>
 

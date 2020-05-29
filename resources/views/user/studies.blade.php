@@ -17,7 +17,7 @@
         route_get_studies="{{route('get_studies_ajax')}}"
         route_get_periods_by_year="{{route('get_periods_by_year')}}"
         route_photo="{{url("/images/content/clip-list-is-empty.png")}}"
-        route_photo_2="{{url("/images/content/clip-2.png")}}"
+        route_photo_2="{{url("/images/content/clip-2_v2.png")}}"
     ></studies>
 
 
