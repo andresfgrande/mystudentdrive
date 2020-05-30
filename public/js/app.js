@@ -3147,9 +3147,9 @@ __webpack_require__.r(__webpack_exports__);
     formatDateFull: function formatDateFull(date_to_format) {
       var date = new Date(date_to_format);
       var options = {
-        weekday: 'long',
+        weekday: 'short',
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric'
       };
       return date = date.toLocaleDateString("es-ES", options);
@@ -3635,9 +3635,9 @@ __webpack_require__.r(__webpack_exports__);
     formatDateFull: function formatDateFull(date_to_format) {
       var date = new Date(date_to_format);
       var options = {
-        weekday: 'long',
+        weekday: 'short',
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric'
       };
       return date = date.toLocaleDateString("es-ES", options);
@@ -4154,9 +4154,9 @@ __webpack_require__.r(__webpack_exports__);
     formatDateFull: function formatDateFull(date_to_format) {
       var date = new Date(date_to_format);
       var options = {
-        weekday: 'long',
+        weekday: 'short',
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric'
       };
       return date = date.toLocaleDateString("es-ES", options);
@@ -6541,13 +6541,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TodolistTag",
-  props: ['route_add_task', 'route_get_subjects_by_user', 'route_get_tasks_by_user'],
+  props: ['route_add_task', 'route_get_subjects_by_user', 'route_get_tasks_by_user', 'route_delete_task', 'route_task_done', 'route_edit_task'],
   created: function created() {
     this.route_add_task_vue = this.route_add_task;
     this.route_get_subjects_by_user_vue = this.route_get_subjects_by_user;
     this.route_get_tasks_by_user_vue = this.route_get_tasks_by_user;
+    this.route_delete_task_vue = this.route_delete_task;
+    this.route_task_done_vue = this.route_task_done;
+    this.route_edit_task_vue = this.route_edit_task;
     this.getSubjectsByUser();
     this.getAllTasks();
   },
@@ -6556,6 +6662,8 @@ __webpack_require__.r(__webpack_exports__);
       route_add_task_vue: '',
       route_get_subjects_by_user_vue: '',
       route_get_tasks_by_user_vue: '',
+      route_delete_task_vue: '',
+      route_edit_task_vue: '',
       taskToAdd: {
         description: '',
         date: '',
@@ -6563,10 +6671,54 @@ __webpack_require__.r(__webpack_exports__);
         subject_id: ''
       },
       subjectsArray: [],
-      tasksArray: []
+      tasksArray: [],
+      taskToDeleteName: '',
+      taskToDelete: {
+        task_id: ''
+      },
+      showDeleteFail: false,
+      showEditFail: false,
+      adding: false,
+      route_task_done_vue: '',
+      taskDone: {
+        task_id: ''
+      },
+      tachadoClass: 'tachado',
+      tachadoImgClass: 'tachado-img',
+      taskToEdit: {
+        task_id: '',
+        description: '',
+        date: '',
+        is_urgent: '',
+        subject_id: ''
+      }
     };
   },
   methods: {
+    formatDateFull: function formatDateFull(date_to_format) {
+      if (date_to_format === null) {
+        return '';
+      }
+
+      var date = new Date(date_to_format);
+      var options = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      };
+      return date = date.toLocaleDateString("es-ES", options);
+    },
+    enableAdding: function enableAdding() {
+      this.adding = true;
+    },
+    disableAdding: function disableAdding() {
+      this.taskToAdd.description = '';
+      this.taskToAdd.date = '';
+      this.taskToAdd.is_urgent = false;
+      this.taskToAdd.subject_id = '';
+      this.adding = false;
+    },
     addTask: function addTask() {
       var _this = this;
 
@@ -6576,29 +6728,105 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log(response.data.result);
 
+        _this.disableAdding();
+
         _this.getAllTasks();
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
-    getSubjectsByUser: function getSubjectsByUser() {
+    editTask: function editTask() {
       var _this2 = this;
+
+      var url = this.route_edit_task_vue;
+      axios.put(url, {
+        task: this.taskToEdit
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'task_edited') {
+          $('#editTaskModal').modal('hide');
+
+          _this2.getAllTasks();
+        }
+
+        if (response.data.result === 'error_edit_task') {
+          _this2.showEditFail = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    editTaskModal: function editTaskModal(id, description, date, urgent, subject) {
+      this.taskToEdit.description = description;
+      this.taskToEdit.task_id = id;
+      this.taskToEdit.date = date;
+      this.taskToEdit.is_urgent = urgent;
+      this.taskToEdit.subject_id = subject;
+      this.showEditFail = false;
+      $('#editTaskModal').modal('show');
+    },
+    deleteTask: function deleteTask() {
+      var _this3 = this;
+
+      var url = this.route_delete_task_vue;
+      axios["delete"](url, {
+        params: this.taskToDelete
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'task_deleted') {
+          $('#deleteTaskModal').modal('hide');
+
+          _this3.getAllTasks();
+        }
+
+        if (response.data.result === 'error_delete_task') {
+          _this3.showDeleteFail = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    deleteTaskModal: function deleteTaskModal(id, description) {
+      this.taskToDelete.task_id = id;
+      this.taskToDeleteName = description;
+      this.showDeleteFail = false;
+      $('#deleteTaskModal').modal('show');
+    },
+    getSubjectsByUser: function getSubjectsByUser() {
+      var _this4 = this;
 
       var url = this.route_get_subjects_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this2.subjectsArray = response.data.result;
+        _this4.subjectsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getAllTasks: function getAllTasks() {
-      var _this3 = this;
+      var _this5 = this;
 
       var url = this.route_get_tasks_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this3.tasksArray = response.data.result;
+        _this5.tasksArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    taskCheckDone: function taskCheckDone(id) {
+      var _this6 = this;
+
+      this.taskDone.task_id = id;
+      var url = this.route_task_done_vue;
+      axios.put(url, {
+        task: this.taskDone
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        _this6.getAllTasks();
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -88124,7 +88352,7 @@ var render = function() {
                     {
                       staticClass: "card-body",
                       style: {
-                        borderRightWidth: 23 + "px",
+                        borderRightWidth: 20 + "px",
                         borderRightStyle: "solid",
                         borderRightColor: event.subject_color
                       }
@@ -88144,7 +88372,7 @@ var render = function() {
                         _vm._v(_vm._s(event.name))
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "card-text" }, [
+                      _c("p", { staticClass: "card-text event-description" }, [
                         _vm._v(_vm._s(event.description))
                       ]),
                       _vm._v(" "),
@@ -89068,7 +89296,7 @@ var render = function() {
                         {
                           staticClass: "card-body",
                           style: {
-                            borderRightWidth: 23 + "px",
+                            borderRightWidth: 20 + "px",
                             borderRightStyle: "solid",
                             borderRightColor: event.subject_color
                           }
@@ -89088,9 +89316,11 @@ var render = function() {
                             _vm._v(_vm._s(event.name))
                           ]),
                           _vm._v(" "),
-                          _c("p", { staticClass: "card-text" }, [
-                            _vm._v(_vm._s(event.description))
-                          ]),
+                          _c(
+                            "p",
+                            { staticClass: "card-text event-description" },
+                            [_vm._v(_vm._s(event.description))]
+                          ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text event-time" }, [
                             _vm._v(
@@ -90043,7 +90273,7 @@ var render = function() {
                         {
                           staticClass: "card-body",
                           style: {
-                            borderRightWidth: 23 + "px",
+                            borderRightWidth: 20 + "px",
                             borderRightStyle: "solid",
                             borderRightColor: event.subject_color
                           }
@@ -90063,9 +90293,11 @@ var render = function() {
                             _vm._v(_vm._s(event.name))
                           ]),
                           _vm._v(" "),
-                          _c("p", { staticClass: "card-text" }, [
-                            _vm._v(_vm._s(event.description))
-                          ]),
+                          _c(
+                            "p",
+                            { staticClass: "card-text event-description" },
+                            [_vm._v(_vm._s(event.description))]
+                          ),
                           _vm._v(" "),
                           _c("p", { staticClass: "card-text event-time" }, [
                             _vm._v(
@@ -93797,181 +94029,675 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container content todo-list dashboard" }, [
-    _c("h3", { staticStyle: { "text-align": "center" } }, [_vm._v("Mi lista")]),
+    _c("h3", { staticStyle: { "text-align": "center" } }, [
+      _vm._v("Mis tareas")
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "form-group", staticStyle: { "margin-top": "2em" } },
-      [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.taskToAdd.description,
-              expression: "taskToAdd.description"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            id: "input-description",
-            "aria-describedby": "emailHelp",
-            placeholder: "por ejemplo: Comprar libro de biología."
-          },
-          domProps: { value: _vm.taskToAdd.description },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.taskToAdd, "description", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.taskToAdd.is_urgent,
-              expression: "taskToAdd.is_urgent"
-            }
-          ],
-          attrs: { type: "checkbox", id: "checkbox-tarea-tag" },
-          domProps: {
-            checked: Array.isArray(_vm.taskToAdd.is_urgent)
-              ? _vm._i(_vm.taskToAdd.is_urgent, null) > -1
-              : _vm.taskToAdd.is_urgent
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.taskToAdd.is_urgent,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 &&
-                    _vm.$set(_vm.taskToAdd, "is_urgent", $$a.concat([$$v]))
-                } else {
-                  $$i > -1 &&
-                    _vm.$set(
-                      _vm.taskToAdd,
-                      "is_urgent",
-                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                    )
-                }
-              } else {
-                _vm.$set(_vm.taskToAdd, "is_urgent", $$c)
-              }
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "checkbox-tarea-tag" } }, [
-          _vm._v("Marcar como tarea urgente.")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.taskToAdd.date,
-              expression: "taskToAdd.date"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "date", id: "date" },
-          domProps: { value: _vm.taskToAdd.date },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.taskToAdd, "date", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.taskToAdd.subject_id,
-                expression: "taskToAdd.subject_id"
-              }
-            ],
-            staticClass: "select-subjects-tasks",
-            attrs: { id: "subject" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.$set(
-                  _vm.taskToAdd,
-                  "subject_id",
-                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                )
-              }
-            }
-          },
-          [
-            _c("option", { attrs: { value: "" } }, [_vm._v("Tarea general")]),
-            _vm._v(" "),
-            _vm._l(_vm.subjectsArray, function(subject) {
-              return _c("option", { domProps: { value: subject.subject_id } }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(subject.subject_name) +
-                    " - " +
-                    _vm._s(subject.period_name) +
-                    " - " +
-                    _vm._s(subject.study_name) +
-                    "\n            "
-                )
-              ])
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c(
+    !_vm.adding
+      ? _c(
           "button",
           {
             staticClass: "btn btn-primary",
-            attrs: { type: "button", disabled: _vm.addTaskDisabled },
-            on: { click: _vm.addTask }
+            staticStyle: { "margin-bottom": "1em" },
+            attrs: { type: "button" },
+            on: { click: _vm.enableAdding }
           },
           [_vm._v("Añadir tarea")]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.adding
+      ? _c(
+          "div",
+          {
+            staticClass: "form-group form-add-task",
+            staticStyle: { "margin-top": "2em" }
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.taskToAdd.description,
+                  expression: "taskToAdd.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                id: "input-description",
+                "aria-describedby": "emailHelp",
+                placeholder: "Por ejemplo: Comprar libro de biología."
+              },
+              domProps: { value: _vm.taskToAdd.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.taskToAdd, "description", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.taskToAdd.is_urgent,
+                  expression: "taskToAdd.is_urgent"
+                }
+              ],
+              attrs: { type: "checkbox", id: "checkbox-tarea-tag" },
+              domProps: {
+                checked: Array.isArray(_vm.taskToAdd.is_urgent)
+                  ? _vm._i(_vm.taskToAdd.is_urgent, null) > -1
+                  : _vm.taskToAdd.is_urgent
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.taskToAdd.is_urgent,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(_vm.taskToAdd, "is_urgent", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.taskToAdd,
+                          "is_urgent",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.taskToAdd, "is_urgent", $$c)
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "checkbox-tarea-tag" } }, [
+              _vm._v("Marcar como tarea urgente.")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.taskToAdd.date,
+                  expression: "taskToAdd.date"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "date", id: "date" },
+              domProps: { value: _vm.taskToAdd.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.taskToAdd, "date", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskToAdd.subject_id,
+                    expression: "taskToAdd.subject_id"
+                  }
+                ],
+                staticClass: "select-subjects-tasks",
+                attrs: { id: "subject" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.taskToAdd,
+                      "subject_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("Tarea general")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.subjectsArray, function(subject) {
+                  return _c(
+                    "option",
+                    { domProps: { value: subject.subject_id } },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(subject.subject_name) +
+                          " - " +
+                          _vm._s(subject.period_name) +
+                          " - " +
+                          _vm._s(subject.study_name) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button", disabled: _vm.addTaskDisabled },
+                on: { click: _vm.addTask }
+              },
+              [_vm._v("Añadir tarea")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: { click: _vm.disableAdding }
+              },
+              [_vm._v("Cancelar")]
+            )
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "section-item" }, [
+      _c(
+        "ul",
+        _vm._l(_vm.tasksArray, function(task) {
+          return _c(
+            "li",
+            {
+              style: {
+                borderLeftWidth: 20 + "px",
+                borderLeftStyle: "solid",
+                borderLeftColor: task.subject_color
+              }
+            },
+            [
+              _c("div", { staticClass: "check-done" }, [
+                task.task_is_urgent
+                  ? _c("div", {
+                      staticClass: "urgent-task-div",
+                      class: task.task_is_done && _vm.tachadoImgClass
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                task.task_is_done
+                  ? _c("input", {
+                      attrs: {
+                        type: "checkbox",
+                        id: "checkbox-task",
+                        checked: ""
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.taskCheckDone(task.task_id)
+                        }
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                !task.task_is_done
+                  ? _c("input", {
+                      attrs: { type: "checkbox", id: "checkbox-task2" },
+                      on: {
+                        click: function($event) {
+                          return _vm.taskCheckDone(task.task_id)
+                        }
+                      }
+                    })
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "task-item" }, [
+                _c(
+                  "p",
+                  {
+                    staticClass: "task_description",
+                    class: task.task_is_done && _vm.tachadoClass,
+                    on: {
+                      click: function($event) {
+                        return _vm.editTaskModal(
+                          task.task_id,
+                          task.task_description,
+                          task.task_date,
+                          task.task_is_urgent,
+                          task.subject_id
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(task.task_description))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  {
+                    staticClass: "task_subject",
+                    class: task.task_is_done && _vm.tachadoClass
+                  },
+                  [_vm._v(_vm._s(task.subject_name))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  {
+                    staticClass: "task_date",
+                    class: task.task_is_done && _vm.tachadoClass
+                  },
+                  [_vm._v(_vm._s(_vm.formatDateFull(task.task_date)))]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "delete-task-div",
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteTaskModal(
+                        task.task_id,
+                        task.task_description
+                      )
+                    }
+                  }
+                })
+              ])
+            ]
+          )
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "editTaskModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "description-edit" } }, [
+                      _vm._v("Descripción de la tarea:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.taskToEdit.description,
+                          expression: "taskToEdit.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "description-edit",
+                        "aria-describedby": "emailHelp",
+                        placeholder: "Por ejemplo: Comprar libro de biología."
+                      },
+                      domProps: { value: _vm.taskToEdit.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.taskToEdit,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "date-edit" } }, [
+                      _vm._v("Fecha de la tarea:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.taskToEdit.date,
+                          expression: "taskToEdit.date"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "date", id: "date-edit" },
+                      domProps: { value: _vm.taskToEdit.date },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.taskToEdit, "date", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.taskToEdit.is_urgent,
+                          expression: "taskToEdit.is_urgent"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "checkbox-tarea-tag-edit"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.taskToEdit.is_urgent)
+                          ? _vm._i(_vm.taskToEdit.is_urgent, null) > -1
+                          : _vm.taskToEdit.is_urgent
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.taskToEdit.is_urgent,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                _vm.$set(
+                                  _vm.taskToEdit,
+                                  "is_urgent",
+                                  $$a.concat([$$v])
+                                )
+                            } else {
+                              $$i > -1 &&
+                                _vm.$set(
+                                  _vm.taskToEdit,
+                                  "is_urgent",
+                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                )
+                            }
+                          } else {
+                            _vm.$set(_vm.taskToEdit, "is_urgent", $$c)
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "checkbox-tarea-tag-edit" } }, [
+                      _vm._v("Marcar como tarea urgente.")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject-edit" } }, [
+                      _vm._v("Asignatura relacionada:")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.taskToEdit.subject_id,
+                            expression: "taskToEdit.subject_id"
+                          }
+                        ],
+                        staticClass: "select-subjects-tasks",
+                        attrs: { id: "subject-edit" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.taskToEdit,
+                              "subject_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v("Tarea general")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.subjectsArray, function(subject) {
+                          return _c(
+                            "option",
+                            { domProps: { value: subject.subject_id } },
+                            [
+                              _vm._v(
+                                "\n                                        " +
+                                  _vm._s(subject.subject_name) +
+                                  " - " +
+                                  _vm._s(subject.period_name) +
+                                  " - " +
+                                  _vm._s(subject.study_name) +
+                                  "\n                                    "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _vm.showEditFail
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                    No se ha podido editar esta tarea, vuelve a intentarlo.\n                                "
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.editTask }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
         )
       ]
     ),
     _vm._v(" "),
     _c(
-      "ul",
-      _vm._l(_vm.tasksArray, function(task) {
-        return _c("li", [
-          _vm._v("\n            " + _vm._s(task) + "\n        ")
-        ])
-      }),
-      0
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "deleteTaskModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("h5", [_vm._v(_vm._s(_vm.taskToDeleteName))])
+                  ]),
+                  _vm._v(" "),
+                  _vm.showDeleteFail
+                    ? _c("small", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n                                No se ha podido eliminar esta tarea, vuelve a intentarlo.\n                            "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteTask }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel2" } },
+        [_vm._v("Edición del evento")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel3" } },
+        [_vm._v("¿Seguro que quieres eliminar esta tarea?")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

@@ -55,6 +55,9 @@
                     route_add_task="{{route('add_task')}}"
                     route_get_subjects_by_user="{{route('get_subjects_by_user')}}"
                     route_get_tasks_by_user="{{route('get_tasks_by_user')}}"
+                    route_delete_task="{{route('delete_task')}}"
+                    route_task_done="{{route('task_done')}}"
+                    route_edit_task="{{route('edit_task')}}"
                 ></todo-list-tag>
             </div>
         </div>

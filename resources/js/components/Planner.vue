@@ -26,11 +26,11 @@
                 <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>
                 <div class="custom-card-event" v-for="event in pageOfItems" :key="event.id">
                     <div class="card w-75">
-                        <div class="card-body" v-bind:style="{ borderRightWidth: 23+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
+                        <div class="card-body" v-bind:style="{ borderRightWidth: 20+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
                             <h5 class="card-title event-date">{{formatDateFull(event.date)}}</h5>
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                             <h5 class="card-title event-name" >{{event.name}}</h5>
-                            <p class="card-text">{{event.description}}</p>
+                            <p class="card-text event-description">{{event.description}}</p>
                             <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
                             <div class="actions-planner-events">
                                 <div class="edit-event-div" @click="editEventModal(event)"></div>
@@ -300,7 +300,7 @@
             },
             formatDateFull(date_to_format){
                 var date = new Date(date_to_format);
-                var options = {   weekday: 'long',year: 'numeric', month: 'long', day: 'numeric' };
+                var options = {   weekday: 'short',year: 'numeric', month: 'short', day: 'numeric' };
                 return date = date.toLocaleDateString("es-ES",options);
             },
             getEvents(){
@@ -350,7 +350,6 @@
                     });
             },
             deleteEvent(){
-
                 var url = this.route_delete_event_vue;
                 axios.delete(url,{params:this.eventToDelete}).then(response => {
                     console.log(response.data.result)
