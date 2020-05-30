@@ -6762,7 +6762,13 @@ __webpack_require__.r(__webpack_exports__);
       this.taskToEdit.task_id = id;
       this.taskToEdit.date = date;
       this.taskToEdit.is_urgent = urgent;
-      this.taskToEdit.subject_id = subject;
+
+      if (subject === undefined) {
+        this.taskToEdit.subject_id = null;
+      } else {
+        this.taskToEdit.subject_id = subject;
+      }
+
       this.showEditFail = false;
       $('#editTaskModal').modal('show');
     },
@@ -94252,11 +94258,8 @@ var render = function() {
                 _vm._v(" "),
                 task.task_is_done
                   ? _c("input", {
-                      attrs: {
-                        type: "checkbox",
-                        id: "checkbox-task",
-                        checked: ""
-                      },
+                      staticClass: "checkbox-task",
+                      attrs: { type: "checkbox", checked: "" },
                       on: {
                         click: function($event) {
                           return _vm.taskCheckDone(task.task_id)
@@ -94267,7 +94270,8 @@ var render = function() {
                 _vm._v(" "),
                 !task.task_is_done
                   ? _c("input", {
-                      attrs: { type: "checkbox", id: "checkbox-task2" },
+                      staticClass: "checkbox-task2",
+                      attrs: { type: "checkbox" },
                       on: {
                         click: function($event) {
                           return _vm.taskCheckDone(task.task_id)

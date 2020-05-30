@@ -25,9 +25,9 @@
                 <li v-for="task in tasksArray" v-bind:style="{ borderLeftWidth: 20+'px',borderLeftStyle: 'solid', borderLeftColor: task.subject_color}">
                     <div class="check-done">
                         <div v-if="task.task_is_urgent" class ="urgent-task-div" :class="task.task_is_done && tachadoImgClass"></div>
-                        <input type="checkbox" id="checkbox-task"  @click="taskCheckDone(task.task_id)"
+                        <input type="checkbox" class="checkbox-task"   @click="taskCheckDone(task.task_id)"
                                checked v-if="task.task_is_done">
-                        <input type="checkbox" id="checkbox-task2"  @click="taskCheckDone(task.task_id)"
+                        <input type="checkbox" class="checkbox-task2"   @click="taskCheckDone(task.task_id)"
                                v-if="!task.task_is_done">
                     </div>
                     <div class="task-item">
@@ -229,7 +229,11 @@
                 this.taskToEdit.task_id = id;
                 this.taskToEdit.date = date;
                 this.taskToEdit.is_urgent = urgent;
-                this.taskToEdit.subject_id = subject;
+                if(subject === undefined){
+                    this.taskToEdit.subject_id = null;
+                }else{
+                    this.taskToEdit.subject_id = subject;
+                }
                 this.showEditFail = false;
                 $('#editTaskModal').modal('show');
             },
