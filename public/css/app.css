@@ -22787,7 +22787,7 @@ a.text-dark:focus {
 }
 
 #page-content-wrapper {
-  min-width: 100vw;
+  min-width: 96vw;
 }
 
 #page-content-wrapper #menu-toggle {
@@ -22800,7 +22800,7 @@ a.text-dark:focus {
 }
 
 #page-content-wrapper-subject-page {
-  min-width: 100vw;
+  min-width: 96vw;
 }
 
 #page-content-wrapper-subject-page #menu-toggle-subject-page {

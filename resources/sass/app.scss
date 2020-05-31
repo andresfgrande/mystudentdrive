@@ -9,7 +9,9 @@
 
 @import 'node_modules/bootstrap/scss/bootstrap';
 
-
+//* {
+//    border: 1px solid #f00 !important;
+//}
 /***************DESKTOP**************/
 .page-title{
     //margin-top: 0.5em;
@@ -981,7 +983,8 @@
 }
 
 #page-content-wrapper {
-    min-width: 100vw;
+    //min-width: 100vw;
+    min-width: 96vw;
     #menu-toggle{
         z-index: 2;
         top: 75px;
@@ -994,7 +997,8 @@
 }
 
 #page-content-wrapper-subject-page {
-    min-width: 100vw;
+    //min-width: 100vw;
+    min-width: 96vw;
     #menu-toggle-subject-page{
         z-index: 2;
         top: 75px;
