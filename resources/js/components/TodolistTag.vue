@@ -1,15 +1,17 @@
 <template>
     <div class="container content todo-list dashboard">
-        <h3 style="text-align:center;">Mis tareas</h3>
-
+        <h4 class="title-todo-list" >Mis tareas</h4>
         <button type="button" class="btn btn-primary" v-if="!adding" style="margin-bottom: 1em;" @click="enableAdding">Añadir tarea</button>
 
-        <div class="form-group form-add-task" v-if="adding" style="margin-top: 2em;">
-            <input type="text" class="form-control" id="input-description" v-model="taskToAdd.description"
+        <div class="form-group form-add-task" v-if="adding">
+            <label for="input-description">Descripción de la tarea:</label>
+            <input type="text" class="form-control input-description" id="input-description" v-model="taskToAdd.description"
                    aria-describedby="emailHelp" placeholder="Por ejemplo: Comprar libro de biología.">
             <input type="checkbox" id="checkbox-tarea-tag" v-model="taskToAdd.is_urgent" >
             <label for="checkbox-tarea-tag">Marcar como tarea urgente.</label>
-            <input type="date" class="form-control" id="date" v-model="taskToAdd.date" >
+            <label for="date" class="label-for-date-event">Fecha de la tarea:</label>
+            <input type="date" class="form-control input-date" id="date" v-model="taskToAdd.date" >
+            <label for="subject">Asignatura relacionada con esta tarea:</label>
             <select id="subject" class="select-subjects-tasks" v-model="taskToAdd.subject_id">
                 <option value="">Tarea general</option>
                 <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
@@ -38,9 +40,13 @@
                             <p class="task_date" :class="task.task_is_done && tachadoClass">{{formatDateFull(task.task_date)}}</p>
                         <div class ="delete-task-div" @click="deleteTaskModal(task.task_id,task.task_description)"></div>
                     </div>
-
                 </li>
             </ul>
+        </div>
+        <div class="empty-tasks-photo" v-if="showImgEmptyTasks">
+            <img  class="empty-img-tasks" :src="this.routeImgEmptyTasks"  alt="empty_tasks_list"/>
+            <h5 class="description-empty-tasks">¡Apunta todas tus tareas!</h5>
+            <h5 class="description-empty-tasks second">Será tu lista de buenos propositos...</h5>
         </div>
 <!--        <button @click="editTask('hey')">test edit call</button>-->
 
@@ -130,7 +136,7 @@
     export default {
         name: "TodolistTag",
         props:['route_add_task','route_get_subjects_by_user','route_get_tasks_by_user','route_delete_task',
-        'route_task_done','route_edit_task'],
+        'route_task_done','route_edit_task','route_get_tasks_by_subject','page_type','subject_prop','route_base_images'],
         created(){
             this.route_add_task_vue = this.route_add_task;
             this.route_get_subjects_by_user_vue = this.route_get_subjects_by_user;
@@ -138,8 +144,13 @@
             this.route_delete_task_vue = this.route_delete_task;
             this.route_task_done_vue = this.route_task_done;
             this.route_edit_task_vue = this.route_edit_task;
+            this.route_get_tasks_by_subject_vue = this.route_get_tasks_by_subject;
+            this.page_type_vue = this.page_type;
+            this.subject_prop_vue = this.subject_prop;
+            this.route_base_images_vue = this.route_base_images;
+            this.routeImgEmptyTasks = this.route_base_images_vue +"/content/clip-message-sent-1_v2.png";
             this.getSubjectsByUser();
-            this.getAllTasks();
+            this.getTasksByPageType();
         },
         data(){
             return{
@@ -148,6 +159,9 @@
                 route_get_tasks_by_user_vue:'',
                 route_delete_task_vue:'',
                 route_edit_task_vue:'',
+                route_get_tasks_by_subject_vue:'',
+                page_type_vue:'',
+                subject_prop_vue:'',
                 taskToAdd:{
                     description:'',
                     date:'',
@@ -176,9 +190,33 @@
                     is_urgent: '',
                     subject_id:'',
                 },
+                currentSubject:{
+                    subject_id:'',
+                },
+                routeImgEmptyTasks:'',
+                route_base_images_vue:'',
             }
         },
         methods:{
+            getTasksByPageType(){
+                if(this.page_type_vue === 'dashboard'){
+                    this.getAllTasks();
+                }
+                if(this.page_type_vue === 'subject'){
+                    this.getTasksBySubject();
+                }
+            },
+            getTasksBySubject(){
+                this.currentSubject.subject_id = this.subject_prop_vue.subject_ID;
+                var url = this.route_get_tasks_by_subject_vue;
+                axios.get(url,{params:this.currentSubject}).then(response => {
+                    console.log(response.data.result);
+                    this.tasksArray = response.data.result;
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
             formatDateFull(date_to_format){
                 if(date_to_format === null){
                     return '';
@@ -188,7 +226,10 @@
                 return date = date.toLocaleDateString("es-ES",options);
             },
             enableAdding(){
-              this.adding = true;
+                if(this.page_type_vue === 'subject'){
+                    this.taskToAdd.subject_id = this.subject_prop_vue.subject_ID;
+                }
+                this.adding = true;
             },
             disableAdding(){
                 this.taskToAdd.description ='';
@@ -202,7 +243,8 @@
                 axios.post(url ,{task:this.taskToAdd}).then(response => {
                     console.log(response.data.result);
                     this.disableAdding();
-                    this.getAllTasks();
+                    // this.getAllTasks();
+                    this.getTasksByPageType();
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -214,7 +256,8 @@
                     console.log(response.data.result);
                     if(response.data.result === 'task_edited'){
                         $('#editTaskModal').modal('hide');
-                        this.getAllTasks()
+                        // this.getAllTasks()
+                        this.getTasksByPageType();
                     }
                     if(response.data.result === 'error_edit_task'){
                         this.showEditFail = true;
@@ -243,7 +286,8 @@
                     console.log(response.data.result)
                     if(response.data.result === 'task_deleted'){
                         $('#deleteTaskModal').modal('hide');
-                        this.getAllTasks()
+                        // this.getAllTasks()
+                        this.getTasksByPageType();
                     }
                     if(response.data.result === 'error_delete_task'){
                         this.showDeleteFail = true;
@@ -284,7 +328,8 @@
                 var url = this.route_task_done_vue;
                 axios.put(url ,{task:this.taskDone}).then(response => {
                     console.log(response.data.result);
-                    this.getAllTasks();
+                    // this.getAllTasks();
+                    this.getTasksByPageType();
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -298,7 +343,14 @@
                 }else{
                     return false;
                 }
-            }
+            },
+            showImgEmptyTasks(){
+                if(this.tasksArray.length == 0){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>

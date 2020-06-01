@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
 <!--                    <h3 class="planner-title">Agenda de {{checkElementName}}</h3>-->
-                    <h3 class="planner-title">Mi agenda</h3>
+                    <h4 class="planner-title">Mi agenda</h4>
                     <div class="checkbox-show-old">
                         <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
                         <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>

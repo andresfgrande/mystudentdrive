@@ -2378,6 +2378,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    studyLink: function studyLink() {
+      window.location = "/study/" + this.chosed_year_vue.study_id;
+    },
+    studyYearLink: function studyYearLink() {
+      window.location = "/study/" + this.chosed_year_vue.study_id + "?year=" + this.chosed_year_vue.id;
+    },
     studiesLink: function studiesLink() {
       window.location = "/studies";
     },
@@ -2841,6 +2847,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -3519,6 +3527,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PlannerTag",
   props: ['planner_events', 'route_add_event', 'route_get_events', 'route_get_subjects_by_user', 'route_edit_event', 'route_delete_event', 'route_update_old_events', 'study_prop', 'route_get_events_by_study', 'page_type', 'route_get_events_by_subject', 'subject_prop', 'route_base_images'],
@@ -3766,7 +3776,7 @@ __webpack_require__.r(__webpack_exports__);
       this.eventToAdd.description = '';
       this.eventToAdd.date = '';
       this.eventToAdd.classroom = '';
-      this.eventToAdd.subject_id = '';
+      this.eventToAdd.subject_id = this.subject_prop_vue.subject_ID;
       this.eventToAdd.time = '';
     },
     editEventModal: function editEventModal(event) {
@@ -5865,6 +5875,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SubjectPage",
@@ -6644,9 +6655,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TodolistTag",
-  props: ['route_add_task', 'route_get_subjects_by_user', 'route_get_tasks_by_user', 'route_delete_task', 'route_task_done', 'route_edit_task'],
+  props: ['route_add_task', 'route_get_subjects_by_user', 'route_get_tasks_by_user', 'route_delete_task', 'route_task_done', 'route_edit_task', 'route_get_tasks_by_subject', 'page_type', 'subject_prop', 'route_base_images'],
   created: function created() {
     this.route_add_task_vue = this.route_add_task;
     this.route_get_subjects_by_user_vue = this.route_get_subjects_by_user;
@@ -6654,8 +6671,13 @@ __webpack_require__.r(__webpack_exports__);
     this.route_delete_task_vue = this.route_delete_task;
     this.route_task_done_vue = this.route_task_done;
     this.route_edit_task_vue = this.route_edit_task;
+    this.route_get_tasks_by_subject_vue = this.route_get_tasks_by_subject;
+    this.page_type_vue = this.page_type;
+    this.subject_prop_vue = this.subject_prop;
+    this.route_base_images_vue = this.route_base_images;
+    this.routeImgEmptyTasks = this.route_base_images_vue + "/content/clip-message-sent-1_v2.png";
     this.getSubjectsByUser();
-    this.getAllTasks();
+    this.getTasksByPageType();
   },
   data: function data() {
     return {
@@ -6664,6 +6686,9 @@ __webpack_require__.r(__webpack_exports__);
       route_get_tasks_by_user_vue: '',
       route_delete_task_vue: '',
       route_edit_task_vue: '',
+      route_get_tasks_by_subject_vue: '',
+      page_type_vue: '',
+      subject_prop_vue: '',
       taskToAdd: {
         description: '',
         date: '',
@@ -6691,10 +6716,38 @@ __webpack_require__.r(__webpack_exports__);
         date: '',
         is_urgent: '',
         subject_id: ''
-      }
+      },
+      currentSubject: {
+        subject_id: ''
+      },
+      routeImgEmptyTasks: '',
+      route_base_images_vue: ''
     };
   },
   methods: {
+    getTasksByPageType: function getTasksByPageType() {
+      if (this.page_type_vue === 'dashboard') {
+        this.getAllTasks();
+      }
+
+      if (this.page_type_vue === 'subject') {
+        this.getTasksBySubject();
+      }
+    },
+    getTasksBySubject: function getTasksBySubject() {
+      var _this = this;
+
+      this.currentSubject.subject_id = this.subject_prop_vue.subject_ID;
+      var url = this.route_get_tasks_by_subject_vue;
+      axios.get(url, {
+        params: this.currentSubject
+      }).then(function (response) {
+        console.log(response.data.result);
+        _this.tasksArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
     formatDateFull: function formatDateFull(date_to_format) {
       if (date_to_format === null) {
         return '';
@@ -6710,6 +6763,10 @@ __webpack_require__.r(__webpack_exports__);
       return date = date.toLocaleDateString("es-ES", options);
     },
     enableAdding: function enableAdding() {
+      if (this.page_type_vue === 'subject') {
+        this.taskToAdd.subject_id = this.subject_prop_vue.subject_ID;
+      }
+
       this.adding = true;
     },
     disableAdding: function disableAdding() {
@@ -6720,7 +6777,7 @@ __webpack_require__.r(__webpack_exports__);
       this.adding = false;
     },
     addTask: function addTask() {
-      var _this = this;
+      var _this2 = this;
 
       var url = this.route_add_task_vue;
       axios.post(url, {
@@ -6728,15 +6785,16 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log(response.data.result);
 
-        _this.disableAdding();
+        _this2.disableAdding(); // this.getAllTasks();
 
-        _this.getAllTasks();
+
+        _this2.getTasksByPageType();
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     editTask: function editTask() {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = this.route_edit_task_vue;
       axios.put(url, {
@@ -6745,13 +6803,13 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'task_edited') {
-          $('#editTaskModal').modal('hide');
+          $('#editTaskModal').modal('hide'); // this.getAllTasks()
 
-          _this2.getAllTasks();
+          _this3.getTasksByPageType();
         }
 
         if (response.data.result === 'error_edit_task') {
-          _this2.showEditFail = true;
+          _this3.showEditFail = true;
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -6773,7 +6831,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#editTaskModal').modal('show');
     },
     deleteTask: function deleteTask() {
-      var _this3 = this;
+      var _this4 = this;
 
       var url = this.route_delete_task_vue;
       axios["delete"](url, {
@@ -6782,13 +6840,13 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'task_deleted') {
-          $('#deleteTaskModal').modal('hide');
+          $('#deleteTaskModal').modal('hide'); // this.getAllTasks()
 
-          _this3.getAllTasks();
+          _this4.getTasksByPageType();
         }
 
         if (response.data.result === 'error_delete_task') {
-          _this3.showDeleteFail = true;
+          _this4.showDeleteFail = true;
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -6801,38 +6859,38 @@ __webpack_require__.r(__webpack_exports__);
       $('#deleteTaskModal').modal('show');
     },
     getSubjectsByUser: function getSubjectsByUser() {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = this.route_get_subjects_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this4.subjectsArray = response.data.result;
+        _this5.subjectsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getAllTasks: function getAllTasks() {
-      var _this5 = this;
+      var _this6 = this;
 
       var url = this.route_get_tasks_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this5.tasksArray = response.data.result;
+        _this6.tasksArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     taskCheckDone: function taskCheckDone(id) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.taskDone.task_id = id;
       var url = this.route_task_done_vue;
       axios.put(url, {
         task: this.taskDone
       }).then(function (response) {
-        console.log(response.data.result);
+        console.log(response.data.result); // this.getAllTasks();
 
-        _this6.getAllTasks();
+        _this7.getTasksByPageType();
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -6841,6 +6899,13 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     addTaskDisabled: function addTaskDisabled() {
       if (this.taskToAdd.description === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    showImgEmptyTasks: function showImgEmptyTasks() {
+      if (this.tasksArray.length == 0) {
         return true;
       } else {
         return false;
@@ -87057,7 +87122,7 @@ var render = function() {
   return _c("div", { staticClass: "container content year dashboard" }, [
     !_vm.showYear
       ? _c("div", { staticClass: "section-empty-studies" }, [
-          _c("h3", [_vm._v("Esto se ve muy vacio...")]),
+          _c("h4", [_vm._v("Esto se ve muy vacio...")]),
           _vm._v(" "),
           _c("img", {
             staticClass: "empty-img-studies",
@@ -87080,18 +87145,27 @@ var render = function() {
     _vm._v(" "),
     _vm.showYear
       ? _c("div", [
-          _c("h3", { staticClass: "title-study-name" }, [
-            _vm._v(_vm._s(_vm.chosed_year_vue.study_name))
-          ]),
+          _c(
+            "h4",
+            { staticClass: "title-study-name", on: { click: _vm.studyLink } },
+            [_vm._v(_vm._s(_vm.chosed_year_vue.study_name))]
+          ),
           _vm._v(" "),
-          _c("h5", { staticClass: "title-year-dates" }, [
-            _vm._v(
-              "Curso " +
-                _vm._s(_vm.formatDateYear(_vm.chosed_year_vue.start_date)) +
-                " - " +
-                _vm._s(_vm.formatDateYear(_vm.chosed_year_vue.end_date))
-            )
-          ]),
+          _c(
+            "h5",
+            {
+              staticClass: "title-year-dates",
+              on: { click: _vm.studyYearLink }
+            },
+            [
+              _vm._v(
+                "Curso " +
+                  _vm._s(_vm.formatDateYear(_vm.chosed_year_vue.start_date)) +
+                  " - " +
+                  _vm._s(_vm.formatDateYear(_vm.chosed_year_vue.end_date))
+              )
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -88475,7 +88549,9 @@ var render = function() {
               _c("form", [
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Nombre del evento:")
+                    ]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -88517,7 +88593,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "description" } }, [
-                      _vm._v("Descripción")
+                      _vm._v("Descripción:")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -88555,6 +88631,10 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject" } }, [
+                      _vm._v("Asignatura relacionada:")
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "select",
                       {
@@ -88616,7 +88696,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "classroom" } }, [
-                      _vm._v("classroom")
+                      _vm._v("Lugar:")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -88654,7 +88734,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "time" } }),
+                    _c("label", { attrs: { for: "time" } }, [_vm._v("Hora:")]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -88687,7 +88767,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "date" } }),
+                    _c("label", { attrs: { for: "date" } }, [_vm._v("Fecha:")]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -88774,7 +88854,7 @@ var render = function() {
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "name-edit" } }, [
-                      _vm._v("Nombre")
+                      _vm._v("Nombre del evento:")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -88817,7 +88897,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "description-edit" } }, [
-                      _vm._v("Descripción")
+                      _vm._v("Descripción:")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -88855,6 +88935,10 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "subject-edit" } }, [
+                      _vm._v("Asignatura relacionada:")
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "select",
                       {
@@ -88889,7 +88973,7 @@ var render = function() {
                       },
                       [
                         _c("option", { attrs: { value: "" } }, [
-                          _vm._v("evento general")
+                          _vm._v("Evento general")
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.subjectsArray, function(subject) {
@@ -88916,7 +89000,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "classroom-edit" } }, [
-                      _vm._v("classroom")
+                      _vm._v("Lugar:")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -88954,7 +89038,9 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "time-edit" } }),
+                    _c("label", { attrs: { for: "time-edit" } }, [
+                      _vm._v("Hora:")
+                    ]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -88987,7 +89073,9 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "date-edit" } }),
+                    _c("label", { attrs: { for: "date-edit" } }, [
+                      _vm._v("Fecha:")
+                    ]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -89223,7 +89311,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("h3", { staticClass: "planner-title" }, [
+              _c("h4", { staticClass: "planner-title" }, [
                 _vm._v("Agenda de " + _vm._s(_vm.checkElementName))
               ]),
               _vm._v(" "),
@@ -89425,7 +89513,7 @@ var render = function() {
                     _c("div", { staticClass: "modal-body" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "name" } }, [
-                          _vm._v("Nombre")
+                          _vm._v("Nombre del evento:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89472,7 +89560,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "description" } }, [
-                          _vm._v("Descripción")
+                          _vm._v("Descripción:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89510,6 +89598,10 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "subject" } }, [
+                          _vm._v("Asignatura relacionada:")
+                        ]),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -89571,7 +89663,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "classroom" } }, [
-                          _vm._v("classroom")
+                          _vm._v("Lugar:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89609,7 +89701,9 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "time" } }),
+                        _c("label", { attrs: { for: "time" } }, [
+                          _vm._v("Hora:")
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -89646,7 +89740,9 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "date" } }),
+                        _c("label", { attrs: { for: "date" } }, [
+                          _vm._v("Fecha:")
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -89737,7 +89833,7 @@ var render = function() {
                     _c("div", { staticClass: "modal-body" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "name-edit" } }, [
-                          _vm._v("Nombre")
+                          _vm._v("Nombre del evento:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89784,7 +89880,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "description-edit" } }, [
-                          _vm._v("Descripción")
+                          _vm._v("Descripción:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89822,6 +89918,10 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "subject-edit" } }, [
+                          _vm._v("Asignatura relacionada:")
+                        ]),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -89883,7 +89983,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", { attrs: { for: "classroom-edit" } }, [
-                          _vm._v("classroom")
+                          _vm._v("Lugar:")
                         ]),
                         _vm._v(" "),
                         _c("input", {
@@ -89921,7 +90021,9 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "time-edit" } }),
+                        _c("label", { attrs: { for: "time-edit" } }, [
+                          _vm._v("Hora:")
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -89958,7 +90060,9 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "date-edit" } }),
+                        _c("label", { attrs: { for: "date-edit" } }, [
+                          _vm._v("Fecha")
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -90202,7 +90306,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("h3", { staticClass: "planner-title" }, [_vm._v("Mi agenda")]),
+              _c("h4", { staticClass: "planner-title" }, [_vm._v("Mi agenda")]),
               _vm._v(" "),
               _c("div", { staticClass: "checkbox-show-old" }, [
                 _c("input", {
@@ -93203,10 +93307,13 @@ var render = function() {
           "div",
           { staticClass: "subject-content subject-page-content" },
           [
-            _c("h3", { staticClass: "title-subject" }, [
+            _c("h4", { staticClass: "title-subject" }, [
+              _vm._v(_vm._s(_vm.subjectName))
+            ]),
+            _vm._v(" "),
+            _c("h5", { staticClass: "title-subject" }, [
               _vm._v(
-                _vm._s(_vm.subjectName) +
-                  " - " +
+                " " +
                   _vm._s(_vm.current_subject_vue.period_name) +
                   " - " +
                   _vm._s(
@@ -94035,9 +94142,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container content todo-list dashboard" }, [
-    _c("h3", { staticStyle: { "text-align": "center" } }, [
-      _vm._v("Mis tareas")
-    ]),
+    _c("h4", { staticClass: "title-todo-list" }, [_vm._v("Mis tareas")]),
     _vm._v(" "),
     !_vm.adding
       ? _c(
@@ -94053,185 +94158,190 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _vm.adding
-      ? _c(
-          "div",
-          {
-            staticClass: "form-group form-add-task",
-            staticStyle: { "margin-top": "2em" }
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.taskToAdd.description,
-                  expression: "taskToAdd.description"
+      ? _c("div", { staticClass: "form-group form-add-task" }, [
+          _c("label", { attrs: { for: "input-description" } }, [
+            _vm._v("Descripción de la tarea:")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.taskToAdd.description,
+                expression: "taskToAdd.description"
+              }
+            ],
+            staticClass: "form-control input-description",
+            attrs: {
+              type: "text",
+              id: "input-description",
+              "aria-describedby": "emailHelp",
+              placeholder: "Por ejemplo: Comprar libro de biología."
+            },
+            domProps: { value: _vm.taskToAdd.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
                 }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "input-description",
-                "aria-describedby": "emailHelp",
-                placeholder: "Por ejemplo: Comprar libro de biología."
-              },
-              domProps: { value: _vm.taskToAdd.description },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                _vm.$set(_vm.taskToAdd, "description", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.taskToAdd.is_urgent,
+                expression: "taskToAdd.is_urgent"
+              }
+            ],
+            attrs: { type: "checkbox", id: "checkbox-tarea-tag" },
+            domProps: {
+              checked: Array.isArray(_vm.taskToAdd.is_urgent)
+                ? _vm._i(_vm.taskToAdd.is_urgent, null) > -1
+                : _vm.taskToAdd.is_urgent
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.taskToAdd.is_urgent,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 &&
+                      _vm.$set(_vm.taskToAdd, "is_urgent", $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      _vm.$set(
+                        _vm.taskToAdd,
+                        "is_urgent",
+                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                      )
                   }
-                  _vm.$set(_vm.taskToAdd, "description", $event.target.value)
+                } else {
+                  _vm.$set(_vm.taskToAdd, "is_urgent", $$c)
                 }
               }
-            }),
-            _vm._v(" "),
-            _c("input", {
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "checkbox-tarea-tag" } }, [
+            _vm._v("Marcar como tarea urgente.")
+          ]),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "label-for-date-event", attrs: { for: "date" } },
+            [_vm._v("Fecha de la tarea:")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.taskToAdd.date,
+                expression: "taskToAdd.date"
+              }
+            ],
+            staticClass: "form-control input-date",
+            attrs: { type: "date", id: "date" },
+            domProps: { value: _vm.taskToAdd.date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.taskToAdd, "date", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "subject" } }, [
+            _vm._v("Asignatura relacionada con esta tarea:")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.taskToAdd.is_urgent,
-                  expression: "taskToAdd.is_urgent"
+                  value: _vm.taskToAdd.subject_id,
+                  expression: "taskToAdd.subject_id"
                 }
               ],
-              attrs: { type: "checkbox", id: "checkbox-tarea-tag" },
-              domProps: {
-                checked: Array.isArray(_vm.taskToAdd.is_urgent)
-                  ? _vm._i(_vm.taskToAdd.is_urgent, null) > -1
-                  : _vm.taskToAdd.is_urgent
-              },
+              staticClass: "select-subjects-tasks",
+              attrs: { id: "subject" },
               on: {
                 change: function($event) {
-                  var $$a = _vm.taskToAdd.is_urgent,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 &&
-                        _vm.$set(_vm.taskToAdd, "is_urgent", $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        _vm.$set(
-                          _vm.taskToAdd,
-                          "is_urgent",
-                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                        )
-                    }
-                  } else {
-                    _vm.$set(_vm.taskToAdd, "is_urgent", $$c)
-                  }
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "checkbox-tarea-tag" } }, [
-              _vm._v("Marcar como tarea urgente.")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.taskToAdd.date,
-                  expression: "taskToAdd.date"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "date", id: "date" },
-              domProps: { value: _vm.taskToAdd.date },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.taskToAdd, "date", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.taskToAdd.subject_id,
-                    expression: "taskToAdd.subject_id"
-                  }
-                ],
-                staticClass: "select-subjects-tasks",
-                attrs: { id: "subject" },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.taskToAdd,
-                      "subject_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  }
-                }
-              },
-              [
-                _c("option", { attrs: { value: "" } }, [
-                  _vm._v("Tarea general")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.subjectsArray, function(subject) {
-                  return _c(
-                    "option",
-                    { domProps: { value: subject.subject_id } },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(subject.subject_name) +
-                          " - " +
-                          _vm._s(subject.period_name) +
-                          " - " +
-                          _vm._s(subject.study_name) +
-                          "\n                "
-                      )
-                    ]
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.taskToAdd,
+                    "subject_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button", disabled: _vm.addTaskDisabled },
-                on: { click: _vm.addTask }
-              },
-              [_vm._v("Añadir tarea")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button" },
-                on: { click: _vm.disableAdding }
-              },
-              [_vm._v("Cancelar")]
-            )
-          ]
-        )
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "" } }, [_vm._v("Tarea general")]),
+              _vm._v(" "),
+              _vm._l(_vm.subjectsArray, function(subject) {
+                return _c(
+                  "option",
+                  { domProps: { value: subject.subject_id } },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(subject.subject_name) +
+                        " - " +
+                        _vm._s(subject.period_name) +
+                        " - " +
+                        _vm._s(subject.study_name) +
+                        "\n                "
+                    )
+                  ]
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button", disabled: _vm.addTaskDisabled },
+              on: { click: _vm.addTask }
+            },
+            [_vm._v("Añadir tarea")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary",
+              attrs: { type: "button" },
+              on: { click: _vm.disableAdding }
+            },
+            [_vm._v("Cancelar")]
+          )
+        ])
       : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "section-item" }, [
@@ -94338,6 +94448,23 @@ var render = function() {
         0
       )
     ]),
+    _vm._v(" "),
+    _vm.showImgEmptyTasks
+      ? _c("div", { staticClass: "empty-tasks-photo" }, [
+          _c("img", {
+            staticClass: "empty-img-tasks",
+            attrs: { src: this.routeImgEmptyTasks, alt: "empty_tasks_list" }
+          }),
+          _vm._v(" "),
+          _c("h5", { staticClass: "description-empty-tasks" }, [
+            _vm._v("¡Apunta todas tus tareas!")
+          ]),
+          _vm._v(" "),
+          _c("h5", { staticClass: "description-empty-tasks second" }, [
+            _vm._v("Será tu lista de buenos propositos...")
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -94727,7 +94854,7 @@ var render = function() {
     "div",
     { staticClass: "container content year" },
     [
-      _c("h3", [
+      _c("h4", [
         _vm._v(
           "Curso " +
             _vm._s(_vm.formatDateYear(_vm.chosed_year_vue.start_date)) +

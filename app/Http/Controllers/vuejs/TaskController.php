@@ -18,6 +18,7 @@ class TaskController extends Controller
             ->join('subjects','tasks.subject_id','=','subjects.id')
             ->where('user_id',$user->getAuthIdentifier())
             ->orderBy('tasks.date','ASC')
+            ->orderBy('tasks.id','ASC')
             ->get(array(
                 'tasks.id AS task_id',
                 'tasks.description AS task_description',
@@ -33,6 +34,7 @@ class TaskController extends Controller
         $result2 =  DB::table('tasks')
             ->where('user_id',$user->getAuthIdentifier())
             ->orderBy('tasks.date','ASC')
+            ->orderBy('tasks.id','ASC')
             ->Where('subject_id','=',null)
             ->get(array(
                 'tasks.id AS task_id',
@@ -44,6 +46,30 @@ class TaskController extends Controller
         $result2 = $result2->toArray();
         $tasks = array_merge($result,$result2);
         return Response::json(array('success'=>true,'result'=>$tasks));
+    }
+
+    public function getTasksBySubject(Request $request){
+        $subject_id = $request->get('subject_id');
+
+        $user = Auth::User();
+        $result =  DB::table('tasks')
+            ->join('subjects','tasks.subject_id','=','subjects.id')
+            ->where('user_id',$user->getAuthIdentifier())
+            ->where('subjects.id','=',$subject_id)
+            ->orderBy('tasks.date','ASC')
+            ->get(array(
+                'tasks.id AS task_id',
+                'tasks.description AS task_description',
+                'tasks.date AS task_date',
+                'tasks.is_urgent AS task_is_urgent',
+                'tasks.is_done AS task_is_done',
+                'subjects.id AS subject_id',
+                'subjects.name AS subject_name',
+                'subjects.color AS subject_color',
+
+            ));
+        $result = $result->toArray();
+        return Response::json(array('success'=>true,'result'=>$result));
     }
 
     public function addTask(Request $request){

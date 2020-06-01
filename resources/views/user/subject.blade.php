@@ -46,6 +46,10 @@
             route_delete_task="{{route('delete_task')}}"
             route_task_done="{{route('task_done')}}"
             route_edit_task="{{route('edit_task')}}"
+            route_get_tasks_by_subject="{{route('get_tasks_by_subject')}}"
+            v-bind:subject_prop="{{json_encode($subject)}}"
+            v-bind:page_type="{{json_encode($page_type)}}"
+            route_base_images="{{url('/images/')}}"
         ></todo-list-tag>
 </div>
 
