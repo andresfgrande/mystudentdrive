@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
 <!--                    <h3 class="planner-title">Agenda de {{checkElementName}}</h3>-->
-                    <h3 class="planner-title">Mi agenda</h3>
+                    <h4 class="planner-title">Mi agenda</h4>
                     <div class="checkbox-show-old">
                         <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
                         <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>
@@ -13,11 +13,11 @@
                     <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>
                     <div class="custom-card-event" v-for="event in pageOfItems" :key="event.id">
                         <div class="card w-100">
-                            <div class="card-body" v-bind:style="{ borderRightWidth: 23+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
+                            <div class="card-body" v-bind:style="{ borderRightWidth: 20+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
                                 <h5 class="card-title event-date">{{formatDateFull(event.date)}}</h5>
                                 <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                                 <h5 class="card-title event-name" >{{event.name}}</h5>
-                                <p class="card-text">{{event.description}}</p>
+                                <p class="card-text event-description">{{event.description}}</p>
                                 <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
                                 <div class="actions-planner-events">
                                     <div class="edit-event-div" @click="editEventModal(event)"></div>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="empty-event-photo" v-if="showImgEmptyAgenda">
-                        <img  class="empty-img-events" :src="this.routeImgEvents"  alt="empty_studies_events"/>
+                        <img  class="empty-img-events-dashboard" :src="this.routeImgEvents"  alt="empty_studies_events"/>
 
                         <h5>Apunta tus examenes, entregas, presentaciones...</h5>
                     </div>
@@ -301,7 +301,7 @@
             },
             formatDateFull(date_to_format){
                 var date = new Date(date_to_format);
-                var options = {   weekday: 'long',year: 'numeric', month: 'long', day: 'numeric' };
+                var options = {   weekday: 'short',year: 'numeric', month: 'short', day: 'numeric' };
                 return date = date.toLocaleDateString("es-ES",options);
             },
             getEvents(){

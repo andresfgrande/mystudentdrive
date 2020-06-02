@@ -1,7 +1,7 @@
 <template>
 
     <div class="container content year">
-        <h3>Curso {{formatDateYear(chosed_year_vue.start_date)}} - {{formatDateYear(chosed_year_vue.end_date)}}</h3>
+        <h4>Curso {{formatDateYear(chosed_year_vue.start_date)}} - {{formatDateYear(chosed_year_vue.end_date)}}</h4>
         <button type="button"  class="btn btn-primary btn-add-subject" @click="addSubjectModal">
             Añadir asignatura
         </button>

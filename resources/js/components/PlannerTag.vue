@@ -5,7 +5,7 @@
             <div class="col">
 
 <!--                <h3 class="planner-title">Agenda de {{study_prop_vue.name}}</h3>-->
-                <h3 class="planner-title">Agenda de {{checkElementName}}</h3>
+                <h4 class="planner-title">Agenda de {{checkElementName}}</h4>
                 <div class="checkbox-show-old">
                     <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
                     <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>
@@ -14,11 +14,11 @@
                 <button type="button" class="btn btn-primary add-event" @click="addEventModal">Añadir un evento</button>
                 <div class="custom-card-event" v-for="event in pageOfItems" :key="event.id">
                     <div class="card w-100">
-                        <div class="card-body" v-bind:style="{ borderRightWidth: 23+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
+                        <div class="card-body" v-bind:style="{ borderRightWidth: 20+'px',borderRightStyle: 'solid', borderRightColor: event.subject_color}">
                             <h5 class="card-title event-date">{{formatDateFull(event.date)}}</h5>
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                             <h5 class="card-title event-name" >{{event.name}}</h5>
-                            <p class="card-text">{{event.description}}</p>
+                            <p class="card-text event-description">{{event.description}}</p>
                             <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
                             <div class="actions-planner-events">
                                 <div class="edit-event-div" @click="editEventModal(event)"></div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <!--/*********************************ADD EVENT*********************************************/-->
+        <!--/*********************************ADD EVENT****************************************/-->
         <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -50,7 +50,7 @@
                     <form>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="name">Nombre</label>
+                                <label for="name">Nombre del evento:</label>
                                 <input class="form-control" v-model="eventToAdd.name" v-on:keyup="cleanMessage" id="name" type="text" name="name"
                                        placeholder="" required>
                                 <small v-if="showNameExists"  class="text-danger">
@@ -58,11 +58,12 @@
                                 </small>
                             </div>
                             <div class="form-group">
-                                <label for="description">Descripción</label>
+                                <label for="description">Descripción:</label>
                                 <input class="form-control" v-model="eventToAdd.description" v-on:keyup="cleanMessage" id="description" type="text" name="description"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
+                                <label for="subject">Asignatura relacionada:</label>
                                 <select id="subject" v-model="eventToAdd.subject_id">
                                     <option value="">evento general</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
@@ -71,17 +72,17 @@
                                 </select><!--                                       placeholder="" required>-->
                             </div>
                             <div class="form-group">
-                                <label for="classroom">classroom</label>
+                                <label for="classroom">Lugar:</label>
                                 <input class="form-control" v-model="eventToAdd.classroom" v-on:keyup="cleanMessage" id="classroom" type="text" name="classroom"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
-                                <label for="time"></label>
+                                <label for="time">Hora:</label>
                                 <input class="form-control" v-model="eventToAdd.time" v-on:keyup="cleanMessage" id="time" type="time" name="time"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
-                                <label for="date"></label>
+                                <label for="date">Fecha:</label>
                                 <input class="form-control" v-model="eventToAdd.date" v-on:keyup="cleanMessage" id="date" type="date" name="date"
                                        placeholder="" required>
                             </div>
@@ -96,7 +97,7 @@
             </div>
         </div>
         <!--/***********************************************************************************************-->
-        <!--/*********************************EDIT EVENT*********************************************/-->
+        <!--/****************************************EDIT EVENT*********************************************/-->
         <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -109,7 +110,7 @@
                     <form>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="name-edit">Nombre</label>
+                                <label for="name-edit">Nombre del evento:</label>
                                 <input class="form-control" v-model="eventToEdit.name" v-on:keyup="cleanMessage" id="name-edit" type="text" name="name"
                                        placeholder="" required>
                                 <small v-if="showNameExistsEdit"  class="text-danger">
@@ -117,11 +118,12 @@
                                 </small>
                             </div>
                             <div class="form-group">
-                                <label for="description-edit">Descripción</label>
+                                <label for="description-edit">Descripción:</label>
                                 <input class="form-control" v-model="eventToEdit.description" v-on:keyup="cleanMessage" id="description-edit" type="text" name="description"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
+                                <label for="subject-edit">Asignatura relacionada:</label>
                                 <select id="subject-edit" v-model="eventToEdit.subject_id">
                                     <option  value="">evento general</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
@@ -130,17 +132,17 @@
                                 </select><!--                                       placeholder="" required>-->
                             </div>
                             <div class="form-group">
-                                <label for="classroom-edit">classroom</label>
+                                <label for="classroom-edit">Lugar:</label>
                                 <input class="form-control" v-model="eventToEdit.classroom" v-on:keyup="cleanMessage" id="classroom-edit" type="text" name="classroom"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
-                                <label for="time-edit"></label>
+                                <label for="time-edit">Hora:</label>
                                 <input class="form-control" v-model="eventToEdit.time" v-on:keyup="cleanMessage" id="time-edit" type="time" name="time"
                                        placeholder="" required>
                             </div>
                             <div class="form-group">
-                                <label for="date-edit"></label>
+                                <label for="date-edit">Fecha</label>
                                 <input class="form-control" v-model="eventToEdit.date" v-on:keyup="cleanMessage" id="date-edit" type="date" name="date"
                                        placeholder="" required>
                             </div>
@@ -303,7 +305,7 @@
             },
             formatDateFull(date_to_format){
                 var date = new Date(date_to_format);
-                var options = {   weekday: 'long',year: 'numeric', month: 'long', day: 'numeric' };
+                var options = {   weekday: 'short',year: 'numeric', month: 'short', day: 'numeric' };
                 return date = date.toLocaleDateString("es-ES",options);
             },
             getEvents(){
@@ -402,7 +404,7 @@
                 this.eventToAdd.description='';
                 this.eventToAdd.date='';
                 this.eventToAdd.classroom='';
-                this.eventToAdd.subject_id='';
+                this.eventToAdd.subject_id= this.subject_prop_vue.subject_ID;
                 this.eventToAdd.time='';
 
             },

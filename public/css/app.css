@@ -22156,17 +22156,17 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
-.study .content.year h3 {
+.study .content.year h4 {
   text-align: center;
 }
 
 .study .content.year div.delete-subject-div {
   content: url("/images/borrar.png");
-  width: 22px;
+  width: 16px;
   float: right;
   cursor: pointer;
   margin-right: 1.3em;
-  margin-top: 1.1em;
+  margin-top: 1.3em;
   margin-left: 1.2em;
 }
 
@@ -22180,6 +22180,10 @@ a.text-dark:focus {
 
 /*************PÁGINA SUBJECT*************************************/
 
+.subject .subject-content.subject-page-content {
+  width: 90%;
+}
+
 .subject .subject-content {
   margin-bottom: 2em;
   width: 100%;
@@ -22190,7 +22194,7 @@ a.text-dark:focus {
 }
 
 .subject .subject-content .card-header a {
-  font-size: 18px;
+  font-size: 15px;
   color: #3490dc;
   cursor: pointer;
   font-weight: bold;
@@ -22215,23 +22219,24 @@ a.text-dark:focus {
 
 .subject .subject-content .card-header div.add-section-div {
   content: url("/images/anadir.png");
-  width: 22px;
+  width: 19px;
   float: right;
   cursor: pointer;
+  margin-top: 0.4em;
 }
 
 .subject .subject-content .card-header div.edit-subject-div {
   content: url("/images/038-edit.png");
-  width: 20px;
+  width: 16px;
   display: inline-block;
   cursor: pointer;
   margin-left: 1em;
-  margin-bottom: -0.4em;
+  margin-bottom: -0.35em;
 }
 
 .subject .subject-content div.delete-section-div {
   content: url("/images/borrar.png");
-  width: 22px;
+  width: 16px;
   float: right;
   cursor: pointer;
   margin-right: 1.3em;
@@ -22245,7 +22250,7 @@ a.text-dark:focus {
 .subject .subject-section .section-title {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  font-size: 18px;
+  font-size: 15px;
   padding-left: 1em;
   background: #eaf4fd;
   cursor: pointer;
@@ -22354,11 +22359,11 @@ a.text-dark:focus {
 
 .subject-section .section-title div.add-file-div {
   content: url("/images/add-file.png");
-  width: 22px;
+  width: 19px;
   float: right;
   cursor: pointer;
-  margin-right: 1em;
-  margin-top: 0.3em;
+  margin-right: 0.5em;
+  margin-top: 0.4em;
 }
 
 /************************PAGINA AGENDA*********************/
@@ -22370,8 +22375,8 @@ a.text-dark:focus {
 }
 
 .agenda-page.subject-page {
-  margin-left: 46%;
-  width: 30%;
+  margin-left: 43%;
+  width: 29%;
   position: absolute;
 }
 
@@ -22420,24 +22425,35 @@ a.text-dark:focus {
   margin-left: 0;
   font-weight: bold;
   color: #3490dc;
+  font-size: 15px;
 }
 
 .container.content.planner .custom-card-event .card-body {
   padding-bottom: 0;
+  padding-right: 0.5em;
+  padding-left: 1em;
 }
 
 .container.content.planner .custom-card-event .card-body .event-name {
   font-weight: bold;
+  font-size: 15px;
 }
 
 .container.content.planner .custom-card-event .card-body .event-time {
   font-weight: bold;
   display: inline-block;
+  margin-bottom: 1em;
+}
+
+.container.content.planner .custom-card-event .card-body .event-description {
+  margin-bottom: 0.5em;
 }
 
 .container.content.planner .custom-card-event .card-body .event-subject-name {
   display: inline-block;
   float: right;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .container.content.planner .custom-card-event .card-body .actions-planner-events {
@@ -22447,15 +22463,25 @@ a.text-dark:focus {
 
 .container.content.planner .custom-card-event .card-body .actions-planner-events div.edit-event-div {
   content: url("/images/038-edit.png");
-  width: 22px;
+  width: 16px;
   cursor: pointer;
-  display: inline-block;
+  visibility: hidden;
 }
 
 .container.content.planner .custom-card-event .card-body .actions-planner-events div.delete-event-div {
   content: url("/images/borrar.png");
-  width: 22px;
+  width: 16px;
   cursor: pointer;
+  visibility: hidden;
+}
+
+.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.edit-event-div {
+  visibility: visible;
+  display: inline-block;
+}
+
+.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.delete-event-div {
+  visibility: visible;
   display: inline-block;
 }
 
@@ -22463,6 +22489,11 @@ a.text-dark:focus {
   width: 50%;
   margin-top: 5em;
   margin-left: 25%;
+}
+
+.container.content.planner .empty-event-photo .empty-img-events-dashboard {
+  width: 100%;
+  margin-top: 5em;
 }
 
 .container.content.planner .empty-event-photo h5 {
@@ -22496,12 +22527,14 @@ a.text-dark:focus {
 
 .container.content.year.dashboard .title-study-name {
   text-align: center;
+  cursor: pointer;
 }
 
 .container.content.year.dashboard .title-year-dates {
   text-align: center;
   font-weight: bold;
   color: #3490dc;
+  cursor: pointer;
 }
 
 .container.content.year.dashboard .btn.btn-primary.btn-add-subject {
@@ -22510,7 +22543,7 @@ a.text-dark:focus {
 
 .container.content.year.dashboard .dashboard-year {
   height: auto;
-  max-height: 650px;
+  max-height: 550px;
   width: 100%;
   overflow-y: scroll;
 }
@@ -22557,6 +22590,139 @@ a.text-dark:focus {
   color: #3490dc;
 }
 
+/*******************TO DO LIST**********************/
+
+.container.content.todo-list.dashboard {
+  margin-top: 0;
+}
+
+.container.content.todo-list.dashboard .title-todo-list {
+  text-align: center;
+}
+
+.container.content.todo-list.dashboard .form-add-task {
+  margin-top: 2em;
+}
+
+.container.content.todo-list.dashboard .form-add-task .input-description {
+  margin-bottom: 1em;
+}
+
+.container.content.todo-list.dashboard .form-add-task .input-date {
+  margin-bottom: 1em;
+}
+
+.container.content.todo-list.dashboard .form-add-task .select-subjects-tasks {
+  width: 75%;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.container.content.todo-list.dashboard .form-add-task .label-for-date-event {
+  display: block;
+}
+
+.container.content.todo-list.dashboard .section-item ul {
+  padding-left: 0;
+  border-top: 1px solid rgba(52, 144, 220, 0.25);
+}
+
+.container.content.todo-list.dashboard .section-item ul li {
+  list-style: none;
+  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+  padding-top: 0.2em;
+  padding-left: 0.5em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li p {
+  display: inline-block;
+}
+
+.container.content.todo-list.dashboard .section-item ul li .task_description {
+  display: block;
+  margin-bottom: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.container.content.todo-list.dashboard .section-item ul li .task_subject {
+  margin-bottom: 0.5em;
+  font-size: 12px;
+  margin-top: 0.5em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li .task_date {
+  font-size: 12px;
+  color: #3490dc;
+  margin-bottom: 0.5em;
+  margin-left: 3%;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.delete-task-div {
+  content: url("/images/interfaz_delete.png");
+  width: 9px;
+  float: right;
+  cursor: pointer;
+  margin-right: 0em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.urgent-task-div {
+  content: url("/images/alerta.png");
+  width: 20px;
+  display: inline-block;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.check-done {
+  display: inline-block;
+  width: 22px;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.check-done .checkbox-task {
+  cursor: pointer;
+  margin-left: 0.3em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.check-done .checkbox-task2 {
+  cursor: pointer;
+  margin-left: 0.3em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li div.check-done .tachado-img {
+  opacity: 0.5;
+}
+
+.container.content.todo-list.dashboard .section-item ul li .task-item {
+  display: inline-block;
+  width: 90%;
+  padding-left: 0.45em;
+}
+
+.container.content.todo-list.dashboard .section-item ul li .task-item .tachado {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.container.content.todo-list.dashboard .empty-tasks-photo .empty-img-tasks {
+  width: 100%;
+}
+
+.container.content.todo-list.dashboard .empty-tasks-photo .description-empty-tasks {
+  text-align: center;
+  margin-top: 1.5em;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.todo-list.dashboard .empty-tasks-photo .description-empty-tasks.second {
+  margin-top: 0;
+}
+
+.container.agenda-page.subject-page.tag-todo-list {
+  margin-top: 115px;
+  margin-left: 70%;
+  width: 30%;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
@@ -22582,6 +22748,12 @@ a.text-dark:focus {
     width: 100%;
     top: 0;
     position: initial;
+  }
+
+  .agenda-page.subject-page.tag-todo-list {
+    margin-left: 0 !important;
+    width: 100% !important;
+    top: 0 !important;
   }
 }
 
@@ -22660,7 +22832,7 @@ a.text-dark:focus {
 }
 
 #page-content-wrapper {
-  min-width: 100vw;
+  min-width: 96vw;
 }
 
 #page-content-wrapper #menu-toggle {
@@ -22673,7 +22845,7 @@ a.text-dark:focus {
 }
 
 #page-content-wrapper-subject-page {
-  min-width: 100vw;
+  min-width: 96vw;
 }
 
 #page-content-wrapper-subject-page #menu-toggle-subject-page {

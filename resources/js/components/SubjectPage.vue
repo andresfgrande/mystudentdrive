@@ -23,7 +23,8 @@
             <button class="btn btn-primary" id="menu-toggle-subject-page" @click="toggleSidebar">. . .</button>
             <div class="subject subject-page">
                 <div class="subject-content subject-page-content">
-                    <h3 class="title-subject">{{subjectName}} - {{current_subject_vue.period_name}} - {{formatDateYear(current_subject_vue.start_year)}} / {{formatDateYear(current_subject_vue.end_year)}}</h3>
+                    <h4 class="title-subject">{{subjectName}}</h4>
+                    <h5 class="title-subject"> {{current_subject_vue.period_name}} - {{formatDateYear(current_subject_vue.start_year)}} / {{formatDateYear(current_subject_vue.end_year)}}</h5>
                     <div class="">
                         <div class="card-header">
                             <a v-if="!editing"> {{subjectName}} - {{current_subject_vue.period_name}}</a>
