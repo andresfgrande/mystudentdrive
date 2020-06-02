@@ -2,7 +2,7 @@
 
     <div class="container content year dashboard">
         <div v-if="!showYear" class="section-empty-studies">
-            <h3>Esto se ve muy vacio...</h3>
+            <h4>Esto se ve muy vacio...</h4>
             <img  class="empty-img-studies" :src="this.routeImgStudies"  alt="empty_studies_photo"/>
             <h5>Comienza a añadir tus estudios</h5>
             <button type="button"  class="btn btn-primary btn-gestion-estudios" @click="studiesLink">
@@ -10,8 +10,8 @@
             </button>
         </div>
         <div v-if="showYear">
-            <h3 class="title-study-name" >{{chosed_year_vue.study_name}}</h3>
-            <h5 class="title-year-dates" >Curso {{formatDateYear(chosed_year_vue.start_date)}} - {{formatDateYear(chosed_year_vue.end_date)}}</h5>
+            <h4 class="title-study-name" @click="studyLink">{{chosed_year_vue.study_name}}</h4>
+            <h5 class="title-year-dates" @click="studyYearLink">Curso {{formatDateYear(chosed_year_vue.start_date)}} - {{formatDateYear(chosed_year_vue.end_date)}}</h5>
             <button type="button"  class="btn btn-primary btn-add-subject" @click="addSubjectModal">
                 Añadir asignatura
             </button>
@@ -263,6 +263,12 @@
             }
         },
         methods:{
+            studyLink(){
+                window.location ="/study/" + this.chosed_year_vue.study_id;
+            },
+            studyYearLink(){
+                window.location = "/study/" + this.chosed_year_vue.study_id +"?year=" + this.chosed_year_vue.id;
+            },
             studiesLink(){
                 window.location="/studies";
             },

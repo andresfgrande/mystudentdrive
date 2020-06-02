@@ -78,3 +78,11 @@ Route::put('/update_old_events','vuejs\PlannerController@updateOldEvents')->name
 Route::get('/get_events_by_study','vuejs\PlannerController@getEventsByStudy')->name('get_events_by_study');
 Route::get('/get_events_by_subject','vuejs\PlannerController@getEventsBySubject')->name('get_events_by_subject');
 Route::get('/get_events_by_date','vuejs\PlannerController@getEventsByDate')->name('get_events_by_date');
+
+/******TASKS******/
+Route::post('/add_task','vuejs\TaskController@addTask')->name('add_task');
+Route::get('/get_tasks_by_user','vuejs\TaskController@getAllTasks')->name('get_tasks_by_user');
+Route::get('/get_tasks_by_subject','vuejs\TaskController@getTasksBySubject')->name('get_tasks_by_subject');
+Route::delete('/delete_task','vuejs\TaskController@deleteTask')->name('delete_task');
+Route::put('/task_done','vuejs\TaskController@taskDone')->name('task_done');
+Route::put('/edit_task','vuejs\TaskController@editTask')->name('edit_task');
