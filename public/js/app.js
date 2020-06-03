@@ -4522,6 +4522,306 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Schedules.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Schedules.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Schedules",
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day'],
+  created: function created() {
+    this.estudios_vue = this.estudios;
+    this.route_get_years_by_study_vue = this.route_get_years_by_study;
+    this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year;
+    this.route_add_study_vue = this.route_add_study;
+    this.route_add_year_vue = this.route_add_year;
+    this.route_add_subject_vue = this.route_add_subject;
+    this.route_add_period_vue = this.route_add_period;
+    this.route_get_studies_vue = this.route_get_studies;
+    this.route_get_periods_by_year_vue = this.route_get_periods_by_year;
+    this.route_photo_vue = this.route_photo;
+    this.route_photo_vue_2 = this.route_photo_2;
+    this.route_get_schedules_by_period_vue = this.route_get_schedules_by_period;
+    this.route_get_classes_by_schedule_and_day_vue = this.route_get_classes_by_schedule_and_day;
+    this.getStudiesArray();
+    this.getAcademicYears();
+  },
+  data: function data() {
+    return {
+      estudios_vue: '',
+      auxArray: [],
+      studiesArray: {
+        studies: []
+      },
+      route_get_periods_by_year_vue: '',
+      periodsArray: '',
+      periodToSearch: {
+        period_id: ''
+      },
+      yearIdChosen: {
+        year_id: ''
+      },
+      route_get_schedules_by_period_vue: '',
+      mondayClasses: [],
+      route_get_classes_by_schedule_and_day_vue: '',
+      classesToSearch: {
+        schedule_id: '' // day:'',
+
+      },
+      schedulesArray: [],
+      // classes: {
+      //     monday:[],
+      //     tuesday:[],
+      //     wednesday:[],
+      //     thursday:[],
+      //     friday:[],
+      // },
+      classes: []
+    };
+  },
+  methods: {
+    getSchedulesByPeriod: function getSchedulesByPeriod() {
+      var _this = this;
+
+      var url = this.route_get_schedules_by_period_vue;
+      axios.get(url, {
+        params: this.periodToSearch
+      }).then(function (response) {
+        console.log('/////////////////////');
+        console.log(response.data.result);
+        _this.schedulesArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
+      var _this2 = this;
+
+      // this.classesToSearch.day = day;
+      var url = this.route_get_classes_by_schedule_and_day_vue;
+      axios.get(url, {
+        params: this.classesToSearch
+      }).then(function (response) {
+        console.log('////////Classes to seacrh/////////////');
+        console.log(response.data.result);
+        _this2.classes = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getAcademicYears: function getAcademicYears() {
+      var _this3 = this;
+
+      var url = this.route_get_years_by_study_vue;
+      axios.get(url, {
+        params: this.studiesArray
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'no_studies') {
+          _this3.showPhotoEmpty = true;
+          console.log('No hay estudios');
+        } else {
+          _this3.showPhotoEmpty = false;
+          var aux2 = [];
+          response.data.result.forEach(function (valor, indice) {
+            aux2.push(valor);
+            console.log('/////////////////');
+            console.log(valor);
+          });
+          _this3.auxArray = aux2;
+          console.log(_this3.auxArray);
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getStudiesArray: function getStudiesArray() {
+      var aux = [];
+      this.estudios_vue.forEach(function (valor, indice) {
+        aux.push(valor.id);
+      });
+      this.studiesArray.studies = aux;
+    },
+    getStudiesAjax: function getStudiesAjax() {
+      var _this4 = this;
+
+      var url = this.route_get_studies_vue;
+      axios.get(url).then(function (response) {
+        console.log(response.data.result);
+        _this4.estudios_vue = response.data.result;
+        _this4.showPhotoEmpty = false;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getPeriodsByYear: function getPeriodsByYear(year_id) {
+      var _this5 = this;
+
+      this.yearIdChosen.year_id = year_id;
+      var url = this.route_get_periods_by_year_vue;
+      axios.get(url, {
+        params: this.yearIdChosen
+      }).then(function (response) {
+        _this5.periodsArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    formatDateYear: function formatDateYear(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.getFullYear();
+    },
+    formatDateFull: function formatDateFull(date_to_format) {
+      var date = new Date(date_to_format);
+      return date = date.toLocaleDateString();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Studies.vue?vue&type=script&lang=js& ***!
@@ -91398,6 +91698,474 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container content studies schedules" }, [
+    _c("h4", { staticClass: "page-title" }, [_vm._v("Mis horarios")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4" }, [
+        _c("h3", { staticStyle: { "text-align": "center" } }, [
+          _vm._v("Cursos")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "courses" },
+          [
+            _vm._l(_vm.estudios_vue, function(item, index) {
+              return _c("div", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-header",
+                    attrs: {
+                      "data-toggle": "",
+                      role: "button",
+                      "aria-controls": "collapseExample",
+                      "aria-expanded": "false"
+                    }
+                  },
+                  [
+                    _c("a", { staticClass: "study-name-title" }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(item.name) +
+                          "\n                            "
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: " year-list" },
+                  _vm._l(_vm.auxArray[index], function(year) {
+                    return year !== "vacio"
+                      ? _c(
+                          "li",
+                          {
+                            staticClass: "years-list-item",
+                            on: {
+                              click: function($event) {
+                                return _vm.getPeriodsByYear(year.id)
+                              }
+                            }
+                          },
+                          [
+                            _c("p", { staticClass: "year-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateYear(year.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateYear(year.end_date))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "date-range" }, [
+                              _vm._v(
+                                _vm._s(_vm.formatDateFull(year.start_date)) +
+                                  " - " +
+                                  _vm._s(_vm.formatDateFull(year.end_date))
+                              )
+                            ])
+                          ]
+                        )
+                      : _vm._e()
+                  }),
+                  0
+                )
+              ])
+            }),
+            _vm._v(" "),
+            _c("br")
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-8" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.periodToSearch.period_id,
+                expression: "periodToSearch.period_id"
+              }
+            ],
+            attrs: { id: "schedule-period" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.periodToSearch,
+                    "period_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                },
+                _vm.getSchedulesByPeriod
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "", value: "" } }, [
+              _vm._v(" Selecciona un periodo de este curso: ")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.periodsArray, function(period) {
+              return _c("option", { domProps: { value: period.id } }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(period.name) +
+                    "  (" +
+                    _vm._s(_vm.formatDateFull(period.start_date)) +
+                    " - " +
+                    _vm._s(_vm.formatDateFull(period.end_date)) +
+                    ")\n                    "
+                )
+              ])
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.classesToSearch.schedule_id,
+                expression: "classesToSearch.schedule_id"
+              }
+            ],
+            attrs: { id: "specific-schedule" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.classesToSearch,
+                    "schedule_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                },
+                _vm.getClassesByScheduleAndDay
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { selected: "", value: "" } }, [
+              _vm._v(" Selecciona un periodo de este curso: ")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.schedulesArray, function(schedule) {
+              return _c("option", { domProps: { value: schedule.id } }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(schedule.name) +
+                    "\n                    "
+                )
+              ])
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "row", staticStyle: { "margin-top": "1em" } },
+          [
+            _c(
+              "div",
+              { staticClass: "col" },
+              [
+                _c("p", [_vm._v("Lunes")]),
+                _vm._v(" "),
+                _vm._l(_vm.classes.monday, function(monday_class) {
+                  return _c("div", { staticClass: "custom-card-event" }, [
+                    _c("div", { staticClass: "card w-75" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderWidth: 3 + "px",
+                            borderStyle: "solid",
+                            borderColor: monday_class.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(monday_class.class_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(monday_class.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(_vm._s(monday_class.class_classroom))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(monday_class.class_start_time))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(monday_class.class_end_time))
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col" },
+              [
+                _c("p", [_vm._v("Martes")]),
+                _vm._v(" "),
+                _vm._l(_vm.classes.tuesday, function(tuesday_class) {
+                  return _c("div", { staticClass: "custom-card-event" }, [
+                    _c("div", { staticClass: "card w-75" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderWidth: 3 + "px",
+                            borderStyle: "solid",
+                            borderColor: tuesday_class.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(tuesday_class.class_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(tuesday_class.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(_vm._s(tuesday_class.class_classroom))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(tuesday_class.class_start_time))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(tuesday_class.class_end_time))
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col" },
+              [
+                _c("p", [_vm._v("Miercoles")]),
+                _vm._v(" "),
+                _vm._l(_vm.classes.wednesday, function(wednesday_class) {
+                  return _c("div", { staticClass: "custom-card-event" }, [
+                    _c("div", { staticClass: "card w-75" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderWidth: 3 + "px",
+                            borderStyle: "solid",
+                            borderColor: wednesday_class.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(wednesday_class.class_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(wednesday_class.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(_vm._s(wednesday_class.class_classroom))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(
+                              " " + _vm._s(wednesday_class.class_start_time)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(wednesday_class.class_end_time))
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col" },
+              [
+                _c("p", [_vm._v("Jueves")]),
+                _vm._v(" "),
+                _vm._l(_vm.classes.thursday, function(thursday_class) {
+                  return _c("div", { staticClass: "custom-card-event" }, [
+                    _c("div", { staticClass: "card w-75" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderWidth: 3 + "px",
+                            borderStyle: "solid",
+                            borderColor: thursday_class.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(thursday_class.class_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(thursday_class.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            { staticClass: "card-text event-description" },
+                            [_vm._v(_vm._s(thursday_class.class_classroom))]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(
+                              " " + _vm._s(thursday_class.class_start_time)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(thursday_class.class_end_time))
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col" },
+              [
+                _c("p", [_vm._v("Viernes")]),
+                _vm._l(_vm.classes.friday, function(friday_class) {
+                  return _c("div", { staticClass: "custom-card-event" }, [
+                    _c("div", { staticClass: "card w-75" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          style: {
+                            borderWidth: 3 + "px",
+                            borderStyle: "solid",
+                            borderColor: friday_class.subject_color
+                          }
+                        },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(friday_class.class_name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(friday_class.subject_name))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            { staticClass: "card-text event-description" },
+                            [_vm._v(_vm._s(friday_class.class_classroom))]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(friday_class.class_start_time))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text " }, [
+                            _vm._v(" " + _vm._s(friday_class.class_end_time))
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            )
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Studies.vue?vue&type=template&id=28014e0c&scoped=true& ***!
@@ -107740,6 +108508,7 @@ Vue.component('planner-tag', __webpack_require__(/*! ./components/PlannerTag.vue
 Vue.component('planner-tag-dashboard', __webpack_require__(/*! ./components/PlannerTagDashboard.vue */ "./resources/js/components/PlannerTagDashboard.vue")["default"]);
 Vue.component('estudios-tag-dashboard', __webpack_require__(/*! ./components/EstudiosTagDashboard.vue */ "./resources/js/components/EstudiosTagDashboard.vue")["default"]);
 Vue.component('todo-list-tag', __webpack_require__(/*! ./components/TodolistTag.vue */ "./resources/js/components/TodolistTag.vue")["default"]);
+Vue.component('schedules', __webpack_require__(/*! ./components/Schedules.vue */ "./resources/js/components/Schedules.vue")["default"]);
 Vue.component('jw-pagination', jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0___default.a); // Vue.component('datepicker', Datepicker);
 
 Vue.component('calendar', v_calendar_lib_components_calendar_umd__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -108418,6 +109187,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfilePhoto_vue_vue_type_template_id_982ca518_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfilePhoto_vue_vue_type_template_id_982ca518_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Schedules.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Schedules.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Schedules.vue?vue&type=template&id=da70a63e&scoped=true& */ "./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true&");
+/* harmony import */ var _Schedules_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Schedules.vue?vue&type=script&lang=js& */ "./resources/js/components/Schedules.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Schedules_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "da70a63e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Schedules.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Schedules.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Schedules.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Schedules_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Schedules.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Schedules.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Schedules_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Schedules.vue?vue&type=template&id=da70a63e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Schedules.vue?vue&type=template&id=da70a63e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Schedules_vue_vue_type_template_id_da70a63e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

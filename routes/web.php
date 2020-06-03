@@ -86,3 +86,9 @@ Route::get('/get_tasks_by_subject','vuejs\TaskController@getTasksBySubject')->na
 Route::delete('/delete_task','vuejs\TaskController@deleteTask')->name('delete_task');
 Route::put('/task_done','vuejs\TaskController@taskDone')->name('task_done');
 Route::put('/edit_task','vuejs\TaskController@editTask')->name('edit_task');
+
+
+/********SCHEDULES********/
+Route::get('/schedules','ScheduleController@index')->name('index_schedules');
+Route::get('/get_schedules_by_period','vuejs\ScheduleController@getSchedulesByPeriod')->name('get_schedules_by_period');
+Route::get('/get_classes_by_schedule_and_day','vuejs\ScheduleController@getClassesByScheduleAndDay')->name('get_classes_by_schedule_and_day');

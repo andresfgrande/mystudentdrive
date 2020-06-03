@@ -41,7 +41,7 @@
                         @auth
                             <li class="nav-item">  <a class="nav-link" href="{{route('studies.index')}}">ESTUDIOS</a></li>
                             <li class="nav-item">  <a class="nav-link" href="{{route('index_planner')}}">AGENDA</a></li>
-                            <li class="nav-item">  <a class="nav-link" href="">HORARIOS</a></li>
+                            <li class="nav-item">  <a class="nav-link" href="{{route('index_schedules')}}">HORARIOS</a></li>
                         @endauth
 
                     </ul>

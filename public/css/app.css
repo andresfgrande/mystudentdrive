@@ -22723,6 +22723,12 @@ a.text-dark:focus {
   width: 30%;
 }
 
+/*************PAGE SCHEDULES*************/
+
+.container.content.schedules {
+  margin-top: 115px;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
