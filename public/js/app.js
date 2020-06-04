@@ -4669,7 +4669,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Schedules",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -4684,8 +4684,10 @@ __webpack_require__.r(__webpack_exports__);
     this.route_photo_vue_2 = this.route_photo_2;
     this.route_get_schedules_by_period_vue = this.route_get_schedules_by_period;
     this.route_get_classes_by_schedule_and_day_vue = this.route_get_classes_by_schedule_and_day;
+    this.route_get_recent_schedule_by_user_vue = this.route_get_recent_schedule_by_user;
     this.getStudiesArray();
     this.getAcademicYears();
+    this.getRecentSchedule();
   },
   data: function data() {
     return {
@@ -4705,43 +4707,40 @@ __webpack_require__.r(__webpack_exports__);
       route_get_schedules_by_period_vue: '',
       mondayClasses: [],
       route_get_classes_by_schedule_and_day_vue: '',
+      route_get_recent_schedule_by_user_vue: '',
       classesToSearch: {
-        schedule_id: '' // day:'',
-
+        schedule_id: ''
       },
       schedulesArray: [],
-      // classes: {
-      //     monday:[],
-      //     tuesday:[],
-      //     wednesday:[],
-      //     thursday:[],
-      //     friday:[],
-      // },
-      classes: []
+      classes: [],
+      recentSchedule: '',
+      classesToSearchRecent: {
+        schedule_id: ''
+      }
     };
   },
   methods: {
-    getSchedulesByPeriod: function getSchedulesByPeriod() {
+    getRecentSchedule: function getRecentSchedule() {
       var _this = this;
 
-      var url = this.route_get_schedules_by_period_vue;
-      axios.get(url, {
-        params: this.periodToSearch
-      }).then(function (response) {
-        console.log('/////////////////////');
+      var url = this.route_get_recent_schedule_by_user_vue;
+      axios.get(url).then(function (response) {
+        console.log('SCHEDULE');
         console.log(response.data.result);
-        _this.schedulesArray = response.data.result;
+        _this.recentSchedule = response.data.result[0];
+        _this.classesToSearchRecent.schedule_id = _this.recentSchedule.schedule_id;
+
+        _this.getRecentClasses();
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
-    getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
+    getRecentClasses: function getRecentClasses() {
       var _this2 = this;
 
-      // this.classesToSearch.day = day;
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
-        params: this.classesToSearch
+        params: this.classesToSearchRecent
       }).then(function (response) {
         console.log('////////Classes to seacrh/////////////');
         console.log(response.data.result);
@@ -4750,8 +4749,36 @@ __webpack_require__.r(__webpack_exports__);
         console.log(errors);
       });
     },
-    getAcademicYears: function getAcademicYears() {
+    getSchedulesByPeriod: function getSchedulesByPeriod() {
       var _this3 = this;
+
+      var url = this.route_get_schedules_by_period_vue;
+      axios.get(url, {
+        params: this.periodToSearch
+      }).then(function (response) {
+        console.log('/////////////////////');
+        console.log(response.data.result);
+        _this3.schedulesArray = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
+      var _this4 = this;
+
+      var url = this.route_get_classes_by_schedule_and_day_vue;
+      axios.get(url, {
+        params: this.classesToSearch
+      }).then(function (response) {
+        console.log('////////Classes to seacrh/////////////');
+        console.log(response.data.result);
+        _this4.classes = response.data.result;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    getAcademicYears: function getAcademicYears() {
+      var _this5 = this;
 
       var url = this.route_get_years_by_study_vue;
       axios.get(url, {
@@ -4760,18 +4787,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'no_studies') {
-          _this3.showPhotoEmpty = true;
+          _this5.showPhotoEmpty = true;
           console.log('No hay estudios');
         } else {
-          _this3.showPhotoEmpty = false;
+          _this5.showPhotoEmpty = false;
           var aux2 = [];
           response.data.result.forEach(function (valor, indice) {
             aux2.push(valor);
             console.log('/////////////////');
             console.log(valor);
           });
-          _this3.auxArray = aux2;
-          console.log(_this3.auxArray);
+          _this5.auxArray = aux2;
+          console.log(_this5.auxArray);
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -4785,26 +4812,26 @@ __webpack_require__.r(__webpack_exports__);
       this.studiesArray.studies = aux;
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this4 = this;
+      var _this6 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this4.estudios_vue = response.data.result;
-        _this4.showPhotoEmpty = false;
+        _this6.estudios_vue = response.data.result;
+        _this6.showPhotoEmpty = false;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getPeriodsByYear: function getPeriodsByYear(year_id) {
-      var _this5 = this;
+      var _this7 = this;
 
       this.yearIdChosen.year_id = year_id;
       var url = this.route_get_periods_by_year_vue;
       axios.get(url, {
         params: this.yearIdChosen
       }).then(function (response) {
-        _this5.periodsArray = response.data.result;
+        _this7.periodsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -91718,6 +91745,9 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-4" }, [
+        _vm._v(
+          "\n" + _vm._s(_vm.recentSchedule.schedule_id) + "\n                "
+        ),
         _c("h3", { staticStyle: { "text-align": "center" } }, [
           _vm._v("Cursos")
         ]),

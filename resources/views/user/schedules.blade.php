@@ -16,6 +16,7 @@
     route_photo_2="{{url("/images/content/clip-2_v2.png")}}"
     route_get_schedules_by_period="{{route("get_schedules_by_period")}}"
     route_get_classes_by_schedule_and_day="{{route("get_classes_by_schedule_and_day")}}"
+    route_get_recent_schedule_by_user="{{route("get_recent_schedule_by_user")}}"
 ></schedules>
 
 @endsection

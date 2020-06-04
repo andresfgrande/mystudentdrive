@@ -3,7 +3,7 @@
         <h4 class="page-title">Mis horarios</h4>
         <div class="row">
             <div class="col-4">
-
+{{recentSchedule.schedule_id}}
                 <h3 style="text-align:center;">Cursos</h3>
 <!--                <div class="button-add-study">-->
 <!--                    <button type="button" class="btn btn-primary" @click="addStudyModal">Añadir estudios</button>-->
@@ -140,7 +140,7 @@
         props:['estudios','route_get_years_by_study','route_get_subjects_by_year',
             'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year',
             'route_add_period','route_photo','route_photo_2','route_get_schedules_by_period',
-            'route_get_classes_by_schedule_and_day'],
+            'route_get_classes_by_schedule_and_day','route_get_recent_schedule_by_user'],
         created(){
             this.estudios_vue = this.estudios;
 
@@ -157,8 +157,11 @@
             this.route_photo_vue_2 = this.route_photo_2;
             this.route_get_schedules_by_period_vue = this.route_get_schedules_by_period;
             this.route_get_classes_by_schedule_and_day_vue = this.route_get_classes_by_schedule_and_day;
+            this.route_get_recent_schedule_by_user_vue = this.route_get_recent_schedule_by_user;
             this.getStudiesArray();
             this.getAcademicYears();
+
+            this.getRecentSchedule();
 
         },
         data(){
@@ -179,22 +182,43 @@
                 route_get_schedules_by_period_vue:'',
                 mondayClasses:[],
                 route_get_classes_by_schedule_and_day_vue:'',
+                route_get_recent_schedule_by_user_vue:'',
                 classesToSearch:{
                     schedule_id:'',
-                    // day:'',
                 },
                 schedulesArray:[],
-                // classes: {
-                //     monday:[],
-                //     tuesday:[],
-                //     wednesday:[],
-                //     thursday:[],
-                //     friday:[],
-                // },
                 classes:[],
+                recentSchedule:'',
+                classesToSearchRecent:{
+                    schedule_id:'',
+                }
             }
         },
         methods:{
+            getRecentSchedule(){
+                var url = this.route_get_recent_schedule_by_user_vue;
+                axios.get(url).then(response => {
+                    console.log('SCHEDULE');
+                    console.log(response.data.result);
+                    this.recentSchedule = response.data.result[0];
+                    this.classesToSearchRecent.schedule_id = this.recentSchedule.schedule_id;
+                    this.getRecentClasses();
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            getRecentClasses(){
+                var url = this.route_get_classes_by_schedule_and_day_vue;
+                axios.get(url,{params:this.classesToSearchRecent}).then(response => {
+                    console.log('////////Classes to seacrh/////////////');
+                    console.log(response.data.result);
+                    this.classes = response.data.result;
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
             getSchedulesByPeriod(){
                 var url = this.route_get_schedules_by_period_vue;
                 axios.get(url,{params:this.periodToSearch}).then(response => {
@@ -209,7 +233,6 @@
             },
 
             getClassesByScheduleAndDay(){
-                // this.classesToSearch.day = day;
                 var url = this.route_get_classes_by_schedule_and_day_vue;
                 axios.get(url,{params:this.classesToSearch}).then(response => {
                     console.log('////////Classes to seacrh/////////////');
