@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vuejs;
 use App\Classe;
 use App\Day;
 use App\Http\Controllers\Controller;
+use App\Planner;
 use App\Schedule;
 use App\Study;
 use Illuminate\Http\Request;
@@ -22,7 +23,6 @@ class ScheduleController extends Controller
             ->where('period_id','=',$period_id)
             ->get();
         $result = $result->toArray();
-        //dd($result[0]->id);
 
         return Response::json(array('success'=>true,'result'=>$result));
     }
@@ -72,7 +72,12 @@ class ScheduleController extends Controller
                 'subjects.id AS subject_id',
                 'subjects.period_id AS subject_period_id',
                 'subjects.name AS subject_name',
-                'subjects.color AS subject_color'
+                'subjects.color AS subject_color',
+                'days.mon AS mon',
+                'days.tue AS tue',
+                'days.wed AS wed',
+                'days.thu AS thu',
+                'days.fri AS fri',
             ));
         return $result->toArray();
     }
@@ -94,7 +99,9 @@ class ScheduleController extends Controller
                 'schedules.period_id AS schedule_period_id',
                 'schedules.name AS schedule',
                 'academic_years.id AS year_id',
-                'studies.name AS study_name'
+                'studies.name AS study_name',
+                'academic_years.start_date AS year_start',
+                'academic_years.end_date AS year_end'
             ));
 
         $schedule = $result->toArray();
@@ -133,48 +140,60 @@ class ScheduleController extends Controller
         $name = $request->params['name'];
         $start_time = $request->params['start_time'];
         $end_time = $request->params['end_time'];
-        $classroom = $request->params['classroom'];
+        if($request->params['classroom'] == null){
+            $classroom = '-';
+        }else{
+            $classroom = $request->params['classroom'];
+        }
         $monday = $request->params['monday'];
         $tuesday = $request->params['tuesday'];
         $wednesday = $request->params['wednesday'];
         $thursday = $request->params['thursday'];
         $friday = $request->params['friday'];
 
-
-        //TODO CHEck name existe
-        try {
-            $classe = new Classe();
-            $classe->subject_id = $subject_id;
-            $classe->schedule_id = $schedule_id;
-            $classe->name = $name;
-            $classe->start_time = $start_time;
-            $classe->end_time = $end_time;
-            $classe->classroom = $classroom;
-            $classe->save();
-        } catch (\Throwable $e) {
-            return Response::json(array('success'=>false,'result'=>'error_create_classe'));
-        }
-
         $result =  DB::table('classes')
             ->where('name', $name)
             ->where('schedule_id', $schedule_id)
             ->where('subject_id', $subject_id)
             ->get('id');
-        $class_id =$result->toArray();
 
-        try {
-            $day = new Day();
-            $day->class_id = $class_id[0]->id;
-            $day->mon = $monday;
-            $day->tue= $tuesday;
-            $day->wed = $wednesday;
-            $day->thu = $thursday;
-            $day->fri = $friday;
-            $day->sat = false;
-            $day->sun = false;
-            $day->save();
-        } catch (\Throwable $e) {
-            return Response::json(array('success'=>false,'result'=>$e));
+        if( empty($result->toArray())){
+            try {
+                $classe = new Classe();
+                $classe->subject_id = $subject_id;
+                $classe->schedule_id = $schedule_id;
+                $classe->name = $name;
+                $classe->start_time = $start_time;
+                $classe->end_time = $end_time;
+                $classe->classroom = $classroom;
+                $classe->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_create_classe'));
+            }
+
+            $result =  DB::table('classes')
+                ->where('name', $name)
+                ->where('schedule_id', $schedule_id)
+                ->where('subject_id', $subject_id)
+                ->get('id');
+            $class_id =$result->toArray();
+
+            try {
+                $day = new Day();
+                $day->class_id = $class_id[0]->id;
+                $day->mon = $monday;
+                $day->tue= $tuesday;
+                $day->wed = $wednesday;
+                $day->thu = $thursday;
+                $day->fri = $friday;
+                $day->sat = false;
+                $day->sun = false;
+                $day->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+        }else{
+            return Response::json(array('success'=>false,'result'=>'error_classe_exists'));
         }
         return Response::json(array('success'=>true,'result'=>'classe_created'));
     }
@@ -188,5 +207,79 @@ class ScheduleController extends Controller
 
         $subjects = $result->toArray();
         return Response::json(array('success'=>true,'result'=>$subjects));
+    }
+
+    public function editClasse(Request $request){
+
+        $classe_id = $request->params['classe_id'];
+        $subject_id = $request->params['subject_id'];
+        $schedule_id = $request->params['schedule_id'];
+        $name = $request->params['name'];
+        $start_time = $request->params['start_time'];
+        $end_time = $request->params['end_time'];
+        if($request->params['classroom'] == null){
+            $classroom = '-';
+        }else{
+            $classroom = $request->params['classroom'];
+        }
+        $monday = $request->params['monday'];
+        $tuesday = $request->params['tuesday'];
+        $wednesday = $request->params['wednesday'];
+        $thursday = $request->params['thursday'];
+        $friday = $request->params['friday'];
+
+        $result =  DB::table('classes')
+            ->where('name', $name)
+            ->where('schedule_id', $schedule_id)
+            ->where('subject_id', $subject_id)
+            ->get('id');
+
+        $aux = DB::table('classes')
+            ->where('id',$classe_id)
+            ->get('name');
+
+        $aux = $aux->toArray();
+
+        $canEdit = false;
+        if($aux[0]->name == $name){
+            $canEdit = true;
+        }
+
+        if(empty($result->toArray()) || $canEdit){
+            try {
+                $classe = Classe::find($classe_id);
+                $classe->subject_id = $subject_id;
+                $classe->schedule_id = $schedule_id;
+                $classe->name = $name;
+                $classe->start_time = $start_time;
+                $classe->end_time = $end_time;
+                $classe->classroom = $classroom;
+                $classe->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>'error_edit_event'));
+            }
+
+            $auxId = DB::table('days')
+                ->where('class_id',$classe_id)
+                ->get('id');
+            $auxId = $auxId->toArray();
+
+            try {
+                $day = Day::find($auxId[0]->id);
+                $day->mon = $monday;
+                $day->tue= $tuesday;
+                $day->wed = $wednesday;
+                $day->thu = $thursday;
+                $day->fri = $friday;
+                $day->sat = false;
+                $day->sun = false;
+                $day->save();
+            } catch (\Throwable $e) {
+                return Response::json(array('success'=>false,'result'=>$e));
+            }
+        }else{
+            return Response::json(array('success'=>false,'result'=>'error_classe_exists'));
+        }
+        return Response::json(array('success'=>true,'result'=>'classe_edited'));
     }
 }

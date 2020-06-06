@@ -20,6 +20,7 @@
     route_add_schedule="{{route("add_schedule")}}"
     route_add_classe="{{route("add_classe")}}"
     route_get_subjects_by_period="{{route("get_subjects_by_period")}}"
+    route_edit_classe="{{route("edit_classe")}}"
 ></schedules>
 
 @endsection

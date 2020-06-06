@@ -4825,9 +4825,113 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Schedules",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -4846,6 +4950,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_schedule_vue = this.route_add_schedule;
     this.route_add_classe_vue = this.route_add_classe;
     this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
+    this.route_edit_classe_vue = this.route_edit_classe;
     this.getStudiesArray();
     this.getAcademicYears();
     this.getRecentSchedule();
@@ -4885,6 +4990,7 @@ __webpack_require__.r(__webpack_exports__);
         name: ''
       },
       showNameExistsSchedule: false,
+      showNameExistsClasse: false,
       route_add_classe_vue: '',
       classeToAdd: {
         subject_id: '',
@@ -4900,7 +5006,25 @@ __webpack_require__.r(__webpack_exports__);
         friday: false
       },
       route_get_subjects_by_period_vue: '',
-      subjectsArray: []
+      subjectsArray: [],
+      chosenYearStart: '',
+      chosenYearEnd: '',
+      classeToEdit: {
+        classe_id: '',
+        subject_id: '',
+        schedule_id: '',
+        name: '',
+        start_time: '',
+        end_time: '',
+        classroom: '',
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false
+      },
+      route_edit_classe_vue: '',
+      showNameExistsClasseEdit: false
     };
   },
   methods: {
@@ -4923,19 +5047,64 @@ __webpack_require__.r(__webpack_exports__);
       this.classeToAdd.thursday = false;
       this.classeToAdd.friday = false;
     },
-    addClasse: function addClasse() {
+    editClasseModal: function editClasseModal(classe) {
+      this.getSubjectsByPeriod();
+      $('#editClasseModal').modal('show');
+      this.classeToEdit.classe_id = classe.class_id;
+      this.classeToEdit.subject_id = classe.class_subject_id;
+      this.classeToEdit.schedule_id = classe.class_schedule_id;
+      this.classeToEdit.name = classe.class_name;
+      this.classeToEdit.start_time = classe.class_start_time;
+      this.classeToEdit.end_time = classe.class_end_time;
+      this.classeToEdit.classroom = classe.class_classroom;
+      this.classeToEdit.monday = classe.mon;
+      this.classeToEdit.tuesday = classe.tue;
+      this.classeToEdit.wednesday = classe.wed;
+      this.classeToEdit.thursday = classe.thu;
+      this.classeToEdit.friday = classe.fri;
+    },
+    editClasse: function editClasse() {
       var _this = this;
+
+      var url = this.route_edit_classe_vue;
+      axios.put(url, {
+        params: this.classeToEdit
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'error_classe_exists') {
+          _this.showNameExistsClasseEdit = true;
+        }
+
+        if (response.data.result === 'classe_edited') {
+          $('#editClasseModal').modal('hide');
+
+          _this.getClassesByScheduleAndDay();
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    addClasse: function addClasse() {
+      var _this2 = this;
 
       var url = this.route_add_classe_vue;
       axios.put(url, {
         params: this.classeToAdd
       }).then(function (response) {
-        console.log(response.data.result);
+        console.log(response.data.result); // if(response.data.result === 'classe_created'){
+        //     $('#addClasseModal').modal('hide');
+        //     this.getClassesByScheduleAndDay()
+        // }
+
+        if (response.data.result === 'error_classe_exists') {
+          _this2.showNameExistsClasse = true;
+        }
 
         if (response.data.result === 'classe_created') {
           $('#addClasseModal').modal('hide');
 
-          _this.getClassesByScheduleAndDay();
+          _this2.getClassesByScheduleAndDay();
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -4947,7 +5116,7 @@ __webpack_require__.r(__webpack_exports__);
       this.scheduleToAdd.period_id = this.periodToSearch.period_id;
     },
     addSchedule: function addSchedule() {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = this.route_add_schedule_vue;
       axios.put(url, {
@@ -4956,56 +5125,56 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'error_schedule_exists') {
-          _this2.showNameExistsSchedule = true;
+          _this3.showNameExistsSchedule = true;
         } else {
           $('#addScheduleModal').modal('hide');
-          _this2.scheduleToAdd.name = '';
+          _this3.scheduleToAdd.name = '';
 
-          _this2.getSchedulesByPeriod();
+          _this3.getSchedulesByPeriod();
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentSchedule: function getRecentSchedule() {
-      var _this3 = this;
+      var _this4 = this;
 
       var url = this.route_get_recent_schedule_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this3.recentSchedule = response.data.result[0];
-        _this3.classesToSearchRecent.schedule_id = _this3.recentSchedule.schedule_id;
+        _this4.recentSchedule = response.data.result[0];
+        _this4.classesToSearchRecent.schedule_id = _this4.recentSchedule.schedule_id;
 
-        _this3.getRecentClasses();
+        _this4.getRecentClasses();
 
-        _this3.getPeriodsByYear(_this3.recentSchedule.year_id, _this3.recentSchedule.study_name);
+        _this4.getPeriodsByYear(_this4.recentSchedule.year_id, _this4.recentSchedule.study_name, _this4.recentSchedule.year_start, _this4.recentSchedule.year_end);
 
-        _this3.periodToSearch.period_id = _this3.recentSchedule.schedule_period_id;
+        _this4.periodToSearch.period_id = _this4.recentSchedule.schedule_period_id;
 
-        _this3.getSubjectsByPeriod();
+        _this4.getSubjectsByPeriod();
 
-        _this3.getSchedulesByPeriod();
+        _this4.getSchedulesByPeriod();
 
-        _this3.classesToSearch.schedule_id = _this3.classesToSearchRecent.schedule_id;
+        _this4.classesToSearch.schedule_id = _this4.classesToSearchRecent.schedule_id;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentClasses: function getRecentClasses() {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
         params: this.classesToSearchRecent
       }).then(function (response) {
         console.log(response.data.result);
-        _this4.classes = response.data.result;
+        _this5.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getSchedulesByPeriod: function getSchedulesByPeriod() {
-      var _this5 = this;
+      var _this6 = this;
 
       var url = this.route_get_schedules_by_period_vue;
       axios.get(url, {
@@ -5013,13 +5182,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('/////////////////////');
         console.log(response.data.result);
-        _this5.schedulesArray = response.data.result;
+        _this6.schedulesArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
-      var _this6 = this;
+      var _this7 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
@@ -5027,13 +5196,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('////////Classes to seacrh/////////////');
         console.log(response.data.result);
-        _this6.classes = response.data.result;
+        _this7.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getAcademicYears: function getAcademicYears() {
-      var _this7 = this;
+      var _this8 = this;
 
       var url = this.route_get_years_by_study_vue;
       axios.get(url, {
@@ -5042,18 +5211,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'no_studies') {
-          _this7.showPhotoEmpty = true;
+          _this8.showPhotoEmpty = true;
           console.log('No hay estudios');
         } else {
-          _this7.showPhotoEmpty = false;
+          _this8.showPhotoEmpty = false;
           var aux2 = [];
           response.data.result.forEach(function (valor, indice) {
             aux2.push(valor);
             console.log('/////////////////');
             console.log(valor);
           });
-          _this7.auxArray = aux2;
-          console.log(_this7.auxArray);
+          _this8.auxArray = aux2;
+          console.log(_this8.auxArray);
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5067,24 +5236,28 @@ __webpack_require__.r(__webpack_exports__);
       this.studiesArray.studies = aux;
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this8 = this;
+      var _this9 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this8.estudios_vue = response.data.result;
-        _this8.showPhotoEmpty = false;
+        _this9.estudios_vue = response.data.result;
+        _this9.showPhotoEmpty = false;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
-    getPeriodsByYear: function getPeriodsByYear(year_id, study_name) {
-      var _this9 = this;
+    getPeriodsByYear: function getPeriodsByYear(year_id, study_name, chosen_year_start, chosen_year_end) {
+      var _this10 = this;
 
       this.schedulesArray = [];
       this.periodToSearch.period_id = '';
       this.classesToSearch.schedule_id = '';
       /*********************************/
+
+      this.chosenYearStart = chosen_year_start;
+      this.chosenYearEnd = chosen_year_end;
+      /**********************************/
 
       this.chosenStudyName = study_name;
       this.yearIdChosen.year_id = year_id;
@@ -5092,7 +5265,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url, {
         params: this.yearIdChosen
       }).then(function (response) {
-        _this9.periodsArray = response.data.result;
+        _this10.periodsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -5108,15 +5281,21 @@ __webpack_require__.r(__webpack_exports__);
     cleanMessageSchedule: function cleanMessageSchedule() {
       this.showNameExistsSchedule = false;
     },
+    cleanMessageClasse: function cleanMessageClasse() {
+      this.showNameExistsClasse = false;
+    },
+    cleanMessageClasseEdit: function cleanMessageClasseEdit() {
+      this.showNameExistsClasseEdit = false;
+    },
     getSubjectsByPeriod: function getSubjectsByPeriod() {
-      var _this10 = this;
+      var _this11 = this;
 
       var url = this.route_get_subjects_by_period_vue;
       axios.get(url, {
         params: this.periodToSearch
       }).then(function (response) {
         console.log(response.data.result);
-        _this10.subjectsArray = response.data.result;
+        _this11.subjectsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -5138,6 +5317,19 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.classeToAdd.name === '' || this.classeToAdd.subject_id === '' || this.classeToAdd.start_time === '' || this.classeToAdd.end_time === '' || !aux) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDisabledEditClasse: function isDisabledEditClasse() {
+      if (this.classeToEdit.monday === false && this.classeToEdit.tuesday === false && this.classeToEdit.wednesday === false && this.classeToEdit.thursday === false && this.classeToEdit.friday === false) {
+        var aux = false;
+      } else {
+        var aux = true;
+      }
+
+      if (this.classeToEdit.name === '' || this.classeToEdit.subject_id === '' || this.classeToEdit.start_time === '' || this.classeToEdit.end_time === '' || !aux) {
         return true;
       } else {
         return false;
@@ -92089,7 +92281,12 @@ var render = function() {
                             staticClass: "years-list-item",
                             on: {
                               click: function($event) {
-                                return _vm.getPeriodsByYear(year.id, item.name)
+                                return _vm.getPeriodsByYear(
+                                  year.id,
+                                  item.name,
+                                  year.start_date,
+                                  year.end_date
+                                )
                               }
                             }
                           },
@@ -92127,6 +92324,14 @@ var render = function() {
       _c("div", { staticClass: "col-8" }, [
         _c("h4", { staticClass: "study-name-title" }, [
           _vm._v(_vm._s(_vm.chosenStudyName))
+        ]),
+        _vm._v(" "),
+        _c("h4", { staticClass: "study-name-title year" }, [
+          _vm._v(
+            _vm._s(_vm.formatDateYear(_vm.chosenYearStart)) +
+              " - " +
+              _vm._s(_vm.formatDateYear(_vm.chosenYearEnd))
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "select-container-period" }, [
@@ -92302,6 +92507,19 @@ var render = function() {
                         }
                       },
                       [
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(monday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "delete-classe-div" })
+                        ]),
+                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(monday_class.class_name))
                         ]),
@@ -92357,6 +92575,19 @@ var render = function() {
                         }
                       },
                       [
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(tuesday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "delete-classe-div" })
+                        ]),
+                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(tuesday_class.class_name))
                         ]),
@@ -92413,6 +92644,19 @@ var render = function() {
                         }
                       },
                       [
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(wednesday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "delete-classe-div" })
+                        ]),
+                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(wednesday_class.class_name))
                         ]),
@@ -92468,6 +92712,19 @@ var render = function() {
                         }
                       },
                       [
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(thursday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "delete-classe-div" })
+                        ]),
+                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(thursday_class.class_name))
                         ]),
@@ -92523,6 +92780,19 @@ var render = function() {
                         }
                       },
                       [
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(friday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "delete-classe-div" })
+                        ]),
+                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(friday_class.class_name))
                         ]),
@@ -92805,6 +93075,7 @@ var render = function() {
                       },
                       domProps: { value: _vm.classeToAdd.name },
                       on: {
+                        keyup: _vm.cleanMessageClasse,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -92812,7 +93083,15 @@ var render = function() {
                           _vm.$set(_vm.classeToAdd, "name", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExistsClasse
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                    Ya tienes una clase con este nombre.\n                                "
+                          )
+                        ])
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
@@ -93309,10 +93588,606 @@ var render = function() {
           ]
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "editClasseModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "editNameLabel3" }
+                  },
+                  [_vm._v("Edición de clase de " + _vm._s(_vm.chosenStudyName))]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "name_classe_edit" } }, [
+                      _vm._v("Nombre de la clase:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.classeToEdit.name,
+                          expression: "classeToEdit.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "name_classe_edit",
+                        type: "text",
+                        name: "name_classe",
+                        placeholder: "",
+                        required: ""
+                      },
+                      domProps: { value: _vm.classeToEdit.name },
+                      on: {
+                        keyup: _vm.cleanMessageClasseEdit,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.classeToEdit,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.showNameExistsClasseEdit
+                      ? _c("small", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                                    Ya tienes una clase con este nombre.\n                                "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticStyle: { display: "block" },
+                        attrs: { for: "class_subject_edit" }
+                      },
+                      [_vm._v("Selecciona una asignatura para esta clase:")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.subject_id,
+                            expression: "classeToEdit.subject_id"
+                          }
+                        ],
+                        attrs: { id: "class_subject_edit" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.classeToEdit,
+                              "subject_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { selected: "", value: "" } }, [
+                          _vm._v(" Asignatura ")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.subjectsArray, function(subject) {
+                          return _c(
+                            "option",
+                            { domProps: { value: subject.id } },
+                            [
+                              _vm._v(
+                                "\n                                        " +
+                                  _vm._s(subject.name) +
+                                  "\n                                    "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "classroom_edit" } }, [
+                      _vm._v("Lugar:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.classeToEdit.classroom,
+                          expression: "classeToEdit.classroom"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "classroom_edit",
+                        type: "text",
+                        name: "classroom",
+                        required: ""
+                      },
+                      domProps: { value: _vm.classeToEdit.classroom },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.classeToEdit,
+                            "classroom",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "start_time_edit" } }, [
+                      _vm._v("Hora inicio:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.classeToEdit.start_time,
+                          expression: "classeToEdit.start_time"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "start_time_edit",
+                        type: "time",
+                        name: "start_time",
+                        required: ""
+                      },
+                      domProps: { value: _vm.classeToEdit.start_time },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.classeToEdit,
+                            "start_time",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "end_time_edit" } }, [
+                      _vm._v("Hora final:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.classeToEdit.end_time,
+                          expression: "classeToEdit.end_time"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "end_time_edit",
+                        type: "time",
+                        name: "end_time",
+                        required: ""
+                      },
+                      domProps: { value: _vm.classeToEdit.end_time },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.classeToEdit,
+                            "end_time",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("p", [_vm._v("Dias:")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check form-check-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.monday,
+                            expression: "classeToEdit.monday"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "inlineCheckbox10" },
+                        domProps: {
+                          checked: Array.isArray(_vm.classeToEdit.monday)
+                            ? _vm._i(_vm.classeToEdit.monday, null) > -1
+                            : _vm.classeToEdit.monday
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.classeToEdit.monday,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "monday",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "monday",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.classeToEdit, "monday", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "inlineCheckbox10" }
+                        },
+                        [_vm._v("Lunes")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check form-check-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.tuesday,
+                            expression: "classeToEdit.tuesday"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "inlineCheckbox12" },
+                        domProps: {
+                          checked: Array.isArray(_vm.classeToEdit.tuesday)
+                            ? _vm._i(_vm.classeToEdit.tuesday, null) > -1
+                            : _vm.classeToEdit.tuesday
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.classeToEdit.tuesday,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "tuesday",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "tuesday",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.classeToEdit, "tuesday", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "inlineCheckbox12" }
+                        },
+                        [_vm._v("Martes")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check form-check-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.wednesday,
+                            expression: "classeToEdit.wednesday"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "inlineCheckbox13" },
+                        domProps: {
+                          checked: Array.isArray(_vm.classeToEdit.wednesday)
+                            ? _vm._i(_vm.classeToEdit.wednesday, null) > -1
+                            : _vm.classeToEdit.wednesday
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.classeToEdit.wednesday,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "wednesday",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "wednesday",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.classeToEdit, "wednesday", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "inlineCheckbox3" }
+                        },
+                        [_vm._v("Miercoles")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check form-check-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.thursday,
+                            expression: "classeToEdit.thursday"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "inlineCheckbox14" },
+                        domProps: {
+                          checked: Array.isArray(_vm.classeToEdit.thursday)
+                            ? _vm._i(_vm.classeToEdit.thursday, null) > -1
+                            : _vm.classeToEdit.thursday
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.classeToEdit.thursday,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "thursday",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "thursday",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.classeToEdit, "thursday", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "inlineCheckbox14" }
+                        },
+                        [_vm._v("Jueves")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-check form-check-inline" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classeToEdit.friday,
+                            expression: "classeToEdit.friday"
+                          }
+                        ],
+                        staticClass: "form-check-input",
+                        attrs: { type: "checkbox", id: "inlineCheckbox15" },
+                        domProps: {
+                          checked: Array.isArray(_vm.classeToEdit.friday)
+                            ? _vm._i(_vm.classeToEdit.friday, null) > -1
+                            : _vm.classeToEdit.friday
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.classeToEdit.friday,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "friday",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.classeToEdit,
+                                    "friday",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.classeToEdit, "friday", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-check-label",
+                          attrs: { for: "inlineCheckbox15" }
+                        },
+                        [_vm._v("Viernes")]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.isDisabledEditClasse
+                      },
+                      on: { click: _vm.editClasse }
+                    },
+                    [_vm._v("Guardar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

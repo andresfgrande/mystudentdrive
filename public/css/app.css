@@ -22490,23 +22490,13 @@ a.text-dark:focus {
   content: url("/images/038-edit.png");
   width: 16px;
   cursor: pointer;
-  visibility: hidden;
+  display: inline-block;
 }
 
 .container.content.planner .custom-card-event .card-body .actions-planner-events div.delete-event-div {
   content: url("/images/borrar.png");
   width: 16px;
   cursor: pointer;
-  visibility: hidden;
-}
-
-.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.edit-event-div {
-  visibility: visible;
-  display: inline-block;
-}
-
-.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.delete-event-div {
-  visibility: visible;
   display: inline-block;
 }
 
@@ -22813,13 +22803,36 @@ a.text-dark:focus {
 
 .container.content.studies.schedules .row .col-8 .study-name-title {
   text-align: center;
-  margin-bottom: 1.5em;
 }
 
-.container.content.studies.schedules .row .col-8 .col {
+.container.content.studies.schedules .row .col-8 .study-name-title.year {
+  margin-bottom: 1.5em;
+  font-size: 20px;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col {
   text-align: center;
   font-size: 16px;
   font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules {
+  position: absolute;
+  left: 175px;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules div.edit-classe-div {
+  content: url("/images/038-edit.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules div.delete-classe-div {
+  content: url("/images/borrar.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 /**************************MOBILE*************************************/

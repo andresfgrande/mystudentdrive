@@ -690,29 +690,29 @@
                     content:url("/images/038-edit.png");
                     width: 16px;
                     cursor:pointer;
-                    //display: inline-block;
-                    visibility:hidden;
+                    display: inline-block;
+                    //visibility:hidden;
                 }
                 div.delete-event-div{
                     content:url("/images/borrar.png");
                     width: 16px;
                     cursor:pointer;
-                    //display:inline-block;
-                    visibility: hidden;
+                    display:inline-block;
+                    //visibility: hidden;
                 }
             }
-            &:hover{
-                .actions-planner-events{
-                    div.edit-event-div{
-                        visibility:visible;
-                        display: inline-block;
-                    }
-                    div.delete-event-div{
-                        visibility: visible;
-                        display: inline-block;
-                    }
-                }
-            }
+            //&:hover{
+            //    .actions-planner-events{
+            //        div.edit-event-div{
+            //            visibility:visible;
+            //            display: inline-block;
+            //        }
+            //        div.delete-event-div{
+            //            visibility: visible;
+            //            display: inline-block;
+            //        }
+            //    }
+            //}
 
         }
     }
@@ -986,15 +986,40 @@
             }
             .study-name-title{
                 text-align: center;
-                margin-bottom: 1.5em;
             }
-            .col{
-                text-align: center;
-                font-size: 16px;
-                font-weight: bold;
+            .study-name-title.year{
+                margin-bottom: 1.5em;
+                font-size: 20px;
+            }
+            .row.custom{
+                .col{
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: bold;
+
+                    .custom-card-event{
+                        .card-body{
+                            .actions-schedules{
+                                position: absolute;
+                                left: 175px;
+                                div.edit-classe-div{
+                                    content:url("/images/038-edit.png");
+                                    width: 16px;
+                                    cursor:pointer;
+                                    display: inline-block;
+                                }
+                                div.delete-classe-div{
+                                    content:url("/images/borrar.png");
+                                    width: 16px;
+                                    cursor:pointer;
+                                    display: inline-block;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-
     }
 }
 

@@ -18,7 +18,8 @@
 <!--                            <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>-->
                         </div>
                         <ul class=" year-list"  >
-                            <li class="years-list-item" v-for="year in auxArray[index]" v-if="year !== 'vacio'" @click="getPeriodsByYear(year.id, item.name)" >
+                            <li class="years-list-item" v-for="year in auxArray[index]" v-if="year !== 'vacio'"
+                                @click="getPeriodsByYear(year.id, item.name, year.start_date, year.end_date)" >
                                 <p class="year-range">{{formatDateYear(year.start_date)}} - {{formatDateYear(year.end_date)}}</p>
                                 <p class="date-range">{{formatDateFull(year.start_date)}} - {{formatDateFull(year.end_date)}}</p>
                             </li>
@@ -32,6 +33,7 @@
             </div>
             <div class="col-8">
                 <h4 class="study-name-title">{{chosenStudyName}}</h4>
+                <h4 class="study-name-title year">{{formatDateYear(chosenYearStart)}} - {{formatDateYear(chosenYearEnd)}}</h4>
                 <div class="select-container-period">
                     <label for="schedule-period" style="display:block">Selecciona un periodo de este curso:</label>
                     <select id="schedule-period" v-model="periodToSearch.period_id" @change="getSchedulesByPeriod" >
@@ -65,6 +67,10 @@
                         <div class="custom-card-event" v-for="monday_class in classes.monday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: monday_class.subject_color}">
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(monday_class)"></div>
+                                        <div class="delete-classe-div"></div>
+                                    </div>
                                     <h5 class="card-title" >{{monday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{monday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{monday_class.class_classroom}}</p>
@@ -79,6 +85,10 @@
                         <div class="custom-card-event" v-for="tuesday_class in classes.tuesday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: tuesday_class.subject_color}">
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(tuesday_class)"></div>
+                                        <div class="delete-classe-div"></div>
+                                    </div>
                                     <h5 class="card-title" >{{tuesday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{tuesday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{tuesday_class.class_classroom}}</p>
@@ -93,6 +103,10 @@
                         <div class="custom-card-event" v-for="wednesday_class in classes.wednesday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: wednesday_class.subject_color}">
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(wednesday_class)"></div>
+                                        <div class="delete-classe-div"></div>
+                                    </div>
                                     <h5 class="card-title" >{{wednesday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{wednesday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{wednesday_class.class_classroom}}</p>
@@ -106,6 +120,10 @@
                         <div class="custom-card-event" v-for="thursday_class in classes.thursday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: thursday_class.subject_color}">
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(thursday_class)"></div>
+                                        <div class="delete-classe-div"></div>
+                                    </div>
                                     <h5 class="card-title" >{{thursday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{thursday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{thursday_class.class_classroom}}</p>
@@ -119,6 +137,10 @@
                         <div class="custom-card-event" v-for="friday_class in classes.friday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: friday_class.subject_color}">
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(friday_class)"></div>
+                                        <div class="delete-classe-div"></div>
+                                    </div>
                                     <h5 class="card-title" >{{friday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{friday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{friday_class.class_classroom}}</p>
@@ -189,10 +211,10 @@
                                 <label for="name_classe">Nombre de la clase:</label>
                                 <input class="form-control" v-model="classeToAdd.name"
                                        id="name_classe" type="text" name="name_classe"
-                                       placeholder="" required>
-<!--                                <small v-if="showNameExistsSchedule"  class="text-danger">-->
-<!--                                    Ya tienes un horario con este nombre.-->
-<!--                                </small>-->
+                                       placeholder="" required v-on:keyup="cleanMessageClasse">
+                                <small v-if="showNameExistsClasse"  class="text-danger">
+                                    Ya tienes una clase con este nombre.
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label for="class_subject" style="display:block">Selecciona una asignatura para esta clase:</label>
@@ -257,6 +279,88 @@
             </div>
         </div>
         <!--/***********************************************************************************************-->
+        <!--/*********************************EDIT CLASSE*********************************************/-->
+        <div class="modal fade" id="editClasseModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="editNameLabel3">Edición de clase de {{chosenStudyName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="name_classe_edit">Nombre de la clase:</label>
+                                <input class="form-control" v-model="classeToEdit.name"
+                                       id="name_classe_edit" type="text" name="name_classe"
+                                       placeholder="" required v-on:keyup="cleanMessageClasseEdit">
+                                <small v-if="showNameExistsClasseEdit"  class="text-danger">
+                                    Ya tienes una clase con este nombre.
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="class_subject_edit" style="display:block">Selecciona una asignatura para esta clase:</label>
+                                <select id="class_subject_edit" v-model="classeToEdit.subject_id"  >
+                                    <option selected value> Asignatura </option>
+                                    <option v-for="subject in subjectsArray" v-bind:value="subject.id">
+                                        {{subject.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="classroom_edit">Lugar:</label>
+                                <input class="form-control" v-model="classeToEdit.classroom"
+                                       id="classroom_edit" type="text" name="classroom"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_time_edit">Hora inicio:</label>
+                                <input class="form-control" v-model="classeToEdit.start_time"
+                                       id="start_time_edit" type="time" name="start_time"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time_edit">Hora final:</label>
+                                <input class="form-control" v-model="classeToEdit.end_time"
+                                       id="end_time_edit" type="time" name="end_time"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <p>Dias:</p>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox10" v-model="classeToEdit.monday">
+                                    <label class="form-check-label" for="inlineCheckbox10">Lunes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox12" v-model="classeToEdit.tuesday">
+                                    <label class="form-check-label" for="inlineCheckbox12">Martes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox13" v-model="classeToEdit.wednesday">
+                                    <label class="form-check-label" for="inlineCheckbox3">Miercoles</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox14" v-model="classeToEdit.thursday">
+                                    <label class="form-check-label" for="inlineCheckbox14">Jueves</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox15" v-model="classeToEdit.friday">
+                                    <label class="form-check-label" for="inlineCheckbox15">Viernes</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" :disabled="isDisabledEditClasse" @click="editClasse">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/***********************************************************************************************-->
     </div>
 </template>
 
@@ -267,11 +371,9 @@
             'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year',
             'route_add_period','route_photo','route_photo_2','route_get_schedules_by_period',
             'route_get_classes_by_schedule_and_day','route_get_recent_schedule_by_user','route_add_schedule',
-            'route_add_classe','route_get_subjects_by_period'],
+            'route_add_classe','route_get_subjects_by_period','route_edit_classe'],
         created(){
             this.estudios_vue = this.estudios;
-
-
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
             this.route_get_subjects_by_year_vue = this.route_get_subjects_by_year ;
             this.route_add_study_vue = this.route_add_study;
@@ -288,12 +390,10 @@
             this.route_add_schedule_vue = this.route_add_schedule;
             this.route_add_classe_vue = this.route_add_classe;
             this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
+            this.route_edit_classe_vue = this.route_edit_classe;
             this.getStudiesArray();
             this.getAcademicYears();
-
             this.getRecentSchedule();
-
-
         },
         data(){
             return{
@@ -330,6 +430,7 @@
                     name:'',
                 },
                 showNameExistsSchedule: false,
+                showNameExistsClasse: false,
                 route_add_classe_vue:'',
                 classeToAdd:{
                     subject_id:'',
@@ -346,7 +447,24 @@
                 },
                 route_get_subjects_by_period_vue:'',
                 subjectsArray:[],
-
+                chosenYearStart:'',
+                chosenYearEnd:'',
+                classeToEdit:{
+                    classe_id:'',
+                    subject_id:'',
+                    schedule_id:'',
+                    name:'',
+                    start_time:'',
+                    end_time:'',
+                    classroom:'',
+                    monday:false,
+                    tuesday:false,
+                    wednesday:false,
+                    thursday:false,
+                    friday:false,
+                },
+                route_edit_classe_vue:'',
+                showNameExistsClasseEdit: false,
             }
         },
         methods:{
@@ -369,13 +487,53 @@
                 this.classeToAdd.thursday=false;
                 this.classeToAdd.friday=false;
             },
+            editClasseModal(classe){
+                this.getSubjectsByPeriod();
+                $('#editClasseModal').modal('show');
+                this.classeToEdit.classe_id = classe.class_id;
+                this.classeToEdit.subject_id = classe.class_subject_id;
+                this.classeToEdit.schedule_id = classe.class_schedule_id;
+                this.classeToEdit.name = classe.class_name;
+                this.classeToEdit.start_time = classe.class_start_time;
+                this.classeToEdit.end_time = classe.class_end_time;
+                this.classeToEdit.classroom = classe.class_classroom;
+                this.classeToEdit.monday = classe.mon;
+                this.classeToEdit.tuesday = classe.tue;
+                this.classeToEdit.wednesday = classe.wed;
+                this.classeToEdit.thursday = classe.thu;
+                this.classeToEdit.friday = classe.fri;
+            },
+            editClasse(){
+                var url = this.route_edit_classe_vue;
+                axios.put(url ,{params:this.classeToEdit}).then(response => {
+                    console.log(response.data.result);
+                    if(response.data.result === 'error_classe_exists'){
+                        this.showNameExistsClasseEdit = true;
+                    }
+                    if(response.data.result === 'classe_edited'){
+                        $('#editClasseModal').modal('hide');
+                        this.getClassesByScheduleAndDay();
+                    }
+
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
             addClasse(){
                 var url = this.route_add_classe_vue;
                 axios.put(url,{params:this.classeToAdd}).then(response => {
                     console.log(response.data.result);
+                    // if(response.data.result === 'classe_created'){
+                    //     $('#addClasseModal').modal('hide');
+                    //     this.getClassesByScheduleAndDay()
+                    // }
+                    if(response.data.result === 'error_classe_exists'){
+                        this.showNameExistsClasse = true;
+                    }
                     if(response.data.result === 'classe_created'){
-                        $('#addClasseModal').modal('hide');
-                        this.getClassesByScheduleAndDay()
+                            $('#addClasseModal').modal('hide');
+                            this.getClassesByScheduleAndDay();
                     }
                 })
                     .catch(errors => {
@@ -410,7 +568,8 @@
                     this.recentSchedule = response.data.result[0];
                     this.classesToSearchRecent.schedule_id = this.recentSchedule.schedule_id;
                     this.getRecentClasses();
-                    this.getPeriodsByYear(this.recentSchedule.year_id, this.recentSchedule.study_name);
+                    this.getPeriodsByYear(this.recentSchedule.year_id, this.recentSchedule.study_name,
+                        this.recentSchedule.year_start, this.recentSchedule.year_end);
                     this.periodToSearch.period_id = this.recentSchedule.schedule_period_id;
                     this.getSubjectsByPeriod();
                     this.getSchedulesByPeriod();
@@ -497,11 +656,14 @@
                         console.log(errors);
                     });
             },
-            getPeriodsByYear(year_id, study_name){
+            getPeriodsByYear(year_id, study_name, chosen_year_start, chosen_year_end){
                 this.schedulesArray= [];
                 this.periodToSearch.period_id = '';
                 this.classesToSearch.schedule_id = '';
                 /*********************************/
+                this.chosenYearStart = chosen_year_start;
+                this.chosenYearEnd = chosen_year_end;
+                /**********************************/
                 this.chosenStudyName = study_name;
                 this.yearIdChosen.year_id = year_id;
                 var url = this.route_get_periods_by_year_vue;
@@ -522,6 +684,12 @@
             },
             cleanMessageSchedule(){
                 this.showNameExistsSchedule = false;
+            },
+            cleanMessageClasse(){
+                this.showNameExistsClasse = false;
+            },
+            cleanMessageClasseEdit(){
+                this.showNameExistsClasseEdit = false;
             },
             getSubjectsByPeriod(){
                 var url = this.route_get_subjects_by_period_vue;
@@ -559,6 +727,22 @@
                     return false;
                 }
             },
+            isDisabledEditClasse: function(){
+                if(this.classeToEdit.monday === false && this.classeToEdit.tuesday === false && this.classeToEdit.wednesday === false
+                    && this.classeToEdit.thursday === false && this.classeToEdit.friday === false){
+
+                    var aux = false;
+                }else{
+                    var aux = true;
+                }
+
+                if(this.classeToEdit.name === '' || this.classeToEdit.subject_id === '' || this.classeToEdit.start_time === ''
+                    || this.classeToEdit.end_time === '' || !aux){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
     }
 </script>
