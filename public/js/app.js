@@ -4929,9 +4929,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Schedules",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe', 'route_delete_classe'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -4951,6 +4980,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_add_classe_vue = this.route_add_classe;
     this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
     this.route_edit_classe_vue = this.route_edit_classe;
+    this.route_delete_classe_vue = this.route_delete_classe;
     this.getStudiesArray();
     this.getAcademicYears();
     this.getRecentSchedule();
@@ -5024,7 +5054,13 @@ __webpack_require__.r(__webpack_exports__);
         friday: false
       },
       route_edit_classe_vue: '',
-      showNameExistsClasseEdit: false
+      showNameExistsClasseEdit: false,
+      classeToDeleteName: '',
+      classeToDelete: {
+        classe_id: ''
+      },
+      route_delete_classe_vue: '',
+      showDeleteClasseFail: false
     };
   },
   methods: {
@@ -5063,8 +5099,36 @@ __webpack_require__.r(__webpack_exports__);
       this.classeToEdit.thursday = classe.thu;
       this.classeToEdit.friday = classe.fri;
     },
-    editClasse: function editClasse() {
+    deleteClasseModal: function deleteClasseModal(classe) {
+      this.classeToDelete.classe_id = classe.class_id;
+      this.classeToDeleteName = classe.class_name;
+      this.showDeleteClasseFail = false;
+      $('#deleteClasseModal').modal('show');
+    },
+    deleteClasse: function deleteClasse() {
       var _this = this;
+
+      var url = this.route_delete_classe_vue;
+      axios["delete"](url, {
+        params: this.classeToDelete
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'classe_deleted') {
+          _this.getClassesByScheduleAndDay();
+
+          $('#deleteClasseModal').modal('hide');
+        }
+
+        if (response.data.result === 'error_delete_classe') {
+          _this.showDeleteClasseFail = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    editClasse: function editClasse() {
+      var _this2 = this;
 
       var url = this.route_edit_classe_vue;
       axios.put(url, {
@@ -5073,20 +5137,20 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'error_classe_exists') {
-          _this.showNameExistsClasseEdit = true;
+          _this2.showNameExistsClasseEdit = true;
         }
 
         if (response.data.result === 'classe_edited') {
           $('#editClasseModal').modal('hide');
 
-          _this.getClassesByScheduleAndDay();
+          _this2.getClassesByScheduleAndDay();
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     addClasse: function addClasse() {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = this.route_add_classe_vue;
       axios.put(url, {
@@ -5098,13 +5162,13 @@ __webpack_require__.r(__webpack_exports__);
         // }
 
         if (response.data.result === 'error_classe_exists') {
-          _this2.showNameExistsClasse = true;
+          _this3.showNameExistsClasse = true;
         }
 
         if (response.data.result === 'classe_created') {
           $('#addClasseModal').modal('hide');
 
-          _this2.getClassesByScheduleAndDay();
+          _this3.getClassesByScheduleAndDay();
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5116,7 +5180,7 @@ __webpack_require__.r(__webpack_exports__);
       this.scheduleToAdd.period_id = this.periodToSearch.period_id;
     },
     addSchedule: function addSchedule() {
-      var _this3 = this;
+      var _this4 = this;
 
       var url = this.route_add_schedule_vue;
       axios.put(url, {
@@ -5125,56 +5189,56 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'error_schedule_exists') {
-          _this3.showNameExistsSchedule = true;
+          _this4.showNameExistsSchedule = true;
         } else {
           $('#addScheduleModal').modal('hide');
-          _this3.scheduleToAdd.name = '';
+          _this4.scheduleToAdd.name = '';
 
-          _this3.getSchedulesByPeriod();
+          _this4.getSchedulesByPeriod();
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentSchedule: function getRecentSchedule() {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = this.route_get_recent_schedule_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this4.recentSchedule = response.data.result[0];
-        _this4.classesToSearchRecent.schedule_id = _this4.recentSchedule.schedule_id;
+        _this5.recentSchedule = response.data.result[0];
+        _this5.classesToSearchRecent.schedule_id = _this5.recentSchedule.schedule_id;
 
-        _this4.getRecentClasses();
+        _this5.getRecentClasses();
 
-        _this4.getPeriodsByYear(_this4.recentSchedule.year_id, _this4.recentSchedule.study_name, _this4.recentSchedule.year_start, _this4.recentSchedule.year_end);
+        _this5.getPeriodsByYear(_this5.recentSchedule.year_id, _this5.recentSchedule.study_name, _this5.recentSchedule.year_start, _this5.recentSchedule.year_end);
 
-        _this4.periodToSearch.period_id = _this4.recentSchedule.schedule_period_id;
+        _this5.periodToSearch.period_id = _this5.recentSchedule.schedule_period_id;
 
-        _this4.getSubjectsByPeriod();
+        _this5.getSubjectsByPeriod();
 
-        _this4.getSchedulesByPeriod();
+        _this5.getSchedulesByPeriod();
 
-        _this4.classesToSearch.schedule_id = _this4.classesToSearchRecent.schedule_id;
+        _this5.classesToSearch.schedule_id = _this5.classesToSearchRecent.schedule_id;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentClasses: function getRecentClasses() {
-      var _this5 = this;
+      var _this6 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
         params: this.classesToSearchRecent
       }).then(function (response) {
         console.log(response.data.result);
-        _this5.classes = response.data.result;
+        _this6.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getSchedulesByPeriod: function getSchedulesByPeriod() {
-      var _this6 = this;
+      var _this7 = this;
 
       var url = this.route_get_schedules_by_period_vue;
       axios.get(url, {
@@ -5182,13 +5246,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('/////////////////////');
         console.log(response.data.result);
-        _this6.schedulesArray = response.data.result;
+        _this7.schedulesArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
-      var _this7 = this;
+      var _this8 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
@@ -5196,13 +5260,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('////////Classes to seacrh/////////////');
         console.log(response.data.result);
-        _this7.classes = response.data.result;
+        _this8.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getAcademicYears: function getAcademicYears() {
-      var _this8 = this;
+      var _this9 = this;
 
       var url = this.route_get_years_by_study_vue;
       axios.get(url, {
@@ -5211,18 +5275,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'no_studies') {
-          _this8.showPhotoEmpty = true;
+          _this9.showPhotoEmpty = true;
           console.log('No hay estudios');
         } else {
-          _this8.showPhotoEmpty = false;
+          _this9.showPhotoEmpty = false;
           var aux2 = [];
           response.data.result.forEach(function (valor, indice) {
             aux2.push(valor);
             console.log('/////////////////');
             console.log(valor);
           });
-          _this8.auxArray = aux2;
-          console.log(_this8.auxArray);
+          _this9.auxArray = aux2;
+          console.log(_this9.auxArray);
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5236,19 +5300,19 @@ __webpack_require__.r(__webpack_exports__);
       this.studiesArray.studies = aux;
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this9 = this;
+      var _this10 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this9.estudios_vue = response.data.result;
-        _this9.showPhotoEmpty = false;
+        _this10.estudios_vue = response.data.result;
+        _this10.showPhotoEmpty = false;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getPeriodsByYear: function getPeriodsByYear(year_id, study_name, chosen_year_start, chosen_year_end) {
-      var _this10 = this;
+      var _this11 = this;
 
       this.schedulesArray = [];
       this.periodToSearch.period_id = '';
@@ -5265,7 +5329,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url, {
         params: this.yearIdChosen
       }).then(function (response) {
-        _this10.periodsArray = response.data.result;
+        _this11.periodsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -5288,14 +5352,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showNameExistsClasseEdit = false;
     },
     getSubjectsByPeriod: function getSubjectsByPeriod() {
-      var _this11 = this;
+      var _this12 = this;
 
       var url = this.route_get_subjects_by_period_vue;
       axios.get(url, {
         params: this.periodToSearch
       }).then(function (response) {
         console.log(response.data.result);
-        _this11.subjectsArray = response.data.result;
+        _this12.subjectsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -92491,7 +92555,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("p", [_vm._v("Lunes")]),
+              _c("p", { staticClass: "day-name" }, [_vm._v("Lunes")]),
               _vm._v(" "),
               _vm._l(_vm.classes.monday, function(monday_class) {
                 return _c("div", { staticClass: "custom-card-event" }, [
@@ -92507,19 +92571,6 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "actions-schedules" }, [
-                          _c("div", {
-                            staticClass: "edit-classe-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editClasseModal(monday_class)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "delete-classe-div" })
-                        ]),
-                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(monday_class.class_name))
                         ]),
@@ -92532,6 +92583,26 @@ var render = function() {
                           _vm._v(
                             "Aula: " + _vm._s(monday_class.class_classroom)
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(monday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass: "delete-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteClasseModal(monday_class)
+                              }
+                            }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text time" }, [
@@ -92559,7 +92630,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("p", [_vm._v("Martes")]),
+              _c("p", { staticClass: "day-name" }, [_vm._v("Martes")]),
               _vm._v(" "),
               _vm._l(_vm.classes.tuesday, function(tuesday_class) {
                 return _c("div", { staticClass: "custom-card-event" }, [
@@ -92575,19 +92646,6 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "actions-schedules" }, [
-                          _c("div", {
-                            staticClass: "edit-classe-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editClasseModal(tuesday_class)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "delete-classe-div" })
-                        ]),
-                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(tuesday_class.class_name))
                         ]),
@@ -92600,6 +92658,26 @@ var render = function() {
                           _vm._v(
                             "Aula: " + _vm._s(tuesday_class.class_classroom)
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(tuesday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass: "delete-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteClasseModal(tuesday_class)
+                              }
+                            }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text time" }, [
@@ -92628,7 +92706,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("p", [_vm._v("Miercoles")]),
+              _c("p", { staticClass: "day-name" }, [_vm._v("Miercoles")]),
               _vm._v(" "),
               _vm._l(_vm.classes.wednesday, function(wednesday_class) {
                 return _c("div", { staticClass: "custom-card-event" }, [
@@ -92644,19 +92722,6 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "actions-schedules" }, [
-                          _c("div", {
-                            staticClass: "edit-classe-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editClasseModal(wednesday_class)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "delete-classe-div" })
-                        ]),
-                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(wednesday_class.class_name))
                         ]),
@@ -92669,6 +92734,26 @@ var render = function() {
                           _vm._v(
                             "Aula: " + _vm._s(wednesday_class.class_classroom)
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(wednesday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass: "delete-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteClasseModal(wednesday_class)
+                              }
+                            }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text time" }, [
@@ -92696,7 +92781,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("p", [_vm._v("Jueves")]),
+              _c("p", { staticClass: "day-name" }, [_vm._v("Jueves")]),
               _vm._v(" "),
               _vm._l(_vm.classes.thursday, function(thursday_class) {
                 return _c("div", { staticClass: "custom-card-event" }, [
@@ -92712,19 +92797,6 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "actions-schedules" }, [
-                          _c("div", {
-                            staticClass: "edit-classe-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editClasseModal(thursday_class)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "delete-classe-div" })
-                        ]),
-                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(thursday_class.class_name))
                         ]),
@@ -92737,6 +92809,26 @@ var render = function() {
                           _vm._v(
                             "Aula: " + _vm._s(thursday_class.class_classroom)
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(thursday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass: "delete-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteClasseModal(thursday_class)
+                              }
+                            }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text time" }, [
@@ -92764,7 +92856,7 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("p", [_vm._v("Viernes")]),
+              _c("p", { staticClass: "day-name" }, [_vm._v("Viernes")]),
               _vm._v(" "),
               _vm._l(_vm.classes.friday, function(friday_class) {
                 return _c("div", { staticClass: "custom-card-event" }, [
@@ -92780,19 +92872,6 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "actions-schedules" }, [
-                          _c("div", {
-                            staticClass: "edit-classe-div",
-                            on: {
-                              click: function($event) {
-                                return _vm.editClasseModal(friday_class)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "delete-classe-div" })
-                        ]),
-                        _vm._v(" "),
                         _c("h5", { staticClass: "card-title" }, [
                           _vm._v(_vm._s(friday_class.class_name))
                         ]),
@@ -92805,6 +92884,26 @@ var render = function() {
                           _vm._v(
                             "Aula: " + _vm._s(friday_class.class_classroom)
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "actions-schedules" }, [
+                          _c("div", {
+                            staticClass: "edit-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.editClasseModal(friday_class)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", {
+                            staticClass: "delete-classe-div",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteClasseModal(friday_class)
+                              }
+                            }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "card-text time" }, [
@@ -94167,6 +94266,71 @@ var render = function() {
           ]
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "deleteClasseModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("h5", [_vm._v(_vm._s(_vm.classeToDeleteName))])
+                  ]),
+                  _vm._v(" "),
+                  _vm.showDeleteClasseFail
+                    ? _c("small", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n                                No se ha podido borrar esta clase, vuelve a intentarlo.\n                            "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteClasse }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
@@ -94221,6 +94385,31 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel4" } },
+        [_vm._v("¿Seguro que quieres eliminar esta classe?")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true

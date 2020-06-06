@@ -18,7 +18,9 @@
     text-align: center;
     margin-bottom: 1em;
 }
-
+#navbarSupportedContent{
+    font-weight: bold;
+}
 .navbar{
     position: fixed;
     width: 100%;
@@ -996,12 +998,14 @@
                     text-align: center;
                     font-size: 16px;
                     font-weight: bold;
-
+                    .day-name{
+                        font-size: 19px;
+                        color: #3490dc;
+                    }
                     .custom-card-event{
                         .card-body{
                             .actions-schedules{
-                                position: absolute;
-                                left: 175px;
+                                float: right;
                                 div.edit-classe-div{
                                     content:url("/images/038-edit.png");
                                     width: 16px;
@@ -1093,7 +1097,22 @@
             }
         }
     }
-
+    .container.content.studies.schedules{
+        .row{
+            .col-4{
+                max-width: 100%;
+            }
+            .col-8{
+                max-width: 100%;
+                .container-buttons {
+                    margin-top: 1.5em;
+                }
+            }
+        }
+    }
+    .container.content.studies.schedules .row.custom {
+        margin-top: 5em;
+    }
 }
 
 /********TEST**************/

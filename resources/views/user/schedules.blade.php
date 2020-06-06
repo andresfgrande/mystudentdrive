@@ -21,6 +21,7 @@
     route_add_classe="{{route("add_classe")}}"
     route_get_subjects_by_period="{{route("get_subjects_by_period")}}"
     route_edit_classe="{{route("edit_classe")}}"
+    route_delete_classe="{{route("delete_classe")}}"
 ></schedules>
 
 @endsection

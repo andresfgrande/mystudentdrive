@@ -382,7 +382,6 @@
                     });
             },
             deleteEvent(){
-
                 var url = this.route_delete_event_vue;
                 axios.delete(url,{params:this.eventToDelete}).then(response => {
                     console.log(response.data.result)
@@ -395,7 +394,6 @@
                     if(response.data.result === 'error_delete_event'){
                         this.showDeleteFail = true;
                     }
-
                 })
                     .catch(errors => {
                         console.log(errors);

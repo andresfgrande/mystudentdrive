@@ -62,18 +62,18 @@
 
                 <div class="row custom">
                     <div class="col">
-                        <p>Lunes</p>
+                        <p class="day-name">Lunes</p>
 
                         <div class="custom-card-event" v-for="monday_class in classes.monday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: monday_class.subject_color}">
-                                    <div class="actions-schedules">
-                                        <div class="edit-classe-div" @click="editClasseModal(monday_class)"></div>
-                                        <div class="delete-classe-div"></div>
-                                    </div>
                                     <h5 class="card-title" >{{monday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{monday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{monday_class.class_classroom}}</p>
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(monday_class)"></div>
+                                        <div class="delete-classe-div" @click="deleteClasseModal(monday_class)"></div>
+                                    </div>
                                     <p class="card-text time" > {{formatTime(monday_class.class_start_time)}} - {{formatTime(monday_class.class_end_time)}}</p>
                                 </div>
                             </div>
@@ -81,17 +81,17 @@
 
                     </div>
                     <div class="col">
-                        <p>Martes</p>
+                        <p class="day-name">Martes</p>
                         <div class="custom-card-event" v-for="tuesday_class in classes.tuesday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: tuesday_class.subject_color}">
-                                    <div class="actions-schedules">
-                                        <div class="edit-classe-div" @click="editClasseModal(tuesday_class)"></div>
-                                        <div class="delete-classe-div"></div>
-                                    </div>
                                     <h5 class="card-title" >{{tuesday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{tuesday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{tuesday_class.class_classroom}}</p>
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(tuesday_class)"></div>
+                                        <div class="delete-classe-div" @click="deleteClasseModal(tuesday_class)"></div>
+                                    </div>
                                     <p class="card-text time" > {{formatTime(tuesday_class.class_start_time)}} - {{formatTime(tuesday_class.class_end_time)}} </p>
                                 </div>
                             </div>
@@ -99,51 +99,51 @@
 
                     </div>
                     <div class="col">
-                        <p>Miercoles</p>
+                        <p class="day-name">Miercoles</p>
                         <div class="custom-card-event" v-for="wednesday_class in classes.wednesday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: wednesday_class.subject_color}">
-                                    <div class="actions-schedules">
-                                        <div class="edit-classe-div" @click="editClasseModal(wednesday_class)"></div>
-                                        <div class="delete-classe-div"></div>
-                                    </div>
                                     <h5 class="card-title" >{{wednesday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{wednesday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{wednesday_class.class_classroom}}</p>
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(wednesday_class)"></div>
+                                        <div class="delete-classe-div" @click="deleteClasseModal(wednesday_class)"></div>
+                                    </div>
                                     <p class="card-text time" > {{formatTime(wednesday_class.class_start_time)}} - {{formatTime(wednesday_class.class_end_time)}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <p>Jueves</p>
+                        <p class="day-name">Jueves</p>
                         <div class="custom-card-event" v-for="thursday_class in classes.thursday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: thursday_class.subject_color}">
-                                    <div class="actions-schedules">
-                                        <div class="edit-classe-div" @click="editClasseModal(thursday_class)"></div>
-                                        <div class="delete-classe-div"></div>
-                                    </div>
                                     <h5 class="card-title" >{{thursday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{thursday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{thursday_class.class_classroom}}</p>
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(thursday_class)"></div>
+                                        <div class="delete-classe-div" @click="deleteClasseModal(thursday_class)"></div>
+                                    </div>
                                     <p class="card-text time" > {{formatTime(thursday_class.class_start_time)}} - {{formatTime(thursday_class.class_end_time)}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <p>Viernes</p>
+                        <p class="day-name">Viernes</p>
                         <div class="custom-card-event" v-for="friday_class in classes.friday">
                             <div class="card w-100">
                                 <div class="card-body" v-bind:style="{ borderWidth: 3+'px',borderStyle: 'solid', borderColor: friday_class.subject_color}">
-                                    <div class="actions-schedules">
-                                        <div class="edit-classe-div" @click="editClasseModal(friday_class)"></div>
-                                        <div class="delete-classe-div"></div>
-                                    </div>
                                     <h5 class="card-title" >{{friday_class.class_name}}</h5>
                                     <h5 class="card-title subject-name" >{{friday_class.subject_name}}</h5>
                                     <p class="card-text classroom">Aula: {{friday_class.class_classroom}}</p>
+                                    <div class="actions-schedules">
+                                        <div class="edit-classe-div" @click="editClasseModal(friday_class)"></div>
+                                        <div class="delete-classe-div" @click="deleteClasseModal(friday_class)"></div>
+                                    </div>
                                     <p class="card-text time" > {{formatTime(friday_class.class_start_time)}} - {{formatTime(friday_class.class_end_time)}}</p>
                                 </div>
                             </div>
@@ -361,6 +361,35 @@
             </div>
         </div>
         <!--/***********************************************************************************************-->
+        <!--/*********************************DELETE EVENT*********************************************/-->
+        <div class="modal fade" id="deleteClasseModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="editNameLabel4">¿Seguro que quieres eliminar esta classe?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h5>{{classeToDeleteName}}</h5>
+                            </div>
+                            <small v-if="showDeleteClasseFail"  class="text-danger">
+                                No se ha podido borrar esta clase, vuelve a intentarlo.
+                            </small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"  @click="deleteClasse">Eliminar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--/***********************************************************************************************-->
     </div>
 </template>
 
@@ -371,7 +400,7 @@
             'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year',
             'route_add_period','route_photo','route_photo_2','route_get_schedules_by_period',
             'route_get_classes_by_schedule_and_day','route_get_recent_schedule_by_user','route_add_schedule',
-            'route_add_classe','route_get_subjects_by_period','route_edit_classe'],
+            'route_add_classe','route_get_subjects_by_period','route_edit_classe', 'route_delete_classe'],
         created(){
             this.estudios_vue = this.estudios;
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
@@ -391,6 +420,7 @@
             this.route_add_classe_vue = this.route_add_classe;
             this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
             this.route_edit_classe_vue = this.route_edit_classe;
+            this.route_delete_classe_vue = this.route_delete_classe;
             this.getStudiesArray();
             this.getAcademicYears();
             this.getRecentSchedule();
@@ -465,6 +495,12 @@
                 },
                 route_edit_classe_vue:'',
                 showNameExistsClasseEdit: false,
+                classeToDeleteName:'',
+                classeToDelete:{
+                    classe_id:'',
+                },
+                route_delete_classe_vue:'',
+                showDeleteClasseFail: false,
             }
         },
         methods:{
@@ -502,6 +538,28 @@
                 this.classeToEdit.wednesday = classe.wed;
                 this.classeToEdit.thursday = classe.thu;
                 this.classeToEdit.friday = classe.fri;
+            },
+            deleteClasseModal(classe){
+                this.classeToDelete.classe_id = classe.class_id;
+                this.classeToDeleteName = classe.class_name;
+                this.showDeleteClasseFail = false;
+                $('#deleteClasseModal').modal('show');
+            },
+            deleteClasse(){
+                var url = this.route_delete_classe_vue;
+                axios.delete(url,{params:this.classeToDelete}).then(response => {
+                    console.log(response.data.result)
+                    if(response.data.result === 'classe_deleted'){
+                        this.getClassesByScheduleAndDay();
+                        $('#deleteClasseModal').modal('hide');
+                    }
+                    if(response.data.result === 'error_delete_classe'){
+                        this.showDeleteClasseFail = true;
+                    }
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
             },
             editClasse(){
                 var url = this.route_edit_classe_vue;
@@ -569,7 +627,7 @@
                     this.classesToSearchRecent.schedule_id = this.recentSchedule.schedule_id;
                     this.getRecentClasses();
                     this.getPeriodsByYear(this.recentSchedule.year_id, this.recentSchedule.study_name,
-                        this.recentSchedule.year_start, this.recentSchedule.year_end);
+                    this.recentSchedule.year_start, this.recentSchedule.year_end);
                     this.periodToSearch.period_id = this.recentSchedule.schedule_period_id;
                     this.getSubjectsByPeriod();
                     this.getSchedulesByPeriod();

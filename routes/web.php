@@ -97,3 +97,4 @@ Route::put('/add_schedule','vuejs\ScheduleController@addSchedule')->name('add_sc
 Route::put('/add_classe','vuejs\ScheduleController@addClasse')->name('add_classe');
 Route::get('/get_subjects_by_period','vuejs\ScheduleController@getSubjectsByPeriod')->name('get_subjects_by_period');
 Route::put('/edit_classe','vuejs\ScheduleController@editClasse')->name('edit_classe');
+Route::delete('/delete_classe','vuejs\ScheduleController@deleteClasse')->name('delete_classe');

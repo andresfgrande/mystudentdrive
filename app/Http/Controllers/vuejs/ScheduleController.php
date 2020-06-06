@@ -282,4 +282,15 @@ class ScheduleController extends Controller
         }
         return Response::json(array('success'=>true,'result'=>'classe_edited'));
     }
+
+    public function deleteClasse(Request $request){
+        $classe_id = $request->get('classe_id');
+        try {
+            $classe = Classe::find($classe_id);
+            $classe->forceDelete();
+        } catch (\Throwable $e) {
+            return Response::json(array('success'=>false,'result'=>'error_delete_classe'));
+        }
+        return Response::json(array('success'=>true,'result'=>'classe_deleted'));
+    }
 }

@@ -21761,6 +21761,10 @@ a.text-dark:focus {
   margin-bottom: 1em;
 }
 
+#navbarSupportedContent {
+  font-weight: bold;
+}
+
 .navbar {
   position: fixed;
   width: 100%;
@@ -22816,9 +22820,13 @@ a.text-dark:focus {
   font-weight: bold;
 }
 
+.container.content.studies.schedules .row .col-8 .row.custom .col .day-name {
+  font-size: 19px;
+  color: #3490dc;
+}
+
 .container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules {
-  position: absolute;
-  left: 175px;
+  float: right;
 }
 
 .container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules div.edit-classe-div {
@@ -22901,6 +22909,22 @@ a.text-dark:focus {
 
   .container.content.planner .custom-card-event .card {
     width: 100% !important;
+  }
+
+  .container.content.studies.schedules .row .col-4 {
+    max-width: 100%;
+  }
+
+  .container.content.studies.schedules .row .col-8 {
+    max-width: 100%;
+  }
+
+  .container.content.studies.schedules .row .col-8 .container-buttons {
+    margin-top: 1.5em;
+  }
+
+  .container.content.studies.schedules .row.custom {
+    margin-top: 5em;
   }
 }
 
