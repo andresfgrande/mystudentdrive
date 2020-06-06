@@ -93,3 +93,6 @@ Route::get('/schedules','ScheduleController@index')->name('index_schedules');
 Route::get('/get_schedules_by_period','vuejs\ScheduleController@getSchedulesByPeriod')->name('get_schedules_by_period');
 Route::get('/get_classes_by_schedule_and_day','vuejs\ScheduleController@getClassesByScheduleAndDay')->name('get_classes_by_schedule_and_day');
 Route::get('/get_recent_schedule_by_user','vuejs\ScheduleController@getRecentScheduleByUser')->name('get_recent_schedule_by_user');
+Route::put('/add_schedule','vuejs\ScheduleController@addSchedule')->name('add_schedule');
+Route::put('/add_classe','vuejs\ScheduleController@addClasse')->name('add_classe');
+Route::get('/get_subjects_by_period','vuejs\ScheduleController@getSubjectsByPeriod')->name('get_subjects_by_period');

@@ -19,7 +19,7 @@
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                             <h5 class="card-title event-name" >{{event.name}}</h5>
                             <p class="card-text event-description">{{event.description}}</p>
-                            <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
+                            <p class="card-text event-time" > Hora: {{formatTime(event.time)}} - Aula: {{event.classroom}}</p>
                             <div class="actions-planner-events">
                                 <div class="edit-event-div" @click="editEventModal(event)"></div>
                                 <div class="delete-event-div" @click="deleteEventModal(event.id,event.name)"></div>
@@ -276,13 +276,17 @@
             }
         },
         methods:{
+            formatTime(time){
+                var string = time;
+                string = string.substring(0,5);
+                return string;
+            },
             addClass(){
                 if(this.subject_prop_vue != null){
                     this.useTheme = true;
                 }else{
                     this.useTheme = false;
                 }
-
             },
             getEventsListByPageType(){
                 if(this.page_type_vue === 'study'){

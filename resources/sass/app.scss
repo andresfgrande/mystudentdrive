@@ -491,9 +491,9 @@
                 li{
                     list-style: none;
                     border-bottom: 1px solid rgba(52, 144, 220, 0.25);
-                    padding-top: 1.5em;
-                    padding-bottom: 1.5em;
-                    padding-left: 2em;
+                    padding-top: 1.2em;
+                    padding-bottom: 1.2em;
+                    padding-left: 1.2em;
                     div.delete-file-div{
                         content:url("/images/interfaz_delete.png");
                         //width: 2.8%;
@@ -525,7 +525,15 @@
     }
 }
 /**********SUBJECT PAGE*******/
-
+.card-footer.pb-0.pt-3.w-100{
+    padding-left: 15px;
+    padding-right: 0;
+    padding-top: 7px !important;
+    border-top-width: 0;
+    .page-item.active .page-link{
+        z-index: 0;
+    }
+}
 .subject.subject-page{
     margin-top: 115px;
     .title-subject{
@@ -605,11 +613,23 @@
     margin-left: 0;
     width: 100%;
     //position: absolute;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /**************PLANNER PAGE****************/
 .container.content.planner{
-
+    .current-date-text{
+        //font-size: 20px;
+        color: #3490dc;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1.5em;
+    }
+    .vc-container{
+        margin-left: 35%;
+        margin-top: 6em;
+    }
     margin-top: 115px;
     .planner-title{
         text-align: center;
@@ -912,6 +932,71 @@
 .container.content.schedules{
     margin-top: 115px;
 }
+.container.content.studies.schedules{
+  .custom-card-event{
+      .card.w-100{
+          text-align: center;
+          .card-body{
+              padding: 10px;
+              .card-title{
+                  font-weight: bold;
+                  font-size: 15px;
+              }
+              .card-title.subject-name{
+                  font-weight: normal;
+                  font-size: 14px;
+              }
+              .card-text.time{
+                  font-weight: bold;
+                  font-size: 15px;
+              }
+              .card-text.classroom{
+                  font-size: 14px;
+              }
+          }
+      }
+
+  }
+    .row.custom{
+        margin-top: 2.2em;
+    }
+    .row{
+        .col-4{
+            .cursos-title{
+                text-align: center;
+                margin-bottom: 1.5em;
+            }
+        }
+        .col-8{
+            .select-container-schedule{
+                display: inline-block;
+                label{
+                    font-weight: bold;
+                }
+            }
+            .select-container-period{
+                margin-right: 2.5em;
+                display: inline-block;
+                label{
+                    font-weight: bold;
+                }
+            }
+            .container-buttons{
+                float: right;
+            }
+            .study-name-title{
+                text-align: center;
+                margin-bottom: 1.5em;
+            }
+            .col{
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+
+    }
+}
 
 
 /**************************MOBILE*************************************/
@@ -944,6 +1029,24 @@
         margin-left: 0 !important;
         width: 100% !important;
         top: 0 !important;
+    }
+
+    .subject {
+        .subject-content.subject-page-content {
+            width: 100%;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+    }
+    /**************PLANNER PAGE****************/
+    .container.content.planner {
+        .col{
+            margin-bottom: 2em;
+        }
+        .vc-container {
+            margin-left: 12%;
+            margin-top: 2em;
+        }
     }
 }
 

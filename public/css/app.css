@@ -22268,9 +22268,9 @@ a.text-dark:focus {
 .subject .subject-section .section-item ul li {
   list-style: none;
   border-bottom: 1px solid rgba(52, 144, 220, 0.25);
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
-  padding-left: 2em;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  padding-left: 1.2em;
 }
 
 .subject .subject-section .section-item ul li div.delete-file-div {
@@ -22300,6 +22300,17 @@ a.text-dark:focus {
 }
 
 /**********SUBJECT PAGE*******/
+
+.card-footer.pb-0.pt-3.w-100 {
+  padding-left: 15px;
+  padding-right: 0;
+  padding-top: 7px !important;
+  border-top-width: 0;
+}
+
+.card-footer.pb-0.pt-3.w-100 .page-item.active .page-link {
+  z-index: 0;
+}
 
 .subject.subject-page {
   margin-top: 115px;
@@ -22383,12 +22394,26 @@ a.text-dark:focus {
 .agenda-page.dashboard {
   margin-left: 0;
   width: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /**************PLANNER PAGE****************/
 
 .container.content.planner {
   margin-top: 115px;
+}
+
+.container.content.planner .current-date-text {
+  color: #3490dc;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+.container.content.planner .vc-container {
+  margin-left: 35%;
+  margin-top: 6em;
 }
 
 .container.content.planner .planner-title {
@@ -22729,6 +22754,74 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
+.container.content.studies.schedules .custom-card-event .card.w-100 {
+  text-align: center;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body {
+  padding: 10px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-title {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-title.subject-name {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-text.time {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-text.classroom {
+  font-size: 14px;
+}
+
+.container.content.studies.schedules .row.custom {
+  margin-top: 2.2em;
+}
+
+.container.content.studies.schedules .row .col-4 .cursos-title {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-schedule {
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-schedule label {
+  font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-period {
+  margin-right: 2.5em;
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-period label {
+  font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .container-buttons {
+  float: right;
+}
+
+.container.content.studies.schedules .row .col-8 .study-name-title {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.container.content.studies.schedules .row .col-8 .col {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
@@ -22760,6 +22853,23 @@ a.text-dark:focus {
     margin-left: 0 !important;
     width: 100% !important;
     top: 0 !important;
+  }
+
+  .subject .subject-content.subject-page-content {
+    width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /**************PLANNER PAGE****************/
+
+  .container.content.planner .col {
+    margin-bottom: 2em;
+  }
+
+  .container.content.planner .vc-container {
+    margin-left: 12%;
+    margin-top: 2em;
   }
 }
 
