@@ -31,7 +31,7 @@
 
                         <h5>Apunta tus examenes, entregas, presentaciones...</h5>
                     </div>
-                    <div class="card-footer pb-0 pt-3 w-100">
+                    <div class="card-footer pb-0 pt-3 w-100" >
                         <jw-pagination :items="planner_events_vue" :pageSize="3" @changePage="onChangePage"></jw-pagination>
                     </div>
                 </div>
@@ -70,6 +70,10 @@
                                             {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                         </option>
                                     </select><!--                                       placeholder="" required>-->
+                                    <a href="/studies"  aria-expanded="false"
+                                       role="button"  aria-controls="collapseExample">
+                                        Gestiona tus asignaturas
+                                    </a>
                                 </div>
                                 <div class="form-group">
                                     <label for="classroom">Lugar:</label>
