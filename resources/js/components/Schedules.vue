@@ -8,7 +8,7 @@
 <!--                    <button type="button" class="btn btn-primary" @click="addStudyModal">Añadir estudios</button>-->
 <!--                </div>-->
                 <div class="courses" >
-
+                    <h5 class="cursos-title">Elige un curso para ver tus horarios:</h5>
                     <div v-for="(item, index) in estudios_vue">
                         <div class="card-header" data-toggle="" role="button"
                              aria-controls="collapseExample" aria-expanded="false">
@@ -41,7 +41,7 @@
                 <h4 class="study-name-title year" v-if="titleYearIsEmpty">
                     {{formatDateYear(chosenYearStart)}} - {{formatDateYear(chosenYearEnd)}}
                 </h4>
-                <div class="select-container-period" v-if="periodsIsEmpty">
+                <div class="select-container-period" v-if="periodsIsEmpty2">
                     <label for="schedule-period" style="display:block">Selecciona un periodo de este curso:</label>
                     <select id="schedule-period" v-model="periodToSearch.period_id" @change="getSchedulesByPeriod" >
                         <option disabled selected value> Periodo </option>
@@ -50,11 +50,12 @@
                         </option>
                     </select>
                 </div>
-                <div v-if="!periodsIsEmpty">
+                <div v-if="!periodsIsEmpty2" >
                         <h5>Comienza creando tus asignaturas...</h5>
                         <button type="button" class="btn btn-primary" @click="studiesLink">Gestionar estudios y asignaturas</button>
                 </div>
-                <div class="select-container-schedule" v-if="schedulesIsEmpty">
+
+                <div class="select-container-schedule" v-if="schedulesIsEmpty2">
                     <label for="specific-schedule" style="display:block">Selecciona un horario de este periodo:</label>
                     <select id="specific-schedule" v-model="classesToSearch.schedule_id" @change="getClassesByScheduleAndDay()" >
                         <option disabled selected value> Horario </option>
@@ -637,6 +638,7 @@
                     if(response.data.result === 'schedule_deleted'){
                         this.getSchedulesByPeriod();
                         this.getClassesByScheduleAndDay();
+                        // this.classesToSearch.schedule_id ='';
                         $('#deleteScheduleModal').modal('hide');
                     }
                     if(response.data.result === 'error_delete_schedule'){
@@ -695,6 +697,7 @@
                         $('#addScheduleModal').modal('hide');
                         this.scheduleToAdd.name = '';
                         this.getSchedulesByPeriod();
+                        this.classesToSearch.schedule_id ='';
                     }
                 })
                     .catch(errors => {
@@ -886,6 +889,18 @@
                 }
             },
             periodsIsEmpty(){
+                // if(this.periodsArray.length === 0){
+                //     return false;
+                // }else{
+                //     return true;
+                // }
+                if(this.periodToSearch.period_id === ''){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            periodsIsEmpty2(){
                 if(this.periodsArray.length === 0){
                     return false;
                 }else{
@@ -893,6 +908,21 @@
                 }
             },
             schedulesIsEmpty(){
+
+                // if(this.schedulesArray.length === 0){
+                //     return false;
+                // }else{
+                //     return true;
+                // }
+
+                if(this.classesToSearch.schedule_id === ''){
+                    return false;
+                }else{
+                    return true;
+                }
+
+            },
+            schedulesIsEmpty2(){
                 if(this.schedulesArray.length === 0){
                     return false;
                 }else{

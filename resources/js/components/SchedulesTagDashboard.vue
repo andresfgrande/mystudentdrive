@@ -278,17 +278,26 @@
                 }
             },
             showImgTodayEmpty(){
-                if(this.classes.today.length === 0){
-                    return true;
+                if (typeof this.classes.today !== 'undefined'){
+                    if(this.classes.today.length === 0){
+                        return true;
+                    }else{
+                        return false
+                    }
                 }else{
-                    return false
+                    return true;
                 }
+
             },
             showImgTomorrowEmpty(){
-                if(this.classes.tomorrow.length === 0){
-                    return true;
+                if (typeof this.classes.tomorrow !== 'undefined'){
+                    if(this.classes.tomorrow.length === 0){
+                        return true;
+                    }else{
+                        return false
+                    }
                 }else{
-                    return false
+                    return true;
                 }
             },
         },

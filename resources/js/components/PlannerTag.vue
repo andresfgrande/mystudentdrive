@@ -70,6 +70,10 @@
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
                                 </select><!--                                       placeholder="" required>-->
+                                <a href="/studies"  aria-expanded="false"
+                                   role="button"  aria-controls="collapseExample">
+                                    Gestiona tus asignaturas
+                                </a>
                             </div>
                             <div class="form-group">
                                 <label for="classroom">Lugar:</label>

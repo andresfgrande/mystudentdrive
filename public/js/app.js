@@ -3050,6 +3050,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Planner",
   props: ['planner_events', 'route_add_event', 'route_get_events', 'route_get_subjects_by_user', 'route_edit_event', 'route_delete_event', 'route_update_old_events', 'route_get_events_by_date', 'route_base_images'],
@@ -3359,6 +3363,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -3887,6 +3895,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -4994,6 +5006,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Schedules",
   props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe', 'route_delete_classe', 'route_delete_schedule'],
@@ -5200,7 +5213,8 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.result === 'schedule_deleted') {
           _this3.getSchedulesByPeriod();
 
-          _this3.getClassesByScheduleAndDay();
+          _this3.getClassesByScheduleAndDay(); // this.classesToSearch.schedule_id ='';
+
 
           $('#deleteScheduleModal').modal('hide');
         }
@@ -5277,6 +5291,8 @@ __webpack_require__.r(__webpack_exports__);
           _this6.scheduleToAdd.name = '';
 
           _this6.getSchedulesByPeriod();
+
+          _this6.classesToSearch.schedule_id = '';
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5484,6 +5500,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     periodsIsEmpty: function periodsIsEmpty() {
+      // if(this.periodsArray.length === 0){
+      //     return false;
+      // }else{
+      //     return true;
+      // }
+      if (this.periodToSearch.period_id === '') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    periodsIsEmpty2: function periodsIsEmpty2() {
       if (this.periodsArray.length === 0) {
         return false;
       } else {
@@ -5491,6 +5519,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     schedulesIsEmpty: function schedulesIsEmpty() {
+      // if(this.schedulesArray.length === 0){
+      //     return false;
+      // }else{
+      //     return true;
+      // }
+      if (this.classesToSearch.schedule_id === '') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    schedulesIsEmpty2: function schedulesIsEmpty2() {
       if (this.schedulesArray.length === 0) {
         return false;
       } else {
@@ -5806,17 +5846,25 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     showImgTodayEmpty: function showImgTodayEmpty() {
-      if (this.classes.today.length === 0) {
-        return true;
+      if (typeof this.classes.today !== 'undefined') {
+        if (this.classes.today.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        return true;
       }
     },
     showImgTomorrowEmpty: function showImgTomorrowEmpty() {
-      if (this.classes.tomorrow.length === 0) {
-        return true;
+      if (typeof this.classes.tomorrow !== 'undefined') {
+        if (this.classes.tomorrow.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        return true;
       }
     }
   }
@@ -90010,6 +90058,23 @@ var render = function() {
                         })
                       ],
                       2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: "/studies",
+                          "aria-expanded": "false",
+                          role: "button",
+                          "aria-controls": "collapseExample"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                    Gestiona tus asignaturas\n                                "
+                        )
+                      ]
                     )
                   ]),
                   _vm._v(" "),
@@ -90977,6 +91042,23 @@ var render = function() {
                             })
                           ],
                           2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: "/studies",
+                              "aria-expanded": "false",
+                              role: "button",
+                              "aria-controls": "collapseExample"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Gestiona tus asignaturas\n                                "
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -91970,6 +92052,23 @@ var render = function() {
                             })
                           ],
                           2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: "/studies",
+                              "aria-expanded": "false",
+                              role: "button",
+                              "aria-controls": "collapseExample"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        Gestiona tus asignaturas\n                                    "
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -92759,6 +92858,10 @@ var render = function() {
           "div",
           { staticClass: "courses" },
           [
+            _c("h5", { staticClass: "cursos-title" }, [
+              _vm._v("Elige un curso para ver tus horarios:")
+            ]),
+            _vm._v(" "),
             _vm._l(_vm.estudios_vue, function(item, index) {
               return _c("div", [
                 _c(
@@ -92880,7 +92983,7 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.periodsIsEmpty
+        _vm.periodsIsEmpty2
           ? _c("div", { staticClass: "select-container-period" }, [
               _c(
                 "label",
@@ -92952,7 +93055,7 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        !_vm.periodsIsEmpty
+        !_vm.periodsIsEmpty2
           ? _c("div", [
               _c("h5", [_vm._v("Comienza creando tus asignaturas...")]),
               _vm._v(" "),
@@ -92968,7 +93071,7 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.schedulesIsEmpty
+        _vm.schedulesIsEmpty2
           ? _c("div", { staticClass: "select-container-schedule" }, [
               _c(
                 "label",
