@@ -17,7 +17,7 @@
                             </a>
 <!--                            <a class="button-add-course"  @click="addYearModal(item.id)">Añadir curso</a>-->
                         </div>
-                        <ul class=" year-list"  >
+                        <ul class="year-list"  >
                             <li class="years-list-item" v-for="year in auxArray[index]" v-if="year !== 'vacio'"
                                 @click="getPeriodsByYear(year.id, item.name, year.start_date, year.end_date)" >
                                 <p class="year-range">{{formatDateYear(year.start_date)}} - {{formatDateYear(year.end_date)}}</p>
@@ -26,15 +26,22 @@
                         </ul>
                     </div>
                     <br>
-<!--                    <p class="empty-text" v-if="showPhotoEmpty">Comienza añadiendo tus estudios y cursos...</p>-->
-<!--                    <img class="empty-img" v-if="showPhotoEmpty" :src="this.route_photo_vue"  alt="profile_photo"/>-->
+                    <div v-if="!studiesIsEmpty" class="empty-studies-schedules-page">
+                        <p class="empty-text" >Comienza añadiendo tus estudios, cursos y asignaturas...</p>
+                        <img class="empty-img schedules"  :src="this.route_photo_vue"  alt="profile_photo"/>
+                        <button type="button"  class="btn btn-primary btn-gestion-estudios" @click="studiesLink">
+                            Gestiona tus estudios
+                        </button>
+                    </div>
                 </div>
 
             </div>
-            <div class="col-8">
+            <div id="section-schedules" class="col-8">
                 <h4 class="study-name-title">{{chosenStudyName}}</h4>
-                <h4 class="study-name-title year">{{formatDateYear(chosenYearStart)}} - {{formatDateYear(chosenYearEnd)}}</h4>
-                <div class="select-container-period">
+                <h4 class="study-name-title year" v-if="titleYearIsEmpty">
+                    {{formatDateYear(chosenYearStart)}} - {{formatDateYear(chosenYearEnd)}}
+                </h4>
+                <div class="select-container-period" v-if="periodsIsEmpty">
                     <label for="schedule-period" style="display:block">Selecciona un periodo de este curso:</label>
                     <select id="schedule-period" v-model="periodToSearch.period_id" @change="getSchedulesByPeriod" >
                         <option disabled selected value> Periodo </option>
@@ -43,20 +50,24 @@
                         </option>
                     </select>
                 </div>
-
-                <div class="select-container-schedule">
+                <div v-if="!periodsIsEmpty">
+                        <h5>Comienza creando tus asignaturas...</h5>
+                        <button type="button" class="btn btn-primary" @click="studiesLink">Gestionar estudios y asignaturas</button>
+                </div>
+                <div class="select-container-schedule" v-if="schedulesIsEmpty">
                     <label for="specific-schedule" style="display:block">Selecciona un horario de este periodo:</label>
-                    <select id="specific-schedule" v-model="classesToSearch.schedule_id" @change="getClassesByScheduleAndDay" >
+                    <select id="specific-schedule" v-model="classesToSearch.schedule_id" @change="getClassesByScheduleAndDay()" >
                         <option disabled selected value> Horario </option>
                         <option v-for="schedule in schedulesArray" v-bind:value="schedule.id">
-                            {{schedule.name}}
+                            {{scheduleNameVar(schedule.name)}}
                         </option>
                     </select>
                 </div>
 
                 <div class="container-buttons">
-                    <button @click="addScheduleModal" class="btn btn-primary">Añadir horario</button>
-                    <button @click="addClasseModal" class="btn btn-primary">Añadir Clase</button>
+                    <button @click="addScheduleModal" class="btn btn-primary" v-if="periodsIsEmpty">Añadir horario</button>
+                    <button @click="addClasseModal" class="btn btn-primary" v-if="schedulesIsEmpty">Añadir Clase</button>
+                    <button @click="deleteScheduleModal" class="btn btn-danger" v-if="schedulesIsEmpty">Eliminar este horario</button>
                 </div>
 
 
@@ -224,6 +235,10 @@
                                         {{subject.name}}
                                     </option>
                                 </select>
+                                <a href="/studies"  aria-expanded="false"
+                                   role="button"  aria-controls="collapseExample">
+                                    Gestiona tus asignaturas
+                                </a>
                             </div>
                             <div class="form-group">
                                 <label for="classroom">Lugar:</label>
@@ -361,7 +376,7 @@
             </div>
         </div>
         <!--/***********************************************************************************************-->
-        <!--/*********************************DELETE EVENT*********************************************/-->
+        <!--/*********************************DELETE CLASSE*********************************************/-->
         <div class="modal fade" id="deleteClasseModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -390,6 +405,35 @@
             </div>
         </div>
         <!--/***********************************************************************************************-->
+        <!--/*********************************DELETE SCHEDULE*********************************************/-->
+        <div class="modal fade" id="deleteScheduleModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"  id="editNameLabel5">¿Seguro que quieres eliminar este horario?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h5>{{scheduleToDelete.schedule_name}}</h5>
+                            </div>
+                            <small v-if="showDeleteScheduleFail"  class="text-danger">
+                                No se ha podido borrar este horario, vuelve a intentarlo.
+                            </small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"  @click="deleteSchedule">Eliminar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--/***********************************************************************************************-->
     </div>
 </template>
 
@@ -400,7 +444,8 @@
             'route_add_study','route_add_year','route_add_subject','route_get_studies','route_get_periods_by_year',
             'route_add_period','route_photo','route_photo_2','route_get_schedules_by_period',
             'route_get_classes_by_schedule_and_day','route_get_recent_schedule_by_user','route_add_schedule',
-            'route_add_classe','route_get_subjects_by_period','route_edit_classe', 'route_delete_classe'],
+            'route_add_classe','route_get_subjects_by_period','route_edit_classe', 'route_delete_classe',
+            'route_delete_schedule'],
         created(){
             this.estudios_vue = this.estudios;
             this.route_get_years_by_study_vue = this.route_get_years_by_study ;
@@ -421,6 +466,7 @@
             this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
             this.route_edit_classe_vue = this.route_edit_classe;
             this.route_delete_classe_vue = this.route_delete_classe;
+            this.route_delete_schedule_vue = this.route_delete_schedule;
             this.getStudiesArray();
             this.getAcademicYears();
             this.getRecentSchedule();
@@ -501,9 +547,21 @@
                 },
                 route_delete_classe_vue:'',
                 showDeleteClasseFail: false,
+                scheduleToDelete:{
+                    schedule_id:'',
+                    schedule_name:'',
+                },
+                route_delete_schedule_vue:'',
+                showDeleteScheduleFail: false,
             }
         },
         methods:{
+            scheduleNameVar(name){
+                return name;
+            },
+            studiesLink(){
+                window.location="/studies";
+            },
             formatTime(time){
                 var string = time;
                 string = string.substring(0,5);
@@ -545,6 +603,17 @@
                 this.showDeleteClasseFail = false;
                 $('#deleteClasseModal').modal('show');
             },
+            deleteScheduleModal(){
+                this.scheduleToDelete.schedule_id = this.classesToSearch.schedule_id;
+                this.showDeleteScheduleFail = false;
+                this.schedulesArray.forEach(schedule => {
+                    if(schedule.id === this.scheduleToDelete.schedule_id){
+                        this.scheduleToDelete.schedule_name = schedule.name;
+                    }
+                });
+
+                $('#deleteScheduleModal').modal('show');
+            },
             deleteClasse(){
                 var url = this.route_delete_classe_vue;
                 axios.delete(url,{params:this.classeToDelete}).then(response => {
@@ -555,6 +624,23 @@
                     }
                     if(response.data.result === 'error_delete_classe'){
                         this.showDeleteClasseFail = true;
+                    }
+                })
+                    .catch(errors => {
+                        console.log(errors);
+                    });
+            },
+            deleteSchedule(){
+                var url = this.route_delete_schedule_vue;
+                axios.delete(url,{params:this.scheduleToDelete}).then(response => {
+                    console.log(response.data.result)
+                    if(response.data.result === 'schedule_deleted'){
+                        this.getSchedulesByPeriod();
+                        this.getClassesByScheduleAndDay();
+                        $('#deleteScheduleModal').modal('hide');
+                    }
+                    if(response.data.result === 'error_delete_schedule'){
+                        this.showDeleteScheduleFail = true;
                     }
                 })
                     .catch(errors => {
@@ -582,10 +668,6 @@
                 var url = this.route_add_classe_vue;
                 axios.put(url,{params:this.classeToAdd}).then(response => {
                     console.log(response.data.result);
-                    // if(response.data.result === 'classe_created'){
-                    //     $('#addClasseModal').modal('hide');
-                    //     this.getClassesByScheduleAndDay()
-                    // }
                     if(response.data.result === 'error_classe_exists'){
                         this.showNameExistsClasse = true;
                     }
@@ -715,6 +797,8 @@
                     });
             },
             getPeriodsByYear(year_id, study_name, chosen_year_start, chosen_year_end){
+                var elmnt = document.getElementById("section-schedules");
+                elmnt.scrollIntoView();
                 this.schedulesArray= [];
                 this.periodToSearch.period_id = '';
                 this.classesToSearch.schedule_id = '';
@@ -799,6 +883,34 @@
                     return true;
                 }else{
                     return false;
+                }
+            },
+            periodsIsEmpty(){
+                if(this.periodsArray.length === 0){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            schedulesIsEmpty(){
+                if(this.schedulesArray.length === 0){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            studiesIsEmpty(){
+                if(this.estudios_vue.length === 0){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            titleYearIsEmpty(){
+                if(this.chosenYearStart === '' || this.chosenYearEnd === ''){
+                    return false;
+                }else{
+                    return true;
                 }
             }
         }

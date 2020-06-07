@@ -4958,9 +4958,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Schedules",
-  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe', 'route_delete_classe'],
+  props: ['estudios', 'route_get_years_by_study', 'route_get_subjects_by_year', 'route_add_study', 'route_add_year', 'route_add_subject', 'route_get_studies', 'route_get_periods_by_year', 'route_add_period', 'route_photo', 'route_photo_2', 'route_get_schedules_by_period', 'route_get_classes_by_schedule_and_day', 'route_get_recent_schedule_by_user', 'route_add_schedule', 'route_add_classe', 'route_get_subjects_by_period', 'route_edit_classe', 'route_delete_classe', 'route_delete_schedule'],
   created: function created() {
     this.estudios_vue = this.estudios;
     this.route_get_years_by_study_vue = this.route_get_years_by_study;
@@ -4981,6 +5025,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_get_subjects_by_period_vue = this.route_get_subjects_by_period;
     this.route_edit_classe_vue = this.route_edit_classe;
     this.route_delete_classe_vue = this.route_delete_classe;
+    this.route_delete_schedule_vue = this.route_delete_schedule;
     this.getStudiesArray();
     this.getAcademicYears();
     this.getRecentSchedule();
@@ -5060,10 +5105,22 @@ __webpack_require__.r(__webpack_exports__);
         classe_id: ''
       },
       route_delete_classe_vue: '',
-      showDeleteClasseFail: false
+      showDeleteClasseFail: false,
+      scheduleToDelete: {
+        schedule_id: '',
+        schedule_name: ''
+      },
+      route_delete_schedule_vue: '',
+      showDeleteScheduleFail: false
     };
   },
   methods: {
+    scheduleNameVar: function scheduleNameVar(name) {
+      return name;
+    },
+    studiesLink: function studiesLink() {
+      window.location = "/studies";
+    },
     formatTime: function formatTime(time) {
       var string = time;
       string = string.substring(0, 5);
@@ -5105,8 +5162,20 @@ __webpack_require__.r(__webpack_exports__);
       this.showDeleteClasseFail = false;
       $('#deleteClasseModal').modal('show');
     },
-    deleteClasse: function deleteClasse() {
+    deleteScheduleModal: function deleteScheduleModal() {
       var _this = this;
+
+      this.scheduleToDelete.schedule_id = this.classesToSearch.schedule_id;
+      this.showDeleteScheduleFail = false;
+      this.schedulesArray.forEach(function (schedule) {
+        if (schedule.id === _this.scheduleToDelete.schedule_id) {
+          _this.scheduleToDelete.schedule_name = schedule.name;
+        }
+      });
+      $('#deleteScheduleModal').modal('show');
+    },
+    deleteClasse: function deleteClasse() {
+      var _this2 = this;
 
       var url = this.route_delete_classe_vue;
       axios["delete"](url, {
@@ -5115,20 +5184,44 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'classe_deleted') {
-          _this.getClassesByScheduleAndDay();
+          _this2.getClassesByScheduleAndDay();
 
           $('#deleteClasseModal').modal('hide');
         }
 
         if (response.data.result === 'error_delete_classe') {
-          _this.showDeleteClasseFail = true;
+          _this2.showDeleteClasseFail = true;
+        }
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    deleteSchedule: function deleteSchedule() {
+      var _this3 = this;
+
+      var url = this.route_delete_schedule_vue;
+      axios["delete"](url, {
+        params: this.scheduleToDelete
+      }).then(function (response) {
+        console.log(response.data.result);
+
+        if (response.data.result === 'schedule_deleted') {
+          _this3.getSchedulesByPeriod();
+
+          _this3.getClassesByScheduleAndDay();
+
+          $('#deleteScheduleModal').modal('hide');
+        }
+
+        if (response.data.result === 'error_delete_schedule') {
+          _this3.showDeleteScheduleFail = true;
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     editClasse: function editClasse() {
-      var _this2 = this;
+      var _this4 = this;
 
       var url = this.route_edit_classe_vue;
       axios.put(url, {
@@ -5137,38 +5230,35 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'error_classe_exists') {
-          _this2.showNameExistsClasseEdit = true;
+          _this4.showNameExistsClasseEdit = true;
         }
 
         if (response.data.result === 'classe_edited') {
           $('#editClasseModal').modal('hide');
 
-          _this2.getClassesByScheduleAndDay();
+          _this4.getClassesByScheduleAndDay();
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     addClasse: function addClasse() {
-      var _this3 = this;
+      var _this5 = this;
 
       var url = this.route_add_classe_vue;
       axios.put(url, {
         params: this.classeToAdd
       }).then(function (response) {
-        console.log(response.data.result); // if(response.data.result === 'classe_created'){
-        //     $('#addClasseModal').modal('hide');
-        //     this.getClassesByScheduleAndDay()
-        // }
+        console.log(response.data.result);
 
         if (response.data.result === 'error_classe_exists') {
-          _this3.showNameExistsClasse = true;
+          _this5.showNameExistsClasse = true;
         }
 
         if (response.data.result === 'classe_created') {
           $('#addClasseModal').modal('hide');
 
-          _this3.getClassesByScheduleAndDay();
+          _this5.getClassesByScheduleAndDay();
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5180,7 +5270,7 @@ __webpack_require__.r(__webpack_exports__);
       this.scheduleToAdd.period_id = this.periodToSearch.period_id;
     },
     addSchedule: function addSchedule() {
-      var _this4 = this;
+      var _this6 = this;
 
       var url = this.route_add_schedule_vue;
       axios.put(url, {
@@ -5189,56 +5279,56 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'error_schedule_exists') {
-          _this4.showNameExistsSchedule = true;
+          _this6.showNameExistsSchedule = true;
         } else {
           $('#addScheduleModal').modal('hide');
-          _this4.scheduleToAdd.name = '';
+          _this6.scheduleToAdd.name = '';
 
-          _this4.getSchedulesByPeriod();
+          _this6.getSchedulesByPeriod();
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentSchedule: function getRecentSchedule() {
-      var _this5 = this;
+      var _this7 = this;
 
       var url = this.route_get_recent_schedule_by_user_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this5.recentSchedule = response.data.result[0];
-        _this5.classesToSearchRecent.schedule_id = _this5.recentSchedule.schedule_id;
+        _this7.recentSchedule = response.data.result[0];
+        _this7.classesToSearchRecent.schedule_id = _this7.recentSchedule.schedule_id;
 
-        _this5.getRecentClasses();
+        _this7.getRecentClasses();
 
-        _this5.getPeriodsByYear(_this5.recentSchedule.year_id, _this5.recentSchedule.study_name, _this5.recentSchedule.year_start, _this5.recentSchedule.year_end);
+        _this7.getPeriodsByYear(_this7.recentSchedule.year_id, _this7.recentSchedule.study_name, _this7.recentSchedule.year_start, _this7.recentSchedule.year_end);
 
-        _this5.periodToSearch.period_id = _this5.recentSchedule.schedule_period_id;
+        _this7.periodToSearch.period_id = _this7.recentSchedule.schedule_period_id;
 
-        _this5.getSubjectsByPeriod();
+        _this7.getSubjectsByPeriod();
 
-        _this5.getSchedulesByPeriod();
+        _this7.getSchedulesByPeriod();
 
-        _this5.classesToSearch.schedule_id = _this5.classesToSearchRecent.schedule_id;
+        _this7.classesToSearch.schedule_id = _this7.classesToSearchRecent.schedule_id;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getRecentClasses: function getRecentClasses() {
-      var _this6 = this;
+      var _this8 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
         params: this.classesToSearchRecent
       }).then(function (response) {
         console.log(response.data.result);
-        _this6.classes = response.data.result;
+        _this8.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getSchedulesByPeriod: function getSchedulesByPeriod() {
-      var _this7 = this;
+      var _this9 = this;
 
       var url = this.route_get_schedules_by_period_vue;
       axios.get(url, {
@@ -5246,13 +5336,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('/////////////////////');
         console.log(response.data.result);
-        _this7.schedulesArray = response.data.result;
+        _this9.schedulesArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getClassesByScheduleAndDay: function getClassesByScheduleAndDay() {
-      var _this8 = this;
+      var _this10 = this;
 
       var url = this.route_get_classes_by_schedule_and_day_vue;
       axios.get(url, {
@@ -5260,13 +5350,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log('////////Classes to seacrh/////////////');
         console.log(response.data.result);
-        _this8.classes = response.data.result;
+        _this10.classes = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getAcademicYears: function getAcademicYears() {
-      var _this9 = this;
+      var _this11 = this;
 
       var url = this.route_get_years_by_study_vue;
       axios.get(url, {
@@ -5275,18 +5365,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.result);
 
         if (response.data.result === 'no_studies') {
-          _this9.showPhotoEmpty = true;
+          _this11.showPhotoEmpty = true;
           console.log('No hay estudios');
         } else {
-          _this9.showPhotoEmpty = false;
+          _this11.showPhotoEmpty = false;
           var aux2 = [];
           response.data.result.forEach(function (valor, indice) {
             aux2.push(valor);
             console.log('/////////////////');
             console.log(valor);
           });
-          _this9.auxArray = aux2;
-          console.log(_this9.auxArray);
+          _this11.auxArray = aux2;
+          console.log(_this11.auxArray);
         }
       })["catch"](function (errors) {
         console.log(errors);
@@ -5300,20 +5390,22 @@ __webpack_require__.r(__webpack_exports__);
       this.studiesArray.studies = aux;
     },
     getStudiesAjax: function getStudiesAjax() {
-      var _this10 = this;
+      var _this12 = this;
 
       var url = this.route_get_studies_vue;
       axios.get(url).then(function (response) {
         console.log(response.data.result);
-        _this10.estudios_vue = response.data.result;
-        _this10.showPhotoEmpty = false;
+        _this12.estudios_vue = response.data.result;
+        _this12.showPhotoEmpty = false;
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     getPeriodsByYear: function getPeriodsByYear(year_id, study_name, chosen_year_start, chosen_year_end) {
-      var _this11 = this;
+      var _this13 = this;
 
+      var elmnt = document.getElementById("section-schedules");
+      elmnt.scrollIntoView();
       this.schedulesArray = [];
       this.periodToSearch.period_id = '';
       this.classesToSearch.schedule_id = '';
@@ -5329,7 +5421,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url, {
         params: this.yearIdChosen
       }).then(function (response) {
-        _this11.periodsArray = response.data.result;
+        _this13.periodsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -5352,14 +5444,14 @@ __webpack_require__.r(__webpack_exports__);
       this.showNameExistsClasseEdit = false;
     },
     getSubjectsByPeriod: function getSubjectsByPeriod() {
-      var _this12 = this;
+      var _this14 = this;
 
       var url = this.route_get_subjects_by_period_vue;
       axios.get(url, {
         params: this.periodToSearch
       }).then(function (response) {
         console.log(response.data.result);
-        _this12.subjectsArray = response.data.result;
+        _this14.subjectsArray = response.data.result;
       })["catch"](function (errors) {
         console.log(errors);
       });
@@ -5397,6 +5489,34 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       } else {
         return false;
+      }
+    },
+    periodsIsEmpty: function periodsIsEmpty() {
+      if (this.periodsArray.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    schedulesIsEmpty: function schedulesIsEmpty() {
+      if (this.schedulesArray.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    studiesIsEmpty: function studiesIsEmpty() {
+      if (this.estudios_vue.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    titleYearIsEmpty: function titleYearIsEmpty() {
+      if (this.chosenYearStart === '' || this.chosenYearEnd === '') {
+        return false;
+      } else {
+        return true;
       }
     }
   }
@@ -7960,6 +8080,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Year",
@@ -7985,6 +8109,7 @@ __webpack_require__.r(__webpack_exports__);
     this.route_delete_section_vue = this.route_delete_section;
     this.route_edit_subject_vue = this.route_edit_subject;
     this.route_delete_subject_vue = this.route_delete_subject;
+    this.routeImgSubjects = this.route_base_images_vue + "/content/clip-uploading.png";
   },
   data: function data() {
     return {
@@ -8034,7 +8159,8 @@ __webpack_require__.r(__webpack_exports__);
         subject_id: ''
       },
       subjectToDeleteName: '',
-      modalDeleteAbierto: ''
+      modalDeleteAbierto: '',
+      routeImgSubjects: ''
     };
   },
   methods: {
@@ -8212,6 +8338,13 @@ __webpack_require__.r(__webpack_exports__);
       this.chosed_year_vue = this.chosed_year;
       this.getSubjectsByYear(this.chosed_year_vue.id);
       return this.subjectsArray;
+    },
+    showSubjectEmptyPhoto: function showSubjectEmptyPhoto() {
+      if (this.subjectsArray.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 });
@@ -88011,7 +88144,7 @@ var render = function() {
             attrs: { src: this.routeImgStudies, alt: "empty_studies_photo" }
           }),
           _vm._v(" "),
-          _c("h5", [_vm._v("Comienza a añadir tus estudios")]),
+          _c("h5", [_vm._v("Comienza añadiendo tus estudios")]),
           _vm._v(" "),
           _c(
             "button",
@@ -92336,7 +92469,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "ul",
-                  { staticClass: " year-list" },
+                  { staticClass: "year-list" },
                   _vm._l(_vm.auxArray[index], function(year) {
                     return year !== "vacio"
                       ? _c(
@@ -92379,175 +92512,249 @@ var render = function() {
               ])
             }),
             _vm._v(" "),
-            _c("br")
+            _c("br"),
+            _vm._v(" "),
+            !_vm.studiesIsEmpty
+              ? _c("div", { staticClass: "empty-studies-schedules-page" }, [
+                  _c("p", { staticClass: "empty-text" }, [
+                    _vm._v(
+                      "Comienza añadiendo tus estudios, cursos y asignaturas..."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("img", {
+                    staticClass: "empty-img schedules",
+                    attrs: { src: this.route_photo_vue, alt: "profile_photo" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-gestion-estudios",
+                      attrs: { type: "button" },
+                      on: { click: _vm.studiesLink }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Gestiona tus estudios\n                        "
+                      )
+                    ]
+                  )
+                ])
+              : _vm._e()
           ],
           2
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-8" }, [
+      _c("div", { staticClass: "col-8", attrs: { id: "section-schedules" } }, [
         _c("h4", { staticClass: "study-name-title" }, [
           _vm._v(_vm._s(_vm.chosenStudyName))
         ]),
         _vm._v(" "),
-        _c("h4", { staticClass: "study-name-title year" }, [
-          _vm._v(
-            _vm._s(_vm.formatDateYear(_vm.chosenYearStart)) +
-              " - " +
-              _vm._s(_vm.formatDateYear(_vm.chosenYearEnd))
-          )
-        ]),
+        _vm.titleYearIsEmpty
+          ? _c("h4", { staticClass: "study-name-title year" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.formatDateYear(_vm.chosenYearStart)) +
+                  " - " +
+                  _vm._s(_vm.formatDateYear(_vm.chosenYearEnd)) +
+                  "\n                "
+              )
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "select-container-period" }, [
-          _c(
-            "label",
-            {
-              staticStyle: { display: "block" },
-              attrs: { for: "schedule-period" }
-            },
-            [_vm._v("Selecciona un periodo de este curso:")]
-          ),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.periodToSearch.period_id,
-                  expression: "periodToSearch.period_id"
-                }
-              ],
-              attrs: { id: "schedule-period" },
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.periodToSearch,
-                      "period_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.getSchedulesByPeriod
-                ]
-              }
-            },
-            [
+        _vm.periodsIsEmpty
+          ? _c("div", { staticClass: "select-container-period" }, [
               _c(
-                "option",
-                { attrs: { disabled: "", selected: "", value: "" } },
-                [_vm._v(" Periodo ")]
+                "label",
+                {
+                  staticStyle: { display: "block" },
+                  attrs: { for: "schedule-period" }
+                },
+                [_vm._v("Selecciona un periodo de este curso:")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.periodsArray, function(period) {
-                return _c("option", { domProps: { value: period.id } }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(period.name) +
-                      "  (" +
-                      _vm._s(_vm.formatDateFull(period.start_date)) +
-                      " - " +
-                      _vm._s(_vm.formatDateFull(period.end_date)) +
-                      ")\n                        "
-                  )
-                ])
-              })
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "select-container-schedule" }, [
-          _c(
-            "label",
-            {
-              staticStyle: { display: "block" },
-              attrs: { for: "specific-schedule" }
-            },
-            [_vm._v("Selecciona un horario de este periodo:")]
-          ),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.classesToSearch.schedule_id,
-                  expression: "classesToSearch.schedule_id"
-                }
-              ],
-              attrs: { id: "specific-schedule" },
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.classesToSearch,
-                      "schedule_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.getClassesByScheduleAndDay
-                ]
-              }
-            },
-            [
               _c(
-                "option",
-                { attrs: { disabled: "", selected: "", value: "" } },
-                [_vm._v(" Horario ")]
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.periodToSearch.period_id,
+                      expression: "periodToSearch.period_id"
+                    }
+                  ],
+                  attrs: { id: "schedule-period" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.periodToSearch,
+                          "period_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                      _vm.getSchedulesByPeriod
+                    ]
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { disabled: "", selected: "", value: "" } },
+                    [_vm._v(" Periodo ")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.periodsArray, function(period) {
+                    return _c("option", { domProps: { value: period.id } }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(period.name) +
+                          "  (" +
+                          _vm._s(_vm.formatDateFull(period.start_date)) +
+                          " - " +
+                          _vm._s(_vm.formatDateFull(period.end_date)) +
+                          ")\n                        "
+                      )
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.periodsIsEmpty
+          ? _c("div", [
+              _c("h5", [_vm._v("Comienza creando tus asignaturas...")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.studiesLink }
+                },
+                [_vm._v("Gestionar estudios y asignaturas")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.schedulesIsEmpty
+          ? _c("div", { staticClass: "select-container-schedule" }, [
+              _c(
+                "label",
+                {
+                  staticStyle: { display: "block" },
+                  attrs: { for: "specific-schedule" }
+                },
+                [_vm._v("Selecciona un horario de este periodo:")]
               ),
               _vm._v(" "),
-              _vm._l(_vm.schedulesArray, function(schedule) {
-                return _c("option", { domProps: { value: schedule.id } }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(schedule.name) +
-                      "\n                        "
-                  )
-                ])
-              })
-            ],
-            2
-          )
-        ]),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.classesToSearch.schedule_id,
+                      expression: "classesToSearch.schedule_id"
+                    }
+                  ],
+                  attrs: { id: "specific-schedule" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.classesToSearch,
+                          "schedule_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                      function($event) {
+                        return _vm.getClassesByScheduleAndDay()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { disabled: "", selected: "", value: "" } },
+                    [_vm._v(" Horario ")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.schedulesArray, function(schedule) {
+                    return _c("option", { domProps: { value: schedule.id } }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.scheduleNameVar(schedule.name)) +
+                          "\n                        "
+                      )
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "container-buttons" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: { click: _vm.addScheduleModal }
-            },
-            [_vm._v("Añadir horario")]
-          ),
+          _vm.periodsIsEmpty
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: { click: _vm.addScheduleModal }
+                },
+                [_vm._v("Añadir horario")]
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: { click: _vm.addClasseModal }
-            },
-            [_vm._v("Añadir Clase")]
-          )
+          _vm.schedulesIsEmpty
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: { click: _vm.addClasseModal }
+                },
+                [_vm._v("Añadir Clase")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.schedulesIsEmpty
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger",
+                  on: { click: _vm.deleteScheduleModal }
+                },
+                [_vm._v("Eliminar este horario")]
+              )
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "row custom" }, [
@@ -93255,6 +93462,23 @@ var render = function() {
                         })
                       ],
                       2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: "/studies",
+                          "aria-expanded": "false",
+                          role: "button",
+                          "aria-controls": "collapseExample"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                    Gestiona tus asignaturas\n                                "
+                        )
+                      ]
                     )
                   ]),
                   _vm._v(" "),
@@ -94331,6 +94555,73 @@ var render = function() {
           ]
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "deleteScheduleModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("h5", [
+                      _vm._v(_vm._s(_vm.scheduleToDelete.schedule_name))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.showDeleteScheduleFail
+                    ? _c("small", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n                                No se ha podido borrar este horario, vuelve a intentarlo.\n                            "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteSchedule }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
@@ -94395,6 +94686,31 @@ var staticRenderFns = [
         "h5",
         { staticClass: "modal-title", attrs: { id: "editNameLabel4" } },
         [_vm._v("¿Seguro que quieres eliminar esta classe?")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editNameLabel5" } },
+        [_vm._v("¿Seguro que quieres eliminar este horario?")]
       ),
       _vm._v(" "),
       _c(
@@ -95209,7 +95525,7 @@ var render = function() {
                               id: "period_name",
                               type: "text",
                               name: "period_name",
-                              placeholder: "",
+                              placeholder: "Por ejemplo: 1er trimestre",
                               required: ""
                             },
                             domProps: { value: _vm.periodToAdd.name },
@@ -97892,6 +98208,17 @@ var render = function() {
         },
         [_vm._v("\n        Añadir asignatura\n    ")]
       ),
+      _vm._v(" "),
+      _vm.showSubjectEmptyPhoto
+        ? _c("div", { staticClass: "empty-subject-photo year-component" }, [
+            _c("img", {
+              staticClass: "empty-img-subjects",
+              attrs: { src: this.routeImgSubjects, alt: "empty_studies_photo" }
+            }),
+            _vm._v(" "),
+            _c("h5", [_vm._v("Añade asignaturas a tu curso...")])
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.subjectsArray, function(subject) {
         return _c(

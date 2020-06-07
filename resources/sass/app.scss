@@ -387,6 +387,17 @@
 
     }
     .content.year{
+        .empty-subject-photo.year-component{
+            text-align: center;
+            .empty-img-subjects{
+                width: 100%;
+            }
+            h5{
+                font-weight: bold;
+                color: #3490dc;
+                margin-bottom: 2em;
+            }
+        }
         margin-top: 115px;
         h4{
             text-align: center;
@@ -776,7 +787,8 @@
         overflow-y: scroll;
     }
     .section-empty-studies{
-        h3{
+        text-align:center;
+        h4{
             text-align:center;
         }
         .empty-img-studies{
@@ -935,6 +947,12 @@
     margin-top: 115px;
 }
 .container.content.studies.schedules{
+    .empty-studies-schedules-page{
+        text-align: center;
+        .empty-img.schedules{
+            width: 100%;
+        }
+    }
   .custom-card-event{
       .card.w-100{
           text-align: center;
@@ -1106,6 +1124,9 @@
                 max-width: 100%;
                 .container-buttons {
                     margin-top: 1.5em;
+                }
+                .select-container-schedule{
+                    margin-top: 1em;
                 }
             }
         }

@@ -22160,6 +22160,20 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
+.study .content.year .empty-subject-photo.year-component {
+  text-align: center;
+}
+
+.study .content.year .empty-subject-photo.year-component .empty-img-subjects {
+  width: 100%;
+}
+
+.study .content.year .empty-subject-photo.year-component h5 {
+  font-weight: bold;
+  color: #3490dc;
+  margin-bottom: 2em;
+}
+
 .study .content.year h4 {
   text-align: center;
 }
@@ -22567,7 +22581,11 @@ a.text-dark:focus {
   overflow-y: scroll;
 }
 
-.container.content.year.dashboard .section-empty-studies h3 {
+.container.content.year.dashboard .section-empty-studies {
+  text-align: center;
+}
+
+.container.content.year.dashboard .section-empty-studies h4 {
   text-align: center;
 }
 
@@ -22748,6 +22766,14 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
+.container.content.studies.schedules .empty-studies-schedules-page {
+  text-align: center;
+}
+
+.container.content.studies.schedules .empty-studies-schedules-page .empty-img.schedules {
+  width: 100%;
+}
+
 .container.content.studies.schedules .custom-card-event .card.w-100 {
   text-align: center;
 }
@@ -22921,6 +22947,10 @@ a.text-dark:focus {
 
   .container.content.studies.schedules .row .col-8 .container-buttons {
     margin-top: 1.5em;
+  }
+
+  .container.content.studies.schedules .row .col-8 .select-container-schedule {
+    margin-top: 1em;
   }
 
   .container.content.studies.schedules .row.custom {

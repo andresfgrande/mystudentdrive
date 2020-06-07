@@ -26,7 +26,7 @@ class CreateClassesTable extends Migration
 
         Schema::table('classes', function (Blueprint $table) {
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
-            $table->foreign('schedule_id')->references('id')->on('schedules');
+            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
 //            $table->unique(['subject_id','schedule_id']);
         });
     }
