@@ -21761,6 +21761,10 @@ a.text-dark:focus {
   margin-bottom: 1em;
 }
 
+#navbarSupportedContent {
+  font-weight: bold;
+}
+
 .navbar {
   position: fixed;
   width: 100%;
@@ -22156,6 +22160,20 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
+.study .content.year .empty-subject-photo.year-component {
+  text-align: center;
+}
+
+.study .content.year .empty-subject-photo.year-component .empty-img-subjects {
+  width: 100%;
+}
+
+.study .content.year .empty-subject-photo.year-component h5 {
+  font-weight: bold;
+  color: #3490dc;
+  margin-bottom: 2em;
+}
+
 .study .content.year h4 {
   text-align: center;
 }
@@ -22268,9 +22286,9 @@ a.text-dark:focus {
 .subject .subject-section .section-item ul li {
   list-style: none;
   border-bottom: 1px solid rgba(52, 144, 220, 0.25);
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
-  padding-left: 2em;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  padding-left: 1.2em;
 }
 
 .subject .subject-section .section-item ul li div.delete-file-div {
@@ -22300,6 +22318,17 @@ a.text-dark:focus {
 }
 
 /**********SUBJECT PAGE*******/
+
+.card-footer.pb-0.pt-3.w-100 {
+  padding-left: 15px;
+  padding-right: 0;
+  padding-top: 7px !important;
+  border-top-width: 0;
+}
+
+.card-footer.pb-0.pt-3.w-100 .page-item.active .page-link {
+  z-index: 0;
+}
 
 .subject.subject-page {
   margin-top: 115px;
@@ -22383,6 +22412,8 @@ a.text-dark:focus {
 .agenda-page.dashboard {
   margin-left: 0;
   width: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /**************PLANNER PAGE****************/
@@ -22391,9 +22422,21 @@ a.text-dark:focus {
   margin-top: 115px;
 }
 
+.container.content.planner .current-date-text {
+  color: #3490dc;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+.container.content.planner .vc-container {
+  margin-left: 35%;
+  margin-top: 6em;
+}
+
 .container.content.planner .planner-title {
   text-align: center;
-  margin-bottom: 1.5em;
+  margin-bottom: 2em;
 }
 
 .container.content.planner .checkbox-show-old {
@@ -22465,23 +22508,13 @@ a.text-dark:focus {
   content: url("/images/038-edit.png");
   width: 16px;
   cursor: pointer;
-  visibility: hidden;
+  display: inline-block;
 }
 
 .container.content.planner .custom-card-event .card-body .actions-planner-events div.delete-event-div {
   content: url("/images/borrar.png");
   width: 16px;
   cursor: pointer;
-  visibility: hidden;
-}
-
-.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.edit-event-div {
-  visibility: visible;
-  display: inline-block;
-}
-
-.container.content.planner .custom-card-event .card-body:hover .actions-planner-events div.delete-event-div {
-  visibility: visible;
   display: inline-block;
 }
 
@@ -22535,6 +22568,7 @@ a.text-dark:focus {
   font-weight: bold;
   color: #3490dc;
   cursor: pointer;
+  margin-bottom: 1.5em;
 }
 
 .container.content.year.dashboard .btn.btn-primary.btn-add-subject {
@@ -22548,7 +22582,11 @@ a.text-dark:focus {
   overflow-y: scroll;
 }
 
-.container.content.year.dashboard .section-empty-studies h3 {
+.container.content.year.dashboard .section-empty-studies {
+  text-align: center;
+}
+
+.container.content.year.dashboard .section-empty-studies h4 {
   text-align: center;
 }
 
@@ -22598,6 +22636,7 @@ a.text-dark:focus {
 
 .container.content.todo-list.dashboard .title-todo-list {
   text-align: center;
+  margin-bottom: 2em;
 }
 
 .container.content.todo-list.dashboard .form-add-task {
@@ -22723,6 +22762,212 @@ a.text-dark:focus {
   width: 30%;
 }
 
+/*************PAGE SCHEDULES*************/
+
+.container.content.schedules {
+  margin-top: 115px;
+}
+
+.container.content.studies.schedules .empty-studies-schedules-page {
+  text-align: center;
+}
+
+.container.content.studies.schedules .empty-studies-schedules-page .empty-img.schedules {
+  width: 100%;
+}
+
+.container.content.studies.schedules .custom-card-event {
+  margin-bottom: 1em;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 {
+  text-align: center;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body {
+  padding: 10px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-title {
+  font-weight: bold;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-title.subject-name {
+  font-weight: bold;
+  font-size: 14px;
+  border-bottom: 0;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-text.time {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.container.content.studies.schedules .custom-card-event .card.w-100 .card-body .card-text.classroom {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.container.content.studies.schedules .row.custom {
+  margin-top: 2.2em;
+}
+
+.container.content.studies.schedules .row .col-4 .cursos-title {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-schedule {
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-schedule label {
+  font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-period {
+  margin-right: 2.5em;
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .select-container-period label {
+  font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .container-buttons {
+  float: right;
+}
+
+.container.content.studies.schedules .row .col-8 .study-name-title {
+  text-align: center;
+}
+
+.container.content.studies.schedules .row .col-8 .study-name-title.year {
+  margin-bottom: 1.5em;
+  font-size: 20px;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .day-name {
+  font-size: 19px;
+  color: #3490dc;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules {
+  float: right;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules div.edit-classe-div {
+  content: url("/images/038-edit.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.studies.schedules .row .col-8 .row.custom .col .custom-card-event .card-body .actions-schedules div.delete-classe-div {
+  content: url("/images/borrar.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/***************SCHEDULES TAG DASHBOARD********************/
+
+.container.content.schedules.dashboard {
+  margin-top: 0;
+}
+
+.container.content.schedules.dashboard .title-schedules {
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.container.content.schedules.dashboard .title-schedules-dashboard {
+  text-align: center;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.container.content.schedules.dashboard .classes-today .empty-img-classes {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.container.content.schedules.dashboard .classes-today .text-no-classes {
+  font-weight: bold;
+  color: #3490dc;
+  text-align: center;
+}
+
+.container.content.schedules.dashboard .classes_tomorrow .empty-img-classes {
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.container.content.schedules.dashboard .classes_tomorrow .text-no-classes {
+  font-weight: bold;
+  color: #3490dc;
+  text-align: center;
+}
+
+.container.content.schedules.dashboard .custom-card-event {
+  margin-bottom: 1em;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 {
+  text-align: center;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 .card-body {
+  padding: 10px;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 .card-body .card-title {
+  font-weight: bold;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 .card-body .card-title.subject-name {
+  font-weight: bold;
+  font-size: 14px;
+  border-bottom: 0;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 .card-body .card-text.time {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card.w-100 .card-body .card-text.classroom {
+  font-size: 14px;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card-body .actions-schedules {
+  float: right;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card-body .actions-schedules div.edit-classe-div {
+  content: url("/images/038-edit.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.container.content.schedules.dashboard .custom-card-event .card-body .actions-schedules div.delete-classe-div {
+  content: url("/images/borrar.png");
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
@@ -22736,6 +22981,14 @@ a.text-dark:focus {
 }
 
 @media only screen and (max-width: 1024px) {
+  .row {
+    display: block;
+  }
+
+  .row .col-2 {
+    max-width: 100%;
+  }
+
   .agenda-page {
     margin-left: 0;
     width: 100%;
@@ -22755,6 +23008,27 @@ a.text-dark:focus {
     width: 100% !important;
     top: 0 !important;
   }
+
+  .subject .subject-content.subject-page-content {
+    width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /**************PLANNER PAGE****************/
+
+  .container.content.planner .col {
+    margin-bottom: 2em;
+  }
+
+  .container.content.planner .vc-container {
+    margin-left: 12%;
+    margin-top: 2em;
+  }
+
+  .container.content.planner.dashboard .row .col {
+    margin-top: 2em;
+  }
 }
 
 @media only screen and (max-width: 992px) {
@@ -22772,6 +23046,26 @@ a.text-dark:focus {
 
   .container.content.planner .custom-card-event .card {
     width: 100% !important;
+  }
+
+  .container.content.studies.schedules .row .col-4 {
+    max-width: 100%;
+  }
+
+  .container.content.studies.schedules .row .col-8 {
+    max-width: 100%;
+  }
+
+  .container.content.studies.schedules .row .col-8 .container-buttons {
+    margin-top: 1.5em;
+  }
+
+  .container.content.studies.schedules .row .col-8 .select-container-schedule {
+    margin-top: 1em;
+  }
+
+  .container.content.studies.schedules .row.custom {
+    margin-top: 5em;
   }
 }
 

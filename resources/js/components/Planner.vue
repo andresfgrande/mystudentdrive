@@ -2,7 +2,7 @@
     <div class="container content planner">
         <div class="row">
             <div class="col">
-                <h3>Calendario</h3>
+                <h3 class="planner-title">Calendario</h3>
 <!--                <datepicker v-model="calendarDate" :inline="true" :language="es" :monday-first="true"-->
 <!--                             @selected="getEventsByDate" ></datepicker>-->
                 <date-picker
@@ -13,7 +13,7 @@
 
                                 />
 
-{{test}}
+                <h4 class="current-date-text">{{test}}</h4>
 
             </div>
             <div class="col">
@@ -31,7 +31,7 @@
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                             <h5 class="card-title event-name" >{{event.name}}</h5>
                             <p class="card-text event-description">{{event.description}}</p>
-                            <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
+                            <p class="card-text event-time" > Hora: {{formatTime(event.time)}} - Aula: {{event.classroom}} </p>
                             <div class="actions-planner-events">
                                 <div class="edit-event-div" @click="editEventModal(event)"></div>
                                 <div class="delete-event-div" @click="deleteEventModal(event.id,event.name)"></div>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="subject">Asignatura relacionada:</label>
                                 <select id="subject" v-model="eventToAdd.subject_id">
-                                    <option value="">evento general</option>
+                                    <option value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label for="subject-edit">Asignatura relacionada:</label>
                                 <select id="subject-edit" v-model="eventToEdit.subject_id">
-                                    <option  value="">Evento general</option>
+                                    <option  value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -270,9 +270,15 @@
                 },
                 routeImgEvents:'',
                 route_base_images_vue:'',
+                test_date_string:'',
             }
         },
         methods:{
+            formatTime(time){
+                var string = time;
+                string = string.substring(0,5);
+                return string;
+            },
             getEventsByDate(){
                 if (this.calendarDate) {
                    const dateString = this.calendarDate.toISOString().substring(0, 10);
@@ -420,14 +426,16 @@
         },
         computed:{
             isDisabled: function(){
-                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' ){
+                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+                    || this.eventToAdd.subject_id === ''){
                     return true;
                 }else{
                     return false;
                 }
             },
             isDisabledEdit: function(){
-                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' ){
+                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+                    || this.eventToEdit.subject_id === ''){
                     return true;
                 }else{
                     return false;
@@ -437,7 +445,17 @@
                 if(this.calendarDate != null){
                     this.getEventsByDate();
                 }
-                return '';
+                var d = new Date(this.calendarDate);
+                var options = {   weekday: 'long',year: 'numeric', month: 'long', day: 'numeric' };
+                console.log('hola');
+                if(!this.calendarDate){
+                    console.log('hola1');
+                    var today = new Date();
+                    return today = today.toLocaleDateString("es-ES",options);
+                }else{
+                    console.log('hola2');
+                    return d = d.toLocaleDateString("es-ES",options);
+                }
             },
             showImgEmptyAgenda(){
                 if(this.planner_events_vue.length == 0){

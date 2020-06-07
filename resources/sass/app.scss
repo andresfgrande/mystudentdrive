@@ -18,7 +18,9 @@
     text-align: center;
     margin-bottom: 1em;
 }
-
+#navbarSupportedContent{
+    font-weight: bold;
+}
 .navbar{
     position: fixed;
     width: 100%;
@@ -385,6 +387,17 @@
 
     }
     .content.year{
+        .empty-subject-photo.year-component{
+            text-align: center;
+            .empty-img-subjects{
+                width: 100%;
+            }
+            h5{
+                font-weight: bold;
+                color: #3490dc;
+                margin-bottom: 2em;
+            }
+        }
         margin-top: 115px;
         h4{
             text-align: center;
@@ -491,9 +504,9 @@
                 li{
                     list-style: none;
                     border-bottom: 1px solid rgba(52, 144, 220, 0.25);
-                    padding-top: 1.5em;
-                    padding-bottom: 1.5em;
-                    padding-left: 2em;
+                    padding-top: 1.2em;
+                    padding-bottom: 1.2em;
+                    padding-left: 1.2em;
                     div.delete-file-div{
                         content:url("/images/interfaz_delete.png");
                         //width: 2.8%;
@@ -525,7 +538,15 @@
     }
 }
 /**********SUBJECT PAGE*******/
-
+.card-footer.pb-0.pt-3.w-100{
+    padding-left: 15px;
+    padding-right: 0;
+    padding-top: 7px !important;
+    border-top-width: 0;
+    .page-item.active .page-link{
+        z-index: 0;
+    }
+}
 .subject.subject-page{
     margin-top: 115px;
     .title-subject{
@@ -605,15 +626,27 @@
     margin-left: 0;
     width: 100%;
     //position: absolute;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /**************PLANNER PAGE****************/
 .container.content.planner{
-
+    .current-date-text{
+        //font-size: 20px;
+        color: #3490dc;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1.5em;
+    }
+    .vc-container{
+        margin-left: 35%;
+        margin-top: 6em;
+    }
     margin-top: 115px;
     .planner-title{
         text-align: center;
-        margin-bottom:1.5em;
+        margin-bottom: 2em;
     }
     .checkbox-show-old{
         margin-bottom: 1em;
@@ -670,29 +703,29 @@
                     content:url("/images/038-edit.png");
                     width: 16px;
                     cursor:pointer;
-                    //display: inline-block;
-                    visibility:hidden;
+                    display: inline-block;
+                    //visibility:hidden;
                 }
                 div.delete-event-div{
                     content:url("/images/borrar.png");
                     width: 16px;
                     cursor:pointer;
-                    //display:inline-block;
-                    visibility: hidden;
+                    display:inline-block;
+                    //visibility: hidden;
                 }
             }
-            &:hover{
-                .actions-planner-events{
-                    div.edit-event-div{
-                        visibility:visible;
-                        display: inline-block;
-                    }
-                    div.delete-event-div{
-                        visibility: visible;
-                        display: inline-block;
-                    }
-                }
-            }
+            //&:hover{
+            //    .actions-planner-events{
+            //        div.edit-event-div{
+            //            visibility:visible;
+            //            display: inline-block;
+            //        }
+            //        div.delete-event-div{
+            //            visibility: visible;
+            //            display: inline-block;
+            //        }
+            //    }
+            //}
 
         }
     }
@@ -742,6 +775,7 @@
         font-weight: bold;
         color: #3490dc;
         cursor: pointer;
+        margin-bottom: 1.5em;
     }
     margin-top:0;
     .btn.btn-primary.btn-add-subject{
@@ -754,7 +788,8 @@
         overflow-y: scroll;
     }
     .section-empty-studies{
-        h3{
+        text-align:center;
+        h4{
             text-align:center;
         }
         .empty-img-studies{
@@ -798,6 +833,7 @@
 .container.content.todo-list.dashboard{
     .title-todo-list{
         text-align: center;
+        margin-bottom: 2em;
     }
     .form-add-task{
         margin-top: 2em;
@@ -908,6 +944,194 @@
     width: 30%;
 }
 
+/*************PAGE SCHEDULES*************/
+.container.content.schedules{
+    margin-top: 115px;
+}
+.container.content.studies.schedules{
+    .empty-studies-schedules-page{
+        text-align: center;
+        .empty-img.schedules{
+            width: 100%;
+        }
+    }
+  .custom-card-event{
+      margin-bottom: 1em;
+      .card.w-100{
+          text-align: center;
+          .card-body{
+              padding: 10px;
+              .card-title{
+                  font-weight: bold;
+                  font-size: 15px;
+                  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+              }
+              .card-title.subject-name{
+                  font-weight: bold;
+                  font-size: 14px;
+                  border-bottom: 0;
+              }
+              .card-text.time{
+                  font-weight: bold;
+                  font-size: 15px;
+              }
+              .card-text.classroom{
+                  font-weight: normal;
+                  font-size: 14px;
+              }
+          }
+      }
+  }
+    .row.custom{
+        margin-top: 2.2em;
+    }
+    .row{
+        .col-4{
+            .cursos-title{
+                text-align: center;
+                margin-bottom: 1.5em;
+            }
+        }
+        .col-8{
+            .select-container-schedule{
+                display: inline-block;
+                label{
+                    font-weight: bold;
+                }
+            }
+            .select-container-period{
+                margin-right: 2.5em;
+                display: inline-block;
+                label{
+                    font-weight: bold;
+                }
+            }
+            .container-buttons{
+                float: right;
+            }
+            .study-name-title{
+                text-align: center;
+            }
+            .study-name-title.year{
+                margin-bottom: 1.5em;
+                font-size: 20px;
+            }
+            .row.custom{
+                .col{
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: bold;
+                    .day-name{
+                        font-size: 19px;
+                        color: #3490dc;
+                    }
+                    .custom-card-event{
+                        .card-body{
+                            .actions-schedules{
+                                float: right;
+                                div.edit-classe-div{
+                                    content:url("/images/038-edit.png");
+                                    width: 16px;
+                                    cursor:pointer;
+                                    display: inline-block;
+                                }
+                                div.delete-classe-div{
+                                    content:url("/images/borrar.png");
+                                    width: 16px;
+                                    cursor:pointer;
+                                    display: inline-block;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/***************SCHEDULES TAG DASHBOARD********************/
+
+.container.content.schedules.dashboard{
+    margin-top: 0;
+    .title-schedules{
+        margin-bottom: 2em;
+        text-align: center;
+    }
+    .title-schedules-dashboard{
+        text-align: center;
+        font-weight: bold;
+        color: #3490dc;
+    }
+
+    .classes-today{
+        .empty-img-classes{
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        .text-no-classes{
+            font-weight: bold;
+            color: #3490dc;
+            text-align: center;
+        }
+    }
+    .classes_tomorrow{
+        .empty-img-classes{
+            margin-bottom: 1em;
+            width: 100%;
+        }
+        .text-no-classes{
+            font-weight: bold;
+            color: #3490dc;
+            text-align: center;
+        }
+    }
+    .custom-card-event{
+        margin-bottom: 1em;
+        .card.w-100{
+            text-align: center;
+            .card-body{
+                padding: 10px;
+                .card-title{
+                    font-weight: bold;
+                    font-size: 15px;
+                    border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+                }
+                .card-title.subject-name{
+                    font-weight: bold;
+                    font-size: 14px;
+                    border-bottom: 0;
+                }
+                .card-text.time{
+                    font-weight: bold;
+                    font-size: 15px;
+                }
+                .card-text.classroom{
+                    font-size: 14px;
+                }
+            }
+        }
+        .card-body{
+            .actions-schedules{
+                float: right;
+                div.edit-classe-div{
+                    content:url("/images/038-edit.png");
+                    width: 16px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+                div.delete-classe-div{
+                    content:url("/images/borrar.png");
+                    width: 16px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+
+
 /**************************MOBILE*************************************/
 
 @media only screen and (max-width: 1400px) {
@@ -921,6 +1145,13 @@
 
 @media only screen and (max-width: 1024px) {
 
+
+    .row{
+        display: block;
+        .col-2{
+            max-width: 100%;
+        }
+    }
     .agenda-page{
         margin-left: 0;
         width: 100%;
@@ -938,6 +1169,31 @@
         margin-left: 0 !important;
         width: 100% !important;
         top: 0 !important;
+    }
+
+    .subject {
+        .subject-content.subject-page-content {
+            width: 100%;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+    }
+    /**************PLANNER PAGE****************/
+    .container.content.planner {
+        .col{
+            margin-bottom: 2em;
+        }
+        .vc-container {
+            margin-left: 12%;
+            margin-top: 2em;
+        }
+    }
+    .container.content.planner.dashboard{
+        .row{
+            .col{
+                margin-top: 2em;
+            }
+        }
     }
 }
 
@@ -959,7 +1215,25 @@
             }
         }
     }
-
+    .container.content.studies.schedules{
+        .row{
+            .col-4{
+                max-width: 100%;
+            }
+            .col-8{
+                max-width: 100%;
+                .container-buttons {
+                    margin-top: 1.5em;
+                }
+                .select-container-schedule{
+                    margin-top: 1em;
+                }
+            }
+        }
+    }
+    .container.content.studies.schedules .row.custom {
+        margin-top: 5em;
+    }
 }
 
 /********TEST**************/

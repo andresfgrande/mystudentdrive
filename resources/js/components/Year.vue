@@ -5,6 +5,10 @@
         <button type="button"  class="btn btn-primary btn-add-subject" @click="addSubjectModal">
             Añadir asignatura
         </button>
+        <div class="empty-subject-photo year-component" v-if="showSubjectEmptyPhoto">
+            <img  class="empty-img-subjects" :src="this.routeImgSubjects"  alt="empty_studies_photo"/>
+            <h5>Añade asignaturas a tu curso...</h5>
+        </div>
             <div v-for="subject in subjectsArray">
                 <div class="delete-subject-div" @click="deleteSubjectModal(chosed_year_vue.id, subject.subject_ID, subject.subject_name)">
                 </div>
@@ -179,6 +183,7 @@
            this.route_delete_section_vue = this.route_delete_section;
            this.route_edit_subject_vue = this.route_edit_subject;
            this.route_delete_subject_vue = this.route_delete_subject;
+           this.routeImgSubjects = this.route_base_images_vue +"/content/clip-uploading.png";
         },
         data(){
             return{
@@ -229,6 +234,7 @@
                 },
                 subjectToDeleteName:'',
                 modalDeleteAbierto:'',
+                routeImgSubjects:'',
             }
         },
         methods:{
@@ -376,6 +382,13 @@
                 this.chosed_year_vue = this.chosed_year;
                 this.getSubjectsByYear(this.chosed_year_vue.id);
                 return this.subjectsArray;
+            },
+            showSubjectEmptyPhoto(){
+                if(this.subjectsArray.length === 0){
+                    return true;
+                }else{
+                    return false;
+                }
             }
         }
     }

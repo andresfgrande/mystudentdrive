@@ -19,7 +19,7 @@
                             <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                             <h5 class="card-title event-name" >{{event.name}}</h5>
                             <p class="card-text event-description">{{event.description}}</p>
-                            <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
+                            <p class="card-text event-time" > Hora: {{formatTime(event.time)}} - Aula: {{event.classroom}}</p>
                             <div class="actions-planner-events">
                                 <div class="edit-event-div" @click="editEventModal(event)"></div>
                                 <div class="delete-event-div" @click="deleteEventModal(event.id,event.name)"></div>
@@ -65,7 +65,7 @@
                             <div class="form-group">
                                 <label for="subject">Asignatura relacionada:</label>
                                 <select id="subject" v-model="eventToAdd.subject_id">
-                                    <option value="">evento general</option>
+                                    <option value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -125,7 +125,7 @@
                             <div class="form-group">
                                 <label for="subject-edit">Asignatura relacionada:</label>
                                 <select id="subject-edit" v-model="eventToEdit.subject_id">
-                                    <option  value="">evento general</option>
+                                    <option  value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -276,13 +276,17 @@
             }
         },
         methods:{
+            formatTime(time){
+                var string = time;
+                string = string.substring(0,5);
+                return string;
+            },
             addClass(){
                 if(this.subject_prop_vue != null){
                     this.useTheme = true;
                 }else{
                     this.useTheme = false;
                 }
-
             },
             getEventsListByPageType(){
                 if(this.page_type_vue === 'study'){
@@ -378,7 +382,6 @@
                     });
             },
             deleteEvent(){
-
                 var url = this.route_delete_event_vue;
                 axios.delete(url,{params:this.eventToDelete}).then(response => {
                     console.log(response.data.result)
@@ -391,7 +394,6 @@
                     if(response.data.result === 'error_delete_event'){
                         this.showDeleteFail = true;
                     }
-
                 })
                     .catch(errors => {
                         console.log(errors);
@@ -448,14 +450,16 @@
         },
         computed:{
             isDisabled: function(){
-                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' ){
+                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+                    || this.eventToAdd.subject_id === ''){
                     return true;
                 }else{
                     return false;
                 }
             },
             isDisabledEdit: function(){
-                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' ){
+                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+                    || this.eventToEdit.subject_id === ''){
                     return true;
                 }else{
                     return false;

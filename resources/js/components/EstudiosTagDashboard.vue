@@ -4,7 +4,7 @@
         <div v-if="!showYear" class="section-empty-studies">
             <h4>Esto se ve muy vacio...</h4>
             <img  class="empty-img-studies" :src="this.routeImgStudies"  alt="empty_studies_photo"/>
-            <h5>Comienza a añadir tus estudios</h5>
+            <h5>Comienza añadiendo tus estudios</h5>
             <button type="button"  class="btn btn-primary btn-gestion-estudios" @click="studiesLink">
                 Gestiona tus estudios
             </button>

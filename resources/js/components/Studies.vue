@@ -190,7 +190,7 @@
                                         <label for="period_name">Nombre del periodo</label>
                                         <input class="form-control" v-model="periodToAdd.name"
                                                id="period_name" type="text" name="period_name"
-                                               placeholder="" v-on:keyup="cleanMessagePeriodName" required>
+                                               placeholder="Por ejemplo: 1er trimestre" v-on:keyup="cleanMessagePeriodName" required>
                                     </div>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="showPeriodNameExist">
                                         <strong>Ya tienes un periodo con este nombre.</strong>

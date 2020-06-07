@@ -18,7 +18,7 @@
                                 <h5 class="card-title event-subject-name" >{{event.subject_name}}</h5>
                                 <h5 class="card-title event-name" >{{event.name}}</h5>
                                 <p class="card-text event-description">{{event.description}}</p>
-                                <p class="card-text event-time" > Hora: {{event.time}} - Aula: {{event.classroom}}</p>
+                                <p class="card-text event-time" > Hora: {{formatTime(event.time)}} - Aula: {{event.classroom}}</p>
                                 <div class="actions-planner-events">
                                     <div class="edit-event-div" @click="editEventModal(event)"></div>
                                     <div class="delete-event-div" @click="deleteEventModal(event.id,event.name)"></div>
@@ -50,7 +50,7 @@
                         <form>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="name">Nombre</label>
+                                    <label for="name">Nombre:</label>
                                     <input class="form-control" v-model="eventToAdd.name" v-on:keyup="cleanMessage" id="name" type="text" name="name"
                                            placeholder="" required>
                                     <small v-if="showNameExists"  class="text-danger">
@@ -58,30 +58,31 @@
                                     </small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">Descripción</label>
+                                    <label for="description">Descripción:</label>
                                     <input class="form-control" v-model="eventToAdd.description" v-on:keyup="cleanMessage" id="description" type="text" name="description"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="subject">Elige una asignatura para este evento:</label>
                                     <select id="subject" v-model="eventToAdd.subject_id">
-                                        <option value="">evento general</option>
+                                        <option value="">Asignatura de este evento</option>
                                         <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                             {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                         </option>
                                     </select><!--                                       placeholder="" required>-->
                                 </div>
                                 <div class="form-group">
-                                    <label for="classroom">classroom</label>
+                                    <label for="classroom">Lugar:</label>
                                     <input class="form-control" v-model="eventToAdd.classroom" v-on:keyup="cleanMessage" id="classroom" type="text" name="classroom"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="time"></label>
+                                    <label for="time">Hora:</label>
                                     <input class="form-control" v-model="eventToAdd.time" v-on:keyup="cleanMessage" id="time" type="time" name="time"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="date"></label>
+                                    <label for="date">Fecha:</label>
                                     <input class="form-control" v-model="eventToAdd.date" v-on:keyup="cleanMessage" id="date" type="date" name="date"
                                            placeholder="" required>
                                 </div>
@@ -109,7 +110,7 @@
                         <form>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="name-edit">Nombre</label>
+                                    <label for="name-edit">Nombre:</label>
                                     <input class="form-control" v-model="eventToEdit.name" v-on:keyup="cleanMessage" id="name-edit" type="text" name="name"
                                            placeholder="" required>
                                     <small v-if="showNameExistsEdit"  class="text-danger">
@@ -117,30 +118,31 @@
                                     </small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="description-edit">Descripción</label>
+                                    <label for="description-edit">Descripción:</label>
                                     <input class="form-control" v-model="eventToEdit.description" v-on:keyup="cleanMessage" id="description-edit" type="text" name="description"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="subject-edit">Elige una asignatura para este evento:</label>
                                     <select id="subject-edit" v-model="eventToEdit.subject_id">
-                                        <option  value="">evento general</option>
+                                        <option  value="">Asignatura de este evento</option>
                                         <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                             {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                         </option>
                                     </select><!--                                       placeholder="" required>-->
                                 </div>
                                 <div class="form-group">
-                                    <label for="classroom-edit">classroom</label>
+                                    <label for="classroom-edit">Lugar:</label>
                                     <input class="form-control" v-model="eventToEdit.classroom" v-on:keyup="cleanMessage" id="classroom-edit" type="text" name="classroom"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="time-edit"></label>
+                                    <label for="time-edit">Hora:</label>
                                     <input class="form-control" v-model="eventToEdit.time" v-on:keyup="cleanMessage" id="time-edit" type="time" name="time"
                                            placeholder="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="date-edit"></label>
+                                    <label for="date-edit">Fecha:</label>
                                     <input class="form-control" v-model="eventToEdit.date" v-on:keyup="cleanMessage" id="date-edit" type="date" name="date"
                                            placeholder="" required>
                                 </div>
@@ -272,13 +274,17 @@
             }
         },
         methods:{
+            formatTime(time){
+                var string = time;
+                string = string.substring(0,5);
+                return string;
+            },
             addClass(){
                 if(this.subject_prop_vue != null){
                     this.useTheme = true;
                 }else{
                     this.useTheme = false;
                 }
-
             },
             getEventsListByPageType(){
                 if(this.page_type_vue === 'study'){
@@ -444,29 +450,21 @@
         },
         computed:{
             isDisabled: function(){
-                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' ){
+                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+                    || this.eventToAdd.subject_id === ''){
                     return true;
                 }else{
                     return false;
                 }
             },
             isDisabledEdit: function(){
-                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' ){
+                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+                    || this.eventToEdit.subject_id === ''){
                     return true;
                 }else{
                     return false;
                 }
             },
-            // checkElementName(){
-            //     if(this.subject_prop_vue != null ){
-            //         return this.subject_prop_vue.subject_name;
-            //     }
-            //     if(this.study_prop_vue != null ){
-            //         return this.subject_prop_vue.name;
-            //     }
-            //     return 'test';
-            //
-            // },
             showImgEmptyAgenda(){
                 if(this.planner_events_vue.length == 0){
                     return true;

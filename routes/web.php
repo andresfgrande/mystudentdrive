@@ -86,3 +86,17 @@ Route::get('/get_tasks_by_subject','vuejs\TaskController@getTasksBySubject')->na
 Route::delete('/delete_task','vuejs\TaskController@deleteTask')->name('delete_task');
 Route::put('/task_done','vuejs\TaskController@taskDone')->name('task_done');
 Route::put('/edit_task','vuejs\TaskController@editTask')->name('edit_task');
+
+
+/********SCHEDULES********/
+Route::get('/schedules','ScheduleController@index')->name('index_schedules');
+Route::get('/get_schedules_by_period','vuejs\ScheduleController@getSchedulesByPeriod')->name('get_schedules_by_period');
+Route::get('/get_classes_by_schedule_and_day','vuejs\ScheduleController@getClassesByScheduleAndDay')->name('get_classes_by_schedule_and_day');
+Route::get('/get_recent_schedule_by_user','vuejs\ScheduleController@getRecentScheduleByUser')->name('get_recent_schedule_by_user');
+Route::put('/add_schedule','vuejs\ScheduleController@addSchedule')->name('add_schedule');
+Route::put('/add_classe','vuejs\ScheduleController@addClasse')->name('add_classe');
+Route::get('/get_subjects_by_period','vuejs\ScheduleController@getSubjectsByPeriod')->name('get_subjects_by_period');
+Route::put('/edit_classe','vuejs\ScheduleController@editClasse')->name('edit_classe');
+Route::delete('/delete_classe','vuejs\ScheduleController@deleteClasse')->name('delete_classe');
+Route::delete('/delete_schedule','vuejs\ScheduleController@deleteSchedule')->name('delete_schedule');
+Route::get('/get_classes_dashboard','vuejs\ScheduleController@getClassesDashboard')->name('get_classes_dashboard');
