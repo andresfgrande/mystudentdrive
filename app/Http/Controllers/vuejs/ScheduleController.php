@@ -304,4 +304,75 @@ class ScheduleController extends Controller
         }
         return Response::json(array('success'=>true,'result'=>'schedule_deleted'));
     }
+
+    /**************************DASHBOARD CONTROLLER PART*************************/
+    public function getClassesDashboard(Request $request){
+
+        $schedule_id = $request->get('schedule_id');
+        $today = $request->get('today');
+        $tomorrow = $request->get('tomorrow');
+
+        switch ($today) {
+            case 'lunes':
+                $today = 'mon';
+                break;
+            case 'martes':
+                $today = 'tue';
+                break;
+            case 'miércoles':
+                $today = 'wed';
+                break;
+            case 'jueves':
+                $today = 'thu';
+                break;
+            case 'viernes':
+                $today = 'fri';
+                break;
+            case 'sabado':
+                $today = 'sat';
+                break;
+            case 'domingo':
+                $today = 'sun';
+                break;
+        }
+        switch ($tomorrow) {
+            case 'lunes':
+                $tomorrow = 'mon';
+                break;
+            case 'martes':
+                $tomorrow = 'tue';
+                break;
+            case 'miércoles':
+                $tomorrow = 'wed';
+                break;
+            case 'jueves':
+                $tomorrow = 'thu';
+                break;
+            case 'viernes':
+                $tomorrow = 'fri';
+                break;
+            case 'sabado':
+                $tomorrow = 'sat';
+                break;
+            case 'domingo':
+                $tomorrow = 'sun';
+                break;
+        }
+
+        $classes = $this->getClassesByScheduleDashboard($schedule_id, $today, $tomorrow);
+
+        return Response::json(array('success'=>true,'result'=>$classes));
+    }
+
+    public function getClassesByScheduleDashboard($schedule_id, $today, $tomorrow){
+        $classesHorario = array(
+            'today'=>[],
+            'tomorrow'=>[],
+        );
+
+        $classesHorario['today'] = $this->getClassesByDayAndSchedule($today, $schedule_id);
+        $classesHorario['tomorrow']= $this->getClassesByDayAndSchedule($tomorrow, $schedule_id);
+
+        return $classesHorario;
+    }
 }

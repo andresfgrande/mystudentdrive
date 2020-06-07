@@ -99,3 +99,4 @@ Route::get('/get_subjects_by_period','vuejs\ScheduleController@getSubjectsByPeri
 Route::put('/edit_classe','vuejs\ScheduleController@editClasse')->name('edit_classe');
 Route::delete('/delete_classe','vuejs\ScheduleController@deleteClasse')->name('delete_classe');
 Route::delete('/delete_schedule','vuejs\ScheduleController@deleteSchedule')->name('delete_schedule');
+Route::get('/get_classes_dashboard','vuejs\ScheduleController@getClassesDashboard')->name('get_classes_dashboard');

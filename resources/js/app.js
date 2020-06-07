@@ -46,6 +46,7 @@ Vue.component('planner-tag-dashboard', require('./components/PlannerTagDashboard
 Vue.component('estudios-tag-dashboard', require('./components/EstudiosTagDashboard.vue').default);
 Vue.component('todo-list-tag', require('./components/TodolistTag.vue').default);
 Vue.component('schedules', require('./components/Schedules.vue').default);
+Vue.component('schedules-tag-dashboard', require('./components/SchedulesTagDashboard.vue').default);
 
 Vue.component('jw-pagination', JwPagination);
 // Vue.component('datepicker', Datepicker);

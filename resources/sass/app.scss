@@ -646,7 +646,7 @@
     margin-top: 115px;
     .planner-title{
         text-align: center;
-        margin-bottom:1.5em;
+        margin-bottom: 2em;
     }
     .checkbox-show-old{
         margin-bottom: 1em;
@@ -775,6 +775,7 @@
         font-weight: bold;
         color: #3490dc;
         cursor: pointer;
+        margin-bottom: 1.5em;
     }
     margin-top:0;
     .btn.btn-primary.btn-add-subject{
@@ -832,6 +833,7 @@
 .container.content.todo-list.dashboard{
     .title-todo-list{
         text-align: center;
+        margin-bottom: 2em;
     }
     .form-add-task{
         margin-top: 2em;
@@ -954,6 +956,7 @@
         }
     }
   .custom-card-event{
+      margin-bottom: 1em;
       .card.w-100{
           text-align: center;
           .card-body{
@@ -961,21 +964,23 @@
               .card-title{
                   font-weight: bold;
                   font-size: 15px;
+                  border-bottom: 1px solid rgba(52, 144, 220, 0.25);
               }
               .card-title.subject-name{
-                  font-weight: normal;
+                  font-weight: bold;
                   font-size: 14px;
+                  border-bottom: 0;
               }
               .card-text.time{
                   font-weight: bold;
                   font-size: 15px;
               }
               .card-text.classroom{
+                  font-weight: normal;
                   font-size: 14px;
               }
           }
       }
-
   }
     .row.custom{
         margin-top: 2.2em;
@@ -1045,6 +1050,87 @@
     }
 }
 
+/***************SCHEDULES TAG DASHBOARD********************/
+
+.container.content.schedules.dashboard{
+    margin-top: 0;
+    .title-schedules{
+        margin-bottom: 2em;
+        text-align: center;
+    }
+    .title-schedules-dashboard{
+        text-align: center;
+        font-weight: bold;
+        color: #3490dc;
+    }
+
+    .classes-today{
+        .empty-img-classes{
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        .text-no-classes{
+            font-weight: bold;
+            color: #3490dc;
+            text-align: center;
+        }
+    }
+    .classes_tomorrow{
+        .empty-img-classes{
+            margin-bottom: 1em;
+            width: 100%;
+        }
+        .text-no-classes{
+            font-weight: bold;
+            color: #3490dc;
+            text-align: center;
+        }
+    }
+    .custom-card-event{
+        margin-bottom: 1em;
+        .card.w-100{
+            text-align: center;
+            .card-body{
+                padding: 10px;
+                .card-title{
+                    font-weight: bold;
+                    font-size: 15px;
+                    border-bottom: 1px solid rgba(52, 144, 220, 0.25);
+                }
+                .card-title.subject-name{
+                    font-weight: bold;
+                    font-size: 14px;
+                    border-bottom: 0;
+                }
+                .card-text.time{
+                    font-weight: bold;
+                    font-size: 15px;
+                }
+                .card-text.classroom{
+                    font-size: 14px;
+                }
+            }
+        }
+        .card-body{
+            .actions-schedules{
+                float: right;
+                div.edit-classe-div{
+                    content:url("/images/038-edit.png");
+                    width: 16px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+                div.delete-classe-div{
+                    content:url("/images/borrar.png");
+                    width: 16px;
+                    cursor:pointer;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+
 
 /**************************MOBILE*************************************/
 
@@ -1059,6 +1145,13 @@
 
 @media only screen and (max-width: 1024px) {
 
+
+    .row{
+        display: block;
+        .col-2{
+            max-width: 100%;
+        }
+    }
     .agenda-page{
         margin-left: 0;
         width: 100%;
@@ -1093,6 +1186,13 @@
         .vc-container {
             margin-left: 12%;
             margin-top: 2em;
+        }
+    }
+    .container.content.planner.dashboard{
+        .row{
+            .col{
+                margin-top: 2em;
+            }
         }
     }
 }

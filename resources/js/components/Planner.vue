@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="subject">Asignatura relacionada:</label>
                                 <select id="subject" v-model="eventToAdd.subject_id">
-                                    <option value="">evento general</option>
+                                    <option value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label for="subject-edit">Asignatura relacionada:</label>
                                 <select id="subject-edit" v-model="eventToEdit.subject_id">
-                                    <option  value="">Evento general</option>
+                                    <option  value="">Asignatura para este evento</option>
                                     <option v-for="subject in subjectsArray" v-bind:value="subject.subject_id">
                                         {{subject.subject_name}} - {{subject.period_name}} - {{subject.study_name}}
                                     </option>
@@ -426,14 +426,16 @@
         },
         computed:{
             isDisabled: function(){
-                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' ){
+                if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+                    || this.eventToAdd.subject_id === ''){
                     return true;
                 }else{
                     return false;
                 }
             },
             isDisabledEdit: function(){
-                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' ){
+                if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+                    || this.eventToEdit.subject_id === ''){
                     return true;
                 }else{
                     return false;
