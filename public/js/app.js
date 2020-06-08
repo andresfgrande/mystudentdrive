@@ -95208,7 +95208,7 @@ var render = function() {
                       staticClass: "edit-classe-div",
                       on: {
                         click: function($event) {
-                          return _vm.editClasseModal(_vm.monday_class)
+                          return _vm.editClasseModal(today_class)
                         }
                       }
                     })

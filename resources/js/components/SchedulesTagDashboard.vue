@@ -11,8 +11,8 @@
                         <h5 class="card-title subject-name" >{{today_class.subject_name}}</h5>
                         <p class="card-text classroom">Aula: {{today_class.class_classroom}}</p>
                         <div class="actions-schedules">
-                            <div class="edit-classe-div" @click="editClasseModal(monday_class)"></div>
-<!--                            <div class="delete-classe-div" @click="deleteClasseModal(monday_class)"></div>-->
+                            <div class="edit-classe-div" @click="editClasseModal(today_class)"></div>
+
                         </div>
                         <p class="card-text time" > {{formatTime(today_class.class_start_time)}} - {{formatTime(today_class.class_end_time)}}</p>
                     </div>
