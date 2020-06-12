@@ -328,7 +328,7 @@ class ScheduleController extends Controller
             case 'viernes':
                 $today = 'fri';
                 break;
-            case 'sabado':
+            case 'sábado':
                 $today = 'sat';
                 break;
             case 'domingo':
@@ -351,7 +351,7 @@ class ScheduleController extends Controller
             case 'viernes':
                 $tomorrow = 'fri';
                 break;
-            case 'sabado':
+            case 'sábado':
                 $tomorrow = 'sat';
                 break;
             case 'domingo':
