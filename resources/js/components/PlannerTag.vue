@@ -455,7 +455,7 @@
         computed:{
             isDisabled: function(){
                 if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
-                    || this.eventToAdd.subject_id === ''){
+                   /* || this.eventToAdd.subject_id === '' */){
                     return true;
                 }else{
                     return false;
@@ -463,7 +463,7 @@
             },
             isDisabledEdit: function(){
                 if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
-                    || this.eventToEdit.subject_id === ''){
+                   /* || this.eventToEdit.subject_id === '' */){
                     return true;
                 }else{
                     return false;

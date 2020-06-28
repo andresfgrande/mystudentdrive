@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="image-profile-container action-photo">
-                    <button type="button" name="upload" @click="$refs.fileInput.click()" v-if="showAvatar" class="btn btn-primary delete-photo action-photo" >Añadir Photo</button>
+                    <button type="button" name="upload" @click="$refs.fileInput.click()" v-if="showAvatar" class="btn btn-primary delete-photo action-photo" >Añadir foto</button>
                 </div>
 
                 <div class="alert alert-danger alert-dismissible fade show" v-if="upload_fail" role="alert">

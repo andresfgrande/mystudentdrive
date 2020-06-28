@@ -21756,6 +21756,10 @@ a.text-dark:focus {
 
 /***************DESKTOP**************/
 
+#logo-image-custom {
+  width: 200px;
+}
+
 .page-title {
   text-align: center;
   margin-bottom: 1em;
@@ -22437,6 +22441,11 @@ a.text-dark:focus {
 .container.content.planner .planner-title {
   text-align: center;
   margin-bottom: 2em;
+  cursor: pointer;
+}
+
+.container.content.planner .planner-title:hover {
+  font-weight: bold;
 }
 
 .container.content.planner .checkbox-show-old {
@@ -22554,6 +22563,10 @@ a.text-dark:focus {
   margin-bottom: 2em;
 }
 
+.container.content.planner.dashboard .btn.btn-primary.add-event {
+  margin-bottom: 1em;
+}
+
 .container.content.year.dashboard {
   margin-top: 0;
 }
@@ -22563,12 +22576,20 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+.container.content.year.dashboard .title-study-name:hover {
+  font-weight: bold;
+}
+
 .container.content.year.dashboard .title-year-dates {
   text-align: center;
   font-weight: bold;
   color: #3490dc;
   cursor: pointer;
   margin-bottom: 1.5em;
+}
+
+.container.content.year.dashboard .title-year-dates:hover {
+  color: #26679c;
 }
 
 .container.content.year.dashboard .btn.btn-primary.btn-add-subject {
@@ -22887,6 +22908,11 @@ a.text-dark:focus {
 .container.content.schedules.dashboard .title-schedules {
   margin-bottom: 2em;
   text-align: center;
+  cursor: pointer;
+}
+
+.container.content.schedules.dashboard .title-schedules:hover {
+  font-weight: bold;
 }
 
 .container.content.schedules.dashboard .title-schedules-dashboard {
@@ -23028,6 +23054,39 @@ a.text-dark:focus {
 
   .container.content.planner.dashboard .row .col {
     margin-top: 2em;
+  }
+
+  .container.content.planner.dashboard .row .col .planner-title {
+    margin-bottom: 1em;
+  }
+
+  .container.content.todo-list.dashboard .title-todo-list {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .container.content.schedules.dashboard .title-schedules {
+    margin-bottom: 1em;
+  }
+
+  .container.content.planner {
+    margin-top: 0;
+  }
+
+  .container.content.planner .planner-title {
+    margin-bottom: 1.5em;
+  }
+
+  .container.agenda-page.subject-page.tag-todo-list {
+    margin-top: 0;
+  }
+
+  .studies .courses {
+    margin-bottom: 0.5em;
+  }
+
+  .content.content.studies {
+    margin-top: 90px;
   }
 }
 

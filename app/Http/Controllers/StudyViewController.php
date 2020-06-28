@@ -19,7 +19,12 @@ class StudyViewController extends Controller
                 ->where('user_id',Auth::id())
                 ->get();
             $aux = $var_study->toArray();
-            $study = $aux[0];
+
+            if(isset($aux[0])){
+                $study = $aux[0];
+            }else{
+                return back();
+            }
 
             $var_years = DB::table('academic_years')
                 ->where('study_id', $request->study_id)
