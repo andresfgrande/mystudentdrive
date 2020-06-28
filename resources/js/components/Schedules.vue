@@ -355,7 +355,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="inlineCheckbox13" v-model="classeToEdit.wednesday">
-                                    <label class="form-check-label" for="inlineCheckbox3">Miercoles</label>
+                                    <label class="form-check-label" for="inlineCheckbox13">Miercoles</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="inlineCheckbox14" v-model="classeToEdit.thursday">

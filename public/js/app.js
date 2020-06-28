@@ -94784,7 +94784,7 @@ var render = function() {
                         "label",
                         {
                           staticClass: "form-check-label",
-                          attrs: { for: "inlineCheckbox3" }
+                          attrs: { for: "inlineCheckbox13" }
                         },
                         [_vm._v("Miercoles")]
                       )
