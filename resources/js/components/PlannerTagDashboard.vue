@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
 <!--                    <h3 class="planner-title">Agenda de {{checkElementName}}</h3>-->
-                    <h4 class="planner-title">Mi agenda</h4>
+                    <h4 class="planner-title" @click="plannerLink">Mi agenda</h4>
                     <div class="checkbox-show-old">
                         <input type="checkbox" id="checkbox-planner-tag" @change="getEventsListByPageType" v-model="infoEvents.show_old">
                         <label for="checkbox-planner-tag">Mostrar eventos anteriores.</label>
@@ -278,6 +278,9 @@
             }
         },
         methods:{
+            plannerLink(){
+                window.location ="/planner";
+            },
             formatTime(time){
                 var string = time;
                 string = string.substring(0,5);
@@ -455,7 +458,7 @@
         computed:{
             isDisabled: function(){
                 if(this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
-                    || this.eventToAdd.subject_id === ''){
+                   /* || this.eventToAdd.subject_id === ''*/){
                     return true;
                 }else{
                     return false;
@@ -463,7 +466,7 @@
             },
             isDisabledEdit: function(){
                 if(this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
-                    || this.eventToEdit.subject_id === ''){
+                   /* || this.eventToEdit.subject_id === '' */){
                     return true;
                 }else{
                     return false;

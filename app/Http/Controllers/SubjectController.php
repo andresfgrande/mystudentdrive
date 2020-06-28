@@ -32,14 +32,24 @@ class SubjectController extends Controller
                     'academic_years.end_date AS end_year',
                 ));
             $subjectArray = $subject->toArray();
-            $subject= $subjectArray[0];
+
+            if(isset($subjectArray[0])){
+                $subject= $subjectArray[0];
+            }else{
+                return back();
+            }
 
             /********************/
             $var_study =  DB::table('studies')->where('id', $request->study_id)
                 ->where('user_id',Auth::id())
                 ->get();
             $aux = $var_study->toArray();
-            $study = $aux[0];
+
+            if(isset($aux[0])){
+                $study = $aux[0];
+            }else{
+                return back();
+            }
 
             $var_years = DB::table('academic_years')
                 ->where('study_id', $request->study_id)

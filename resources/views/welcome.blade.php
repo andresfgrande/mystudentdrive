@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>myStudentDrive</title>
+    <title>MyStudentDrive</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -82,6 +82,19 @@
             font-size: 20px;
         }
 
+        @media only screen and (min-width: 900px) {
+            .img-web-main{
+                width: 30% !important;
+            }
+            .img-logo-main{
+                width: 50% !important;
+            }
+        }
+
+        .hidden{
+            color: transparent;
+            position: absolute;
+        }
     </style>
 </head>
 <body class="body-welcome">
@@ -105,10 +118,13 @@
 
     <div class="content">
 
-        <div class="title m-b-md">
+        <div class="title m-b-md hidden">
             My Student Drive
         </div>
-        <img src="{{asset('images/content/clip-education_v2.png')}}" style="width: 75%" alt="cool">
+        <img src="{{asset('images/logo_mystudentdrive_grande.png')}}" class="img-logo-main"
+             style="width: 90%" alt="My Student Drive">
+        <img src="{{asset('images/content/clip-education_v2.png')}}" class="img-web-main"
+             style="width: 75%" alt="student organization">
                         <div class="links custom-subtitles">
                             <a>Gestiona tus estudios y asignaturas</a>
                             <a>Organiza tu agenda</a>

@@ -13,6 +13,10 @@
 //    border: 1px solid #f00 !important;
 //}
 /***************DESKTOP**************/
+#logo-image-custom{
+    width: 200px;
+}
+
 .page-title{
     //margin-top: 0.5em;
     text-align: center;
@@ -647,6 +651,10 @@
     .planner-title{
         text-align: center;
         margin-bottom: 2em;
+        cursor: pointer;
+        &:hover{
+            font-weight: bold;
+        }
     }
     .checkbox-show-old{
         margin-bottom: 1em;
@@ -763,12 +771,18 @@
             margin-bottom: 2em;
         }
     }
+    .btn.btn-primary.add-event{
+        margin-bottom: 1em;
+    }
 
 }
 .container.content.year.dashboard{
     .title-study-name{
         text-align: center;
         cursor: pointer;
+        &:hover{
+            font-weight: bold;
+        }
     }
     .title-year-dates{
         text-align: center;
@@ -776,6 +790,9 @@
         color: #3490dc;
         cursor: pointer;
         margin-bottom: 1.5em;
+        &:hover{
+            color: #26679c;
+        }
     }
     margin-top:0;
     .btn.btn-primary.btn-add-subject{
@@ -1057,6 +1074,10 @@
     .title-schedules{
         margin-bottom: 2em;
         text-align: center;
+        cursor: pointer;
+        &:hover{
+            font-weight: bold;
+        }
     }
     .title-schedules-dashboard{
         text-align: center;
@@ -1192,8 +1213,38 @@
         .row{
             .col{
                 margin-top: 2em;
+                .planner-title{
+                    margin-bottom: 1em;
+                }
             }
         }
+    }
+    .container.content.todo-list.dashboard {
+        .title-todo-list {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    }
+
+    .container.content.schedules.dashboard {
+        .title-schedules {
+            margin-bottom: 1em;
+        }
+    }
+    .container.content.planner{
+        margin-top: 0;
+    }
+    .container.content.planner .planner-title {
+        margin-bottom: 1.5em;
+    }
+    .container.agenda-page.subject-page.tag-todo-list {
+        margin-top: 0;
+    }
+    .studies .courses {
+        margin-bottom: 0.5em;
+    }
+    .content.content.studies {
+        margin-top: 90px;
     }
 }
 

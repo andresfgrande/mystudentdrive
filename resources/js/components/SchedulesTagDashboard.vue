@@ -1,6 +1,6 @@
 <template>
     <div class="container content schedules dashboard">
-        <h4 class="title-schedules">Proximas clases</h4>
+        <h4 class="title-schedules" @click="schedulesLink">Proximas clases</h4>
         <div class="classes-today">
             <h5 class="title-schedules-dashboard">Hoy</h5>
 
@@ -184,6 +184,9 @@
             }
         },
         methods:{
+            schedulesLink(){
+                window.location ="/schedules";
+            },
             editClasseModal(classe){
                // this.getSubjectsByPeriod();
                 $('#editClasseModal').modal('show');

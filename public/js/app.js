@@ -3306,16 +3306,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isDisabled: function isDisabled() {
-      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' || this.eventToAdd.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+      /* || this.eventToAdd.subject_id === ''*/
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
     isDisabledEdit: function isDisabledEdit() {
-      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' || this.eventToEdit.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+      /*|| this.eventToEdit.subject_id === ''*/
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
@@ -3852,16 +3856,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isDisabled: function isDisabled() {
-      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' || this.eventToAdd.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+      /* || this.eventToAdd.subject_id === '' */
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
     isDisabledEdit: function isDisabledEdit() {
-      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' || this.eventToEdit.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+      /* || this.eventToEdit.subject_id === '' */
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
@@ -4174,6 +4182,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    plannerLink: function plannerLink() {
+      window.location = "/planner";
+    },
     formatTime: function formatTime(time) {
       var string = time;
       string = string.substring(0, 5);
@@ -4382,16 +4393,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isDisabled: function isDisabled() {
-      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === '' || this.eventToAdd.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToAdd.name === '' || this.eventToAdd.time === '' || this.eventToAdd.date === ''
+      /* || this.eventToAdd.subject_id === ''*/
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
     isDisabledEdit: function isDisabledEdit() {
-      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === '' || this.eventToEdit.subject_id === '') {
-        return true;
-      } else {
+      if (this.eventToEdit.name === '' || this.eventToEdit.time === '' || this.eventToEdit.date === ''
+      /* || this.eventToEdit.subject_id === '' */
+      ) {
+          return true;
+        } else {
         return false;
       }
     },
@@ -5745,6 +5760,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    schedulesLink: function schedulesLink() {
+      window.location = "/schedules";
+    },
     editClasseModal: function editClasseModal(classe) {
       // this.getSubjectsByPeriod();
       $('#editClasseModal').modal('show');
@@ -91707,7 +91725,14 @@ var render = function() {
             "div",
             { staticClass: "col" },
             [
-              _c("h4", { staticClass: "planner-title" }, [_vm._v("Mi agenda")]),
+              _c(
+                "h4",
+                {
+                  staticClass: "planner-title",
+                  on: { click: _vm.plannerLink }
+                },
+                [_vm._v("Mi agenda")]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "checkbox-show-old" }, [
                 _c("input", {
@@ -92770,7 +92795,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Añadir Photo")]
+                  [_vm._v("Añadir foto")]
                 )
               : _vm._e()
           ]),
@@ -95169,7 +95194,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container content schedules dashboard" }, [
-    _c("h4", { staticClass: "title-schedules" }, [_vm._v("Proximas clases")]),
+    _c(
+      "h4",
+      { staticClass: "title-schedules", on: { click: _vm.schedulesLink } },
+      [_vm._v("Proximas clases")]
+    ),
     _vm._v(" "),
     _c(
       "div",
