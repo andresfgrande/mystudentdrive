@@ -28,7 +28,8 @@
                 <h2 class="nav-title">
                     <a class="navbar-brand" href="{{ url('/') }}">
 {{--                        {{ config('app.name', 'myStudentDrive') }}--}}
-                        <img id="logo-image-custom" src="{{asset('images/logo_mystudentdrive_grande.png')}}">
+                        <img id="logo-image-custom" style="width: 200px;" src="{{asset('images/logo_mystudentdrive_grande.png')}}"
+                             alt="My Student Drive logo">
 {{--                        <img src="{{asset('images/logo_completo.png')}}">--}}
                     </a>
                 </h2>
