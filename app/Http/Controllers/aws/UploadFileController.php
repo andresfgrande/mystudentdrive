@@ -32,8 +32,10 @@ class UploadFileController extends Controller
         $new_file = $request->file('new_file');
         $new_name = $new_file->getClientOriginalName();
         $bucketName = 'test-bucket-mystudentdrive';
-        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-        $IAM_SECRET = '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';
+//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+//        $IAM_SECRET = '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';
+        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
+        $IAM_SECRET = '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';
 
         try {
             /***************************/
@@ -169,8 +171,10 @@ class UploadFileController extends Controller
         $file_id = $request->get('file_id');
 
         $BUCKET_NAME = 'test-bucket-mystudentdrive';
-        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-        $IAM_SECRET = '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';
+//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+//        $IAM_SECRET = '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';
+        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
+        $IAM_SECRET = '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';
 
         $result =  DB::table('files')
             ->where('id', $file_id)
@@ -256,8 +260,10 @@ class UploadFileController extends Controller
         $targetFile = $result->toArray();
 
         $bucketName = 'test-bucket-mystudentdrive';
-        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-        $IAM_SECRET = '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';
+//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+//        $IAM_SECRET = '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';
+        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
+        $IAM_SECRET = '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';
 
         try {
             $s3 = new S3Client(

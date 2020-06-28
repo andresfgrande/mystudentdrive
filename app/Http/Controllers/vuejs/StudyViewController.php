@@ -200,8 +200,10 @@ class StudyViewController extends Controller
             }
             /*****************************************************/
             $bucketName = 'test-bucket-mystudentdrive';
-            $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-            $IAM_SECRET = '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';
+//            $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+//            $IAM_SECRET = '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';
+            $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
+            $IAM_SECRET = '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';
 
             foreach($filesInSection as $file){
                 try {
@@ -297,8 +299,10 @@ class StudyViewController extends Controller
             }
             /*****************************************************/
             $bucketName = 'test-bucket-mystudentdrive';
-            $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-            $IAM_SECRET = '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';
+//            $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
+//            $IAM_SECRET = '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';
+            $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
+            $IAM_SECRET = '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';
 
             foreach($filesInSection as $file){
                 try {
