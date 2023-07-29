@@ -24,18 +24,13 @@ class UploadFileController extends Controller
 {
     public function uploadFile(Request $request){
         $inipath = php_ini_loaded_file();
-//        if ($inipath) {
-//            echo 'Loaded php.ini: ' . $inipath;
-//        } else {
-//            echo 'A php.ini file is not loaded';
-//        }
+
         $new_file = $request->file('new_file');
         $new_name = $new_file->getClientOriginalName();
         $bucketName = 'test-bucket-mystudentdrive';
-//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-//        $IAM_SECRET = '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';
-        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
-        $IAM_SECRET = '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';
+
+        $IAM_KEY = 'IAM_KEY';
+        $IAM_SECRET = 'IAM_SECRET';
 
         try {
             /***************************/
@@ -51,15 +46,12 @@ class UploadFileController extends Controller
                 )
             );
 
-            //$s3EncryptionClient = new S3EncryptionClient($s3,1);
 
         } catch (Exception $e) {
             die("Error: " . $e->getMessage());
         }
 
-        //$keyName = 'test_example/' . basename($new_name); /*basename($_FILES["fileToUpload"]['tmp_name']);*/
-        //$pathInS3 = 'https://s3.eu-west-2.amazonaws.com/' . $bucketName . '/' . $keyName;
-
+      
         // Add it to S3
         try {
             // Uploaded:
@@ -77,7 +69,7 @@ class UploadFileController extends Controller
                 ),
             ));
 
-            $kmsKeyArn = 'arn:aws:kms:eu-west-2:068140776116:key/a6c703a9-1284-4119-b383-f79dfaf063a8';
+            $kmsKeyArn = 'ARN_KEY';
             // This materials provider handles generating a cipher key and
             // initialization vector, as well as encrypting your cipher key via AWS KMS
             $materialsProvider = new KmsMaterialsProvider(
@@ -171,10 +163,9 @@ class UploadFileController extends Controller
         $file_id = $request->get('file_id');
 
         $BUCKET_NAME = 'test-bucket-mystudentdrive';
-//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-//        $IAM_SECRET = '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';
-        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
-        $IAM_SECRET = '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';
+
+        $IAM_KEY = 'IAM_KEY';
+        $IAM_SECRET = 'IAM_SECRET';
 
         $result =  DB::table('files')
             ->where('id', $file_id)
@@ -211,7 +202,7 @@ class UploadFileController extends Controller
                             ),
                         ));
 
-                        $kmsKeyArn = 'arn:aws:kms:eu-west-2:068140776116:key/a6c703a9-1284-4119-b383-f79dfaf063a8';
+                        $kmsKeyArn = 'KEY_ARN';
                         // This materials provider handles generating a cipher key and
                         // initialization vector, as well as encrypting your cipher key via AWS KMS
                         $materialsProvider = new KmsMaterialsProvider(
@@ -260,10 +251,9 @@ class UploadFileController extends Controller
         $targetFile = $result->toArray();
 
         $bucketName = 'test-bucket-mystudentdrive';
-//        $IAM_KEY = 'AKIAQ7XMBXK2P5QGZZXM';
-//        $IAM_SECRET = '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';
-        $IAM_KEY = 'AKIAQ7XMBXK2GI4MEYXQ';
-        $IAM_SECRET = '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';
+
+        $IAM_KEY = 'IAM_KEY';
+        $IAM_SECRET = 'IAM_SECRET';
 
         try {
             $s3 = new S3Client(
